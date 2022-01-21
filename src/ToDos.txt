@@ -1,0 +1,198 @@
+
+getRandomColorIncludingBlack()
+getRandomColor()
+
+progBlack(unsigned int durationMillis, byte nextPart)
+
+setDurationAndNextPart(unsigned int durationMillis, byte nextPart) {
+
+progScrollText(String words, unsigned int durationMillis, int delay, int col, byte nextPart)
+progShowText(String words, unsigned int durationMillis, int pos_x, int pos_y, int col, byte nextPart)
+	progShowROOTS(unsigned int durationMillis, byte nextPart)
+	progWordArray(wordArrTooCLose2, 10, 570, 5714, getRandomColor(), 5);
+
+progBlingBlingColoring(durationMillis, nextPart, del)
+progFastBlingBling(durationMillis, anzahl, nextPart)
+progFullColors(unsigned int durationMillis, byte nextPart, unsigned int del)
+progFullColorsWithFading(unsigned int durationMillis, byte nextPart)
+progWhiteGoingBright(unsigned int durationMillis, byte nextPart, unsigned int del)
+progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, int red, int green, int blue)
+	progStrobo(ms, nextPart, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	progStrobo(ms, nextPart, 50, 255, 255, 255);	// Weisser strobo
+progMatrixScanner(unsigned int durationMillis, byte nextPart)
+progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int msForChange)
+progStern(unsigned int durationMillis, byte nextPart)
+progStern(unsigned int durationMillis, int msForColorChange, byte nextPart)
+progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange)
+progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange, boolean clearEach)
+progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int msForChange)
+progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int msForChange, boolean clearEach)
+progMovingLines(unsigned int durationMillis, byte nextPart)
+progOutline(unsigned int durationMillis, byte nextPart)
+progRunningPixel(unsigned int durationMillis, byte nextPart)
+progMatrixHorizontal(unsigned int durationMillis, byte nextPart)
+progMatrixVertical(unsigned int durationMillis, byte nextPart)
+
+progPalette(unsigned int durationMillis, uint8_t paletteID, byte nextPart)
+FillLEDsFromPaletteColors(uint8_t colorInd)
+
+display_panOrBounceBitmap(8);	// 8: smiley panning around
+display_bitmap(4, getRandomColor());
+display_rgbBitmap(10); // cool: 5, 8, 9, 10
+
+TODOs:
+	progFadeOut(unsigned int durationMillis, byte nextPart)
+	progBlinkText(String words, unsigned int durationMillis, int col, byte nextPart)
+	?? progCLED(10000, 4);
+
+progPalette
+===============
+0 rainbow slow
+1 rainbow fast (ohne fades)
+2 rainbow fast (mit fades)
+3 lila/grün Fast mit fades
+4 blau/lila/rot/orange mit fades Fast
+5 white fast ohne fades
+6 white fast mit fades
+7 blau/weiss slow mit fades
+8 blau/lila/rot/orange mit fades slow
+9 weiss/blau/beige fast ohne fades (interessante farben)
+10 kurze grüne streifen 
+11 weiss/grün fast mit fades
+
+=========================================
+
+
+progCircles(30000, 5, 1000, true);
+progRandomLines(30000, 5, 500, false);
+progScrollText("Nerds on Fire", 30000, 90, getRandomColor(), 5);
+//progMatrixScanner(55000, 5);
+//progMatrixHorizontal(60000, 1);
+//progShowROOTS(60000, 1);
+//progFastBlingBling(15000, 10, 9); //20s -> 3:13
+//progShowText("ROOTS", 60000, 1, 13, getRandomColor(), 1);
+//progScrollText("Pokerface by Lady Gaga", 60000, 60, getRandomColor(), 1);
+//progScrollText("Phil", 60000, 30, getRandomColor(), 1);
+//progPalette(10000, 11, 2);	// paletteID -> 0 - 11
+	//0 rainbow slow
+	//1 rainbow fast (ohne fades)
+	//2 rainbow fast (mit fades)
+	//3 lila/grün Fast mit fades
+	//4 blau/lila/rot/orange mit fades Fast
+	//5 white fast ohne fades
+	//6 white fast mit fades
+	//7 blau/weiss slow mit fades
+	//8 blau/lila/rot/orange mit fades slow
+	//9 weiss/blau/beige fast ohne fades (interessante farben)
+	//10 weiss/blau/beige fast mit fades (interessante farben)
+	//11 weiss/grün fast mit fades
+//progStern(100000, 900, 2);
+//progFadeOut(16615, 20);
+//count_pixels();
+//progWordArray(wordArrTooCLose2, 10, 570, 5714, getRandomColor(), 5);
+//progScrollText("Nerds on Fire", 10000, getRandomColor(), 4);
+//display_panOrBounceBitmap(8);	// 8: smiley panning around
+//display_bitmap(4, getRandomColor());
+//display_rgbBitmap(10); // cool: 5, 8, 9, 10
+//progBlingBlingColoring(60000, 1);//3    59,5hz
+
+
+
+
+IDEEN
+========
+- ein paar feste Spots die im Takt blinken können
+
+
+
+
+
+=============================================
+liegt hier:
+E:\00_DATEN\Arduino\LEDgit_Neomatrix
+
+im smartgit:
+LEDgit_Neomatrix
+
+gesynced auf github:
+https://github.com/just4phil/LEDgit_Neomatrix
+
+=======================================================
+
+fixen:
+LEDgit_Neomatrix.ino: 1863:31: error: invalid use of member function 'unsigned int String::length() const' (did you forget the '()' ?)
+
+und dann scrolltext am anfang des songs -> laengen testen (automatische kalkulation!)
+=====================================================
+
+
+TODO
+=====
+04.05.2021: ALLE SONGS SO MACHEN WIE THE SUN ALWAYS ... (perfektes Timing)
+	abweichung von akkum. millis berücksichtigen!!
+- default preset sollte gechillt sein (ohne strobo)
+
+pokerface
+=============
+- zu viel strobo?
+
+use somebody
+================
+- in verse ist wechsel zu schnell
+- strobo in ruhigen teilen vor chorus ist quatsch!
+
+set fire
+===========
+- set fire -> 01.05.2021: weiter mit chorus 2
+
+
+done
+======
+05.05.2021:
+- people are people fertig!!
+
+3.5.2021:
+- Sun always shines on TV: FERTIG!
+
+02.05.2021:
+- Titanium	02.05.2021: FERTIG!
+
+01.05.2021:
+- set fire -> 01.05.2021: weiter mit chorus 2
+- DIAMONDS fertig!
+- check until firework
+
+30.04.2021:
+- fixed enjoy
+- check until no roots
+
+
+
+
+
+=====================================================
+
+wenn man auch LEDMATRIX Backend nutzen will:
+
+neomatrix_config_h:
+	muss man an matrix groesse anpassen (done)
+	und richtiges define am anfang (done)
+
+LEDgit_Neomatrix.ino:
+	wieder rein:
+		//#define LEDMATRIX
+		//#include "neomatrix_config.h"
+	auskommentieren:
+		FastLED_NeoMatrix* matrix;
+	setup()
+		wieder rein: //matrix_setup();
+		raus: matrix = new FastLED_NeoMatrix(leds, mw, mh, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
+			//error: redefinition of 'FastLED_NeoMatrix* matrix
+			//neomatrix_config.h:185: note  FastLED_NeoMatrix* matrix previously declared here
+
+===============================================
+
+features:
+
+20.09.2020:
+mit midi 23 + songPart kann man jetzt auch mitten im song einen spezifischen part starten
