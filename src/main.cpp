@@ -51,7 +51,7 @@
 
 //===============================
 
-#define DATA_PIN            12 // C2 
+#define DATA_PIN            9 // auf teensy++2 -> 12 (C2)
 #define TEST_PIN_D7         6  // internal LED
 #define MIDI_RX_PIN         2  // D2
 #define LIPO_PIN            40 // 2 = A2 // 40 // F2
@@ -3075,209 +3075,7 @@ void checkIncomingMIDITEST() {
 		}
 	} while (Serial1.available());
 }
-
 //====================================================
-
-void loop() {
-
-	boolean debug = false;
-
-	//=== ausserhalb vom fastLED loop ====
-
-/* 	if (ISR_USART_got_a_byte) {
-		Serial.println(ISR_received_USART_byte);	// ????
-		ISR_USART_got_a_byte = false;
-	} */
-
-	if (OneSecondHasPast) {
-		//Serial.println(diffMillis);
-		secondsForVoltage++;	// count seconds for voltage lipo safer 
-		OneSecondHasPast = false;
-	}
-
-	//---- check voltage as lipo safer ------
-	if (secondsForVoltage >= SECONDSFORVOLTAGE) {
-		secondsForVoltage = 0;
-
-		//--- analog input auslesen für voltage lipo safer
-		//uint8_t low;
-		//uint8_t analog;
-		//low = ADCL;									// must read LSB first
-		//analog = (ADCH << 8) | low;					// must read MSB only once!
-		//Serial.println(analog);					// TODO JUST TESTING
-		//Serial.println(adc_read(3));
-		//Serial.println(analogRead(40)); // TODO JUST TESTING
-
-		voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(analogRead(LIPO_PIN), 0, 1023, 0, 120);	// glaettungsfunktion um zittern zu vermeiden
-	}
-
-	if (debug) {
-		Serial.print(voltageSmooth);
-		Serial.print("\t");
-		Serial.println(secondsForVoltage);
-	}
-	//--------------------------------------------
-
-
-	//---- start loop only when voltage is high enough
-	if (voltageSmooth > 102) {	// only fire LEDs if voltage is > 10.2V
-
-		checkIncomingMIDI();
-		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
-
-		//=== ab hier wird nur alle 25 ms ausgefuehrt ======
-		
-
-
-		// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
-		flag_processFastLED = true; // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
-
-
-
-
-		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
-			
-			FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
-
-			switch (songID) {
-			case 0:
-				defaultLoop();
-				break;
-			case 1:
-				LearnToFly();
-				break;
-			case 2:
-				Castle();
-				break;
-			case 3:
-				TooClose();
-				break;
-			case 4:
-				Pokerface();
-				break;
-			case 5:
-				UseSomebody();
-				break;
-			case 6:
-				NoRoots();
-				break;
-			case 7:
-				Firework();
-				break;
-			case 8:
-				Diamonds();
-				break;
-			case 9:
-				SetFire();
-				break;
-			case 10:
-				Chandelier();
-				break;
-			case 11:
-				Titanium();
-				break;
-			case 12:
-				SomeoneYouLoved();
-				break;
-			case 13:
-				ShouldntStop();
-				break;
-			case 14:
-				SunAlwaysShinesOnTV();
-				break;
-			case 15:
-				peopleArePeople();
-				break;
-			case 16:
-				enjoyTheSilence();
-				break;
-			case 17:
-				sober();
-				break;
-			case 18:
-				prisoner();
-				break;
-
-			case 20:
-				TEMPLATE();
-				break;
-
-			default:
-				defaultLoop();
-				break;
-			}
-			flag_processFastLED = false;
-		}
-	}
-	else {	// if voltage is too low let LED 0 blink red
-		FastLED.clear();
-		FastLED.show();
-		delay(500);
-		FastLED.setBrightness(BRIGHTNESS);
-		leds[0] = CRGB::Red;
-		FastLED.show();
-		delay(500);
-	}
-}
-
-//====================================================
-
-void setup() {
-
-    // Time for serial port to work?
-    delay(1000);
-    Serial1.begin(31250);	// for midi
-    //UCSRR0B = 0x90;
-
-    //----- to be deleted
-    pinMode(TEST_PIN_D7, OUTPUT);// TODO: nur test mit interner LED
-    //---------------------
-
-    //---- check voltage @ PIN A2 as lipo safer ------
-    //PINF = 0x04;		// ? set PIN F2 as input
-    //DIDR0 = 0x04;		// ? Pin F2 has analog signal
-    //ADMUX = 0xC2;		// configure mux input // C2 = 11000010 => interne 2,56v ref + PIN F2
-    //ADCSRB = 0x80;		// high speed mode
-    //ADCSRA = 0xC3;		// 11000011 => enable ADC free running mode + start conversion + prescaler 64
-
-    //pinMode(A2, INPUT); //---- check voltage @ PIN F2 as lipo safer ------
-    voltageSmooth = map(analogRead(LIPO_PIN), 0, 1023, 0, 120);	// zu beginn mit startwert initialisieren, damit nicht mit NULL gemittelt wird
-
-	//---- Define matrix width and height. --------
-#ifdef USELEDMATRIXCONFIG
-	matrix_setup();	// dies gilt nur in verbindung mit #define LEDMATRIX und #include "neomatrix_config.h" (ganz oben!)
-#else
-	matrix = new FastLED_NeoMatrix(leds, MATRIX_WIDTH, MATRIX_HEIGHT, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
-
-	//----- initialize LEDs ---------
-	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUMMATRIX).setCorrection(TypicalLEDStrip);
-	//NEOPIXEL
-	//WS2812B
-
-	matrix->begin();
-	matrix->setBrightness(BRIGHTNESS);
-#endif
-	    
-    matrix->setTextWrap(false);
-    matrix->setRemapFunction(myRemapFn);	// fuer meine spezifische matrix!
-    //-----------------------
-
-//******* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!
-/*     noInterrupts();				// Alle Interrupts temporär abschalten
-        setupInterrupt();
-    interrupts();				// alle Interrupts scharf schalten */
-
-
-	//Setup Palette
-	currentPalette = RainbowColors_p;
-	currentBlending = LINEARBLEND;
-	
-	//-----------------
-	switchToSong(0);  // TODO: set back to 0 !!!!
-}
-
-//====================================================
-
 
 //************* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // interrupt every 25 ms so that fastLED can process uninterrupted (takes about 18 ms)
@@ -3337,7 +3135,6 @@ String wordArrCastle[] = { castle_w1, castle_w2, castle_w3, castle_w4, castle_w5
 //==============================================
 
  
-
 //void defaultLoop() {
 //	//FastLED.setBrightness(BRIGHTNESS); // zur sicherheit in jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
 //
@@ -5633,6 +5430,206 @@ void TEMPLATE() {
 		break;
 	}
 }
+//=======================================================
+
+void setup() {
+
+    // Time for serial port to work?
+    delay(1000);
+    Serial1.begin(31250);	// for midi
+    //UCSRR0B = 0x90;
+
+    //----- to be deleted
+    pinMode(TEST_PIN_D7, OUTPUT);// TODO: nur test mit interner LED
+    //---------------------
+
+    //---- check voltage @ PIN A2 as lipo safer ------
+    //PINF = 0x04;		// ? set PIN F2 as input
+    //DIDR0 = 0x04;		// ? Pin F2 has analog signal
+    //ADMUX = 0xC2;		// configure mux input // C2 = 11000010 => interne 2,56v ref + PIN F2
+    //ADCSRB = 0x80;		// high speed mode
+    //ADCSRA = 0xC3;		// 11000011 => enable ADC free running mode + start conversion + prescaler 64
+
+    //pinMode(A2, INPUT); //---- check voltage @ PIN F2 as lipo safer ------
+    voltageSmooth = map(analogRead(LIPO_PIN), 0, 1023, 0, 120);	// zu beginn mit startwert initialisieren, damit nicht mit NULL gemittelt wird
+
+	//---- Define matrix width and height. --------
+#ifdef USELEDMATRIXCONFIG
+	matrix_setup();	// dies gilt nur in verbindung mit #define LEDMATRIX und #include "neomatrix_config.h" (ganz oben!)
+#else
+	matrix = new FastLED_NeoMatrix(leds, MATRIX_WIDTH, MATRIX_HEIGHT, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
+
+	//----- initialize LEDs ---------
+	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUMMATRIX).setCorrection(TypicalLEDStrip);
+	//NEOPIXEL
+	//WS2812B
+
+	matrix->begin();
+	matrix->setBrightness(BRIGHTNESS);
+#endif
+	    
+    matrix->setTextWrap(false);
+    matrix->setRemapFunction(myRemapFn);	// fuer meine spezifische matrix!
+    //-----------------------
+
+//******* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!
+/*     noInterrupts();				// Alle Interrupts temporär abschalten
+        setupInterrupt();
+    interrupts();				// alle Interrupts scharf schalten */
+
+
+	//Setup Palette
+	currentPalette = RainbowColors_p;
+	currentBlending = LINEARBLEND;
+	
+	//-----------------
+	switchToSong(0);  // TODO: set back to 0 !!!!
+}
+//====================================================
+
+void loop() {
+
+	boolean debug = false;
+
+	//=== ausserhalb vom fastLED loop ====
+
+/* 	if (ISR_USART_got_a_byte) {
+		Serial.println(ISR_received_USART_byte);	// ????
+		ISR_USART_got_a_byte = false;
+	} */
+
+	if (OneSecondHasPast) {
+		//Serial.println(diffMillis);
+		secondsForVoltage++;	// count seconds for voltage lipo safer 
+		OneSecondHasPast = false;
+	}
+
+	//---- check voltage as lipo safer ------
+	if (secondsForVoltage >= SECONDSFORVOLTAGE) {
+		secondsForVoltage = 0;
+
+		//--- analog input auslesen für voltage lipo safer
+		//uint8_t low;
+		//uint8_t analog;
+		//low = ADCL;									// must read LSB first
+		//analog = (ADCH << 8) | low;					// must read MSB only once!
+		//Serial.println(analog);					// TODO JUST TESTING
+		//Serial.println(adc_read(3));
+		//Serial.println(analogRead(40)); // TODO JUST TESTING
+
+		voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(analogRead(LIPO_PIN), 0, 1023, 0, 120);	// glaettungsfunktion um zittern zu vermeiden
+	}
+
+	if (debug) {
+		Serial.print(voltageSmooth);
+		Serial.print("\t");
+		Serial.println(secondsForVoltage);
+	}
+	//--------------------------------------------
+
+
+	//---- start loop only when voltage is high enough
+	if (voltageSmooth > 102) {	// only fire LEDs if voltage is > 10.2V
+
+		checkIncomingMIDI();
+		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
+
+		//=== ab hier wird nur alle 25 ms ausgefuehrt ======
+		
+
+
+		// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+		flag_processFastLED = true; // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+
+
+
+
+		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
+			
+			FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
+
+			switch (songID) {
+			case 0:
+				defaultLoop();
+				break;
+			case 1:
+				LearnToFly();
+				break;
+			case 2:
+				Castle();
+				break;
+			case 3:
+				TooClose();
+				break;
+			case 4:
+				Pokerface();
+				break;
+			case 5:
+				UseSomebody();
+				break;
+			case 6:
+				NoRoots();
+				break;
+			case 7:
+				Firework();
+				break;
+			case 8:
+				Diamonds();
+				break;
+			case 9:
+				SetFire();
+				break;
+			case 10:
+				Chandelier();
+				break;
+			case 11:
+				Titanium();
+				break;
+			case 12:
+				SomeoneYouLoved();
+				break;
+			case 13:
+				ShouldntStop();
+				break;
+			case 14:
+				SunAlwaysShinesOnTV();
+				break;
+			case 15:
+				peopleArePeople();
+				break;
+			case 16:
+				enjoyTheSilence();
+				break;
+			case 17:
+				sober();
+				break;
+			case 18:
+				prisoner();
+				break;
+
+			case 20:
+				TEMPLATE();
+				break;
+
+			default:
+				defaultLoop();
+				break;
+			}
+			flag_processFastLED = false;
+		}
+	}
+	else {	// if voltage is too low let LED 0 blink red
+		FastLED.clear();
+		FastLED.show();
+		delay(500);
+		FastLED.setBrightness(BRIGHTNESS);
+		leds[0] = CRGB::Red;
+		FastLED.show();
+		delay(500);
+	}
+}
+//====================================================
+
 
 //====================================================
 // Funktion zum auslesen des ADC:
@@ -5656,7 +5653,4 @@ void TEMPLATE() {
 //	low = ADCL;                                     // must read LSB first
 //	return (ADCH << 8) | low;                       // must read MSB only once!
 //}
-
-
-//================================================================
 

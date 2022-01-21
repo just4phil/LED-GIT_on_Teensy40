@@ -135,7 +135,7 @@ uint32_t tft_spi_speed;
 
 // ANDRE: MEINE ANGABEN!!!!
 
-const uint8_t MATRIXPIN = 12;
+const uint8_t MATRIXPIN = 9 // auf teensy++2 -> 12 (C2)
 uint8_t matrix_brightness = 15;
 // Used by LEDMatrix
 const uint16_t MATRIX_TILE_WIDTH = 22; // width of EACH NEOPIXEL MATRIX (not total display)
