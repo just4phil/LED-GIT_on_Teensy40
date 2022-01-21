@@ -116,8 +116,8 @@ volatile boolean nextChangeMillisAlreadyCalculated = false;
 volatile byte nextSongPart = 0;
 volatile byte prog = 0;
 volatile boolean OneSecondHasPast = false;
-volatile byte ISR_received_USART_byte;
-volatile boolean ISR_USART_got_a_byte = false;
+//volatile byte ISR_received_USART_byte;
+//volatile boolean ISR_USART_got_a_byte = false;
 
 unsigned int lastLEDchange = millis();
 int ledState = LOW;             // ledState used to set the LED --TODO: nur test mit interner LED
@@ -3001,7 +3001,7 @@ void switchToPart(byte part) {
 	Serial.println(part);
 }
 
-void checkIncomingMIDI() {
+void checkIncomingMIDI() {	// 21.01.22 TODO: umstellen auf interrupt!!
 
 	boolean debug = false;
 
@@ -3084,10 +3084,10 @@ void loop() {
 
 	//=== ausserhalb vom fastLED loop ====
 
-	if (ISR_USART_got_a_byte) {
+/* 	if (ISR_USART_got_a_byte) {
 		Serial.println(ISR_received_USART_byte);	// ????
 		ISR_USART_got_a_byte = false;
-	}
+	} */
 
 	if (OneSecondHasPast) {
 		//Serial.println(diffMillis);
@@ -3126,6 +3126,15 @@ void loop() {
 		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
 
 		//=== ab hier wird nur alle 25 ms ausgefuehrt ======
+		
+
+
+		// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+		flag_processFastLED = true; // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+
+
+
+
 		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
 			
 			FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
@@ -3253,15 +3262,11 @@ void setup() {
     matrix->setRemapFunction(myRemapFn);	// fuer meine spezifische matrix!
     //-----------------------
 
-    noInterrupts();				// Alle Interrupts temporär abschalten
+//******* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!
+/*     noInterrupts();				// Alle Interrupts temporär abschalten
         setupInterrupt();
+    interrupts();				// alle Interrupts scharf schalten */
 
-        // UART Receiver und Transmitter anschalten, Receive-Interrupt aktivieren
-        // Data mode 8N1, asynchron
-        //UCSR1B = (1 << RXEN1) | (1 << TXEN1) | (1 << RXCIE1);
-        //UCSR1C = (1 << USBS1) | (1 << UCSZ10) | (1 << UCSZ11);
-
-    interrupts();				// alle Interrupts scharf schalten
 
 	//Setup Palette
 	currentPalette = RainbowColors_p;
@@ -3273,8 +3278,10 @@ void setup() {
 
 //====================================================
 
+
+//************* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // interrupt every 25 ms so that fastLED can process uninterrupted (takes about 18 ms)
-void setupInterrupt() {
+/* void setupInterrupt() {
     TCCR3A = 0;
     TCCR3B = 0x0B;      // WGM32 (CTC), Prescaler: // 0x0C = 256 // 0x0B = 64
     OCR3A = 6250;      // 16M/64(prescaler) * 0,025 sec (=25 ms) = 6250 [10ms = 2.500 / 15ms = 3.750 / 20ms = 5.000]
@@ -3304,7 +3311,7 @@ ISR(TIMER3_COMPA_vect) {
     }
 
 	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
-}
+} */
 //========================================================
 
 const static char wordFeels[] = { "Feels" };
