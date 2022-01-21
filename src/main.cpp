@@ -1,18 +1,12 @@
 #include <Arduino.h>
-
-// FastLED_NeoMatrix example for single NeoPixel Shield.
-// By Marc MERLIN <marc_soft@merlins.org>
-// Contains code (c) Adafruit, license BSD
-
 #include <Adafruit_GFX.h>
-#include <FastLED_NeoMatrix.h>
+#include <FastLED_NeoMatrix.h>	// FastLED_NeoMatrix example for single NeoPixel Shield. By Marc MERLIN <marc_soft@merlins.org> Contains code (c) Adafruit, license BSD
 #include <FastLED.h>
-
+#include "smileytongue24.h"
 // Choose your prefered pixmap
 //#include "heart24.h"
 //#include "yellowsmiley24.h"
 //#include "bluesmiley24.h"
-#include "smileytongue24.h"
 
 
 //=============================
@@ -57,24 +51,24 @@
 
 //===============================
 
-#define DATA_PIN            12 // C2 (alt arduino: 3)
+#define DATA_PIN            12 // C2 
 #define TEST_PIN_D7         6  // internal LED
 #define MIDI_RX_PIN         2  // D2
 #define LIPO_PIN            40 // 2 = A2 // 40 // F2
-#define SECONDSFORVOLTAGE	  1
-#define mw					        22	// TODO: ausmerzen
-#define mh				    	    23	// TODO: ausmerzen
+#define SECONDSFORVOLTAGE	1
+#define mw					22	// TODO: ausmerzen
+#define mh				    23	// TODO: ausmerzen
 #define MATRIX_WIDTH        22
 #define MATRIX_HEIGHT       23
-#define BRIGHTNESS			    15    // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
+#define BRIGHTNESS			15    // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
 
 #define MATRIX_TYPE         HORIZONTAL_ZIGZAG_MATRIX
 #define MATRIX_SIZE         (MATRIX_WIDTH * MATRIX_HEIGHT)
-#define NUMMATRIX			      (MATRIX_WIDTH * MATRIX_HEIGHT)	// TODO: ausmerzen
+#define NUMMATRIX			(MATRIX_WIDTH * MATRIX_HEIGHT)	// TODO: ausmerzen
 #define NUMPIXELS           MATRIX_SIZE // TODO: ausmerzen
 #define COLOR_ORDER         RGB
 #define CHIPSET             WS2812B
-#define anz_LEDs			      278
+#define anz_LEDs			278
 
 CRGB leds[NUMMATRIX];
 //=============================================
@@ -137,22 +131,8 @@ int stage = 0;
 
 byte actualAnzahlLEDs = 0; // wird benutzt von fastBlinBling fuer die steigerung der anzahl LEDs
 
-
 CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
-
-
-//#define myUDR1 (_SFR_IO_ADDR(0xCE))
-//#define myUBRR1H (_SFR_IO_ADDR(0xCD))
-//#define myUBRR1L (_SFR_IO_ADDR(0xCF))
-//#define myUCSR1C (_SFR_IO_ADDR(0xCC))
-//#define myUCSR1B (_SFR_IO_ADDR(0xCA))
-//#define myUCSR1A (_SFR_IO_ADDR(0xC9))
-//#define MY_USART1_RX_vect _VECTOR(26)
-//
-//ISR(MY_USART1_RX_vect) {
-//
-//}
 
 //===============================================
 // This could also be defined as matrix->color(255,0,0) but those defines
@@ -693,7 +673,7 @@ void display_panOrBounceBitmap(uint8_t bitmapSize) {
 }
 
 
-//====================================================== LEDMatrix.h
+//====================================================== war frueher mal in LEDMatrix.h
  //========== Andres remapping function =================
  //======================================================
 const int MISSING_LED = 300;
@@ -3105,7 +3085,7 @@ void loop() {
 	//=== ausserhalb vom fastLED loop ====
 
 	if (ISR_USART_got_a_byte) {
-		Serial.println(ISR_received_USART_byte);
+		Serial.println(ISR_received_USART_byte);	// ????
 		ISR_USART_got_a_byte = false;
 	}
 
@@ -3302,20 +3282,7 @@ void setupInterrupt() {
 }
 
 #define INCREMENT	25	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
-
-//#define USART1_RX_vect_num  25
-//#define USART1_RX_vect      _VECTOR(25)  /* USART1, Rx Complete */
-//HardwareSerial.cpp:190 : multiple definition of __vector_25
-
-//ISR( $0030 ) {	// 25 = USART1_RX_vect (für den AT90USB1286 gibt es keine alternative: https://www.nongnu.org/avr-libc/user-manual/group__avr__interrupts.html)
-//	ISR_received_USART_byte = (UDR1);
-//	ISR_USART_got_a_byte = true;
-//}
-
-//void USART1_RX_vect_ISR(void) {	// 25 = USART1_RX_vect (für den AT90USB1286 gibt es keine alternative: https://www.nongnu.org/avr-libc/user-manual/group__avr__interrupts.html)
-//	ISR_received_USART_byte = (UDR1);
-//	ISR_USART_got_a_byte = true;
-//}
+                  // TODO: check speed on TEENSY 4!!
 
 ISR(TIMER3_COMPA_vect) {
 	millisCounterTimer = millisCounterTimer + INCREMENT;	// wird von den progs fürs timing bzw. delay-ersatz verwendet
