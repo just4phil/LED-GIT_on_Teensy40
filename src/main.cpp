@@ -1241,9 +1241,6 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 	}
 }
 
-void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart) {
-	progFastBlingBling(durationMillis, anzahl, nextPart, 0, 0, 0);
-}
 void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart, byte addLEDs, byte maxLEDs, unsigned int del) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
@@ -1278,6 +1275,10 @@ void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart,
 		leds[random(0, anz_LEDs)] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); //LED_RED_HIGH;
 	}
 	FastLED.show();
+}
+
+void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart) {
+	progFastBlingBling(durationMillis, anzahl, nextPart, 0, 0, 0);
 }
 
 void progFullColors(unsigned int durationMillis, byte nextPart, unsigned int del) {
@@ -1426,9 +1427,6 @@ void progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, in
 
 //TODO: Fixen
 
-void progMatrixScanner(unsigned int durationMillis, byte nextPart) {
-	progMatrixScanner(durationMillis, nextPart, 0);
-}
 //msForChange bremst hier aber bringt eigentlich nix!!, da entweder schnell, oder zu langsam!!
 void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
 
@@ -1470,9 +1468,10 @@ void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int 
 	}
 }
 
-void progStern(unsigned int durationMillis, byte nextPart) {
-	progStern(durationMillis, 0, nextPart);
+void progMatrixScanner(unsigned int durationMillis, byte nextPart) {
+	progMatrixScanner(durationMillis, nextPart, 0);
 }
+
 void progStern(unsigned int durationMillis, int msForColorChange, byte nextPart) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
@@ -1517,6 +1516,10 @@ void progStern(unsigned int durationMillis, int msForColorChange, byte nextPart)
 	FastLED.show();
 }
 
+void progStern(unsigned int durationMillis, byte nextPart) {
+	progStern(durationMillis, 0, nextPart);
+}
+
 void progBlack(unsigned int durationMillis, byte nextPart) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
@@ -1535,9 +1538,6 @@ void progBlack(unsigned int durationMillis, byte nextPart) {
 	FastLED.show();
 }
 
-void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
-	progCircles(durationMillis, nextPart, msForChange, true);
-}
 void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange, boolean clearEach) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
@@ -1569,9 +1569,10 @@ void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForC
 	}
 }
 
-void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
-	progRandomLines(durationMillis, nextPart, msForChange, true);
+void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
+	progCircles(durationMillis, nextPart, msForChange, true);
 }
+
 void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int msForChange, boolean clearEach) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
@@ -1609,6 +1610,10 @@ void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int ms
 
 		//lastTimestamp = millis();
 	}
+}
+
+void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
+	progRandomLines(durationMillis, nextPart, msForChange, true);
 }
 
 void progMovingLines(unsigned int durationMillis, byte nextPart) {
@@ -2965,16 +2970,6 @@ int16_t progCLED_counter;
 
 //==========================================================================
 
-void switchToSong(byte song) {
-	//--- start song ----
-	songID = song;
-	Serial.println("-------------------");
-	Serial.print("switched to song: ");
-	Serial.println(song);
-	Serial.println("-------------------");
-	switchToPart(0);
-}
-
 //void switchToSongAndPart(byte song, byte part) {
 //    //--- start song ----
 //    songID = song;
@@ -2999,6 +2994,16 @@ void switchToPart(byte part) {
 
 	Serial.print("switched to part: ");
 	Serial.println(part);
+}
+
+void switchToSong(byte song) {
+	//--- start song ----
+	songID = song;
+	Serial.println("-------------------");
+	Serial.print("switched to song: ");
+	Serial.println(song);
+	Serial.println("-------------------");
+	switchToPart(0);
 }
 
 void checkIncomingMIDI() {	// 21.01.22 TODO: umstellen auf interrupt!!
