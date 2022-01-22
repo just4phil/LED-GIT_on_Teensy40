@@ -1220,6 +1220,10 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 	}
 	//---------------------------------------------------------------------
 
+
+delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
+
+
 	if (progBlingBlingColoring_rounds == 0) {
 		r = getRandomColorValue();
 		g = getRandomColorValue();
@@ -1447,6 +1451,10 @@ void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int 
 	}
 	//---------------------------------------------------------------------
 
+
+delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
+
+
 	if (millisCounterTimer >= msForChange) {	// ersatz für delay()
 		millisCounterTimer = 0;
 
@@ -1478,6 +1486,8 @@ void progMatrixScanner(unsigned int durationMillis, byte nextPart) {
 }
 
 void progStern(unsigned int durationMillis, int msForColorChange, byte nextPart) {
+
+delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -1635,6 +1645,8 @@ void progMovingLines(unsigned int durationMillis, byte nextPart) {
 	}
 	//---------------------------------------------------------------------
 
+delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
+
 	FastLED.clear();
 
 	switch (stage) {
@@ -1716,6 +1728,8 @@ void progOutline(unsigned int durationMillis, byte nextPart) {
 		//		Serial.println(nextChangeMillis);
 	}
 	//---------------------------------------------------------------------
+
+delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
 
 	int anz;
 	FastLED.clear();
@@ -3137,7 +3151,7 @@ String wordArrCastle[] = { castle_w1, castle_w2, castle_w3, castle_w4, castle_w5
 //#0
 void defaultLoop()  {
 
-	switch (prog) {
+ 	switch (prog) { 
 
 	case 0:
 		progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
