@@ -1,7 +1,10 @@
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
+#include <Adafruit_I2CDevice.h>
 #include <FastLED_NeoMatrix.h>	// FastLED_NeoMatrix example for single NeoPixel Shield. By Marc MERLIN <marc_soft@merlins.org> Contains code (c) Adafruit, license BSD
 #include <FastLED.h>
+#include "TeensyTimerTool.h"
+using namespace TeensyTimerTool;
 #include "smileytongue24.h"
 // Choose your prefered pixmap
 //#include "heart24.h"
@@ -133,6 +136,8 @@ byte actualAnzahlLEDs = 0; // wird benutzt von fastBlinBling fuer die steigerung
 
 CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
+
+PeriodicTimer t1;
 
 //===============================================
 // This could also be defined as matrix->color(255,0,0) but those defines
@@ -3082,41 +3087,6 @@ void checkIncomingMIDITEST() {
 }
 //====================================================
 
-//************* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// interrupt every 25 ms so that fastLED can process uninterrupted (takes about 18 ms)
-/* void setupInterrupt() {
-    TCCR3A = 0;
-    TCCR3B = 0x0B;      // WGM32 (CTC), Prescaler: // 0x0C = 256 // 0x0B = 64
-    OCR3A = 6250;      // 16M/64(prescaler) * 0,025 sec (=25 ms) = 6250 [10ms = 2.500 / 15ms = 3.750 / 20ms = 5.000]
-    TIMSK3 = 0x02;      // enable compare interrupt
-}
-
-#define INCREMENT	25	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
-                  // TODO: check speed on TEENSY 4!!
-
-ISR(TIMER3_COMPA_vect) {
-	millisCounterTimer = millisCounterTimer + INCREMENT;	// wird von den progs fürs timing bzw. delay-ersatz verwendet
-    millisCounterForSeconds = millisCounterForSeconds + INCREMENT;
-    millisCounterForProgChange = millisCounterForProgChange + INCREMENT;
-
-    flag_processFastLED = true;	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
-    PORTD ^= 0x40;				// toggle LED every 25 ms
-
-    // test zur messung der timing-praezision
-    if (millisCounterForSeconds >= 1000) {
-        //actualMillis = millis();
-        //diffMillis = actualMillis - lastMillis;
-        //lastMillis = actualMillis;
-        //Serial.println(millisCounterForSeconds);
-        millisCounterForSeconds = 0;
-        OneSecondHasPast = true;
-		//PORTD ^= 0x40;
-    }
-
-	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
-} */
-//========================================================
-
 const static char wordFeels[] = { "Feels" };
 const static char wordLike[] = { "like" };
 const static char wordI[] = { "i" };
@@ -5437,15 +5407,71 @@ void TEMPLATE() {
 }
 //=======================================================
 
-void setup() {
+//************* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// interrupt every 25 ms so that fastLED can process uninterrupted (takes about 18 ms)
 
-    // Time for serial port to work?
-    delay(1000);
+#define INCREMENT	25	// 25 // process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
+                  // TODO: check speed on TEENSY 4!!
+
+/* void setupInterrupt() {
+    TCCR3A = 0;
+    TCCR3B = 0x0B;      // WGM32 (CTC), Prescaler: // 0x0C = 256 // 0x0B = 64
+    OCR3A = 6250;      // 16M/64(prescaler) * 0,025 sec (=25 ms) = 6250 [10ms = 2.500 / 15ms = 3.750 / 20ms = 5.000]
+    TIMSK3 = 0x02;      // enable compare interrupt
+}
+
+ISR(TIMER3_COMPA_vect) {
+	millisCounterTimer = millisCounterTimer + INCREMENT;	// wird von den progs fürs timing bzw. delay-ersatz verwendet
+    millisCounterForSeconds = millisCounterForSeconds + INCREMENT;
+    millisCounterForProgChange = millisCounterForProgChange + INCREMENT;
+
+    flag_processFastLED = true;	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
+    PORTD ^= 0x40;				// toggle LED every 25 ms
+
+    // test zur messung der timing-praezision
+    if (millisCounterForSeconds >= 1000) {
+        //actualMillis = millis();
+        //diffMillis = actualMillis - lastMillis;
+        //lastMillis = actualMillis;
+        //Serial.println(millisCounterForSeconds);
+        millisCounterForSeconds = 0;
+        OneSecondHasPast = true;
+		//PORTD ^= 0x40;
+    }
+
+	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
+}  */
+
+void callback() // toggle the LED
+{
+	millisCounterTimer = millisCounterTimer + INCREMENT;	// wird von den progs fürs timing bzw. delay-ersatz verwendet
+    millisCounterForSeconds = millisCounterForSeconds + INCREMENT;
+    millisCounterForProgChange = millisCounterForProgChange + INCREMENT;
+
+    flag_processFastLED = true;	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
+    //PORTD ^= 0x40;				// toggle LED every 25 ms
+
+    // test zur messung der timing-praezision
+    if (millisCounterForSeconds >= 1000) {
+        //actualMillis = millis();
+        //diffMillis = actualMillis - lastMillis;
+        //lastMillis = actualMillis;
+        //Serial.println(millisCounterForSeconds);
+        millisCounterForSeconds = 0;
+        OneSecondHasPast = true;
+		//PORTD ^= 0x40;
+    }
+
+	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
+}
+
+void setup() {
+    
+    delay(1000);	// Time for serial port to work?
     Serial1.begin(31250);	// for midi
-    //UCSRR0B = 0x90;
 
     //----- to be deleted
-    pinMode(TEST_PIN_D7, OUTPUT);// TODO: nur test mit interner LED
+    //pinMode(TEST_PIN_D7, OUTPUT);// TODO: nur test mit interner LED
     //---------------------
 
     //---- check voltage @ PIN A2 as lipo safer ------
@@ -5466,8 +5492,7 @@ void setup() {
 
 	//----- initialize LEDs ---------
 	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUMMATRIX).setCorrection(TypicalLEDStrip);
-	//NEOPIXEL
-	//WS2812B
+	//NEOPIXEL	//WS2812B
 
 	matrix->begin();
 	matrix->setBrightness(BRIGHTNESS);
@@ -5482,6 +5507,7 @@ void setup() {
         setupInterrupt();
     interrupts();				// alle Interrupts scharf schalten */
 
+	t1.begin(callback, 25ms); // 25 ms
 
 	//Setup Palette
 	currentPalette = RainbowColors_p;
@@ -5498,10 +5524,10 @@ void loop() {
 
 	//=== ausserhalb vom fastLED loop ====
 
-/* 	if (ISR_USART_got_a_byte) {
+/*  	if (ISR_USART_got_a_byte) {
 		Serial.println(ISR_received_USART_byte);	// ????
 		ISR_USART_got_a_byte = false;
-	} */
+	} 
 
 	if (OneSecondHasPast) {
 		//Serial.println(diffMillis);
@@ -5529,24 +5555,27 @@ void loop() {
 		Serial.print(voltageSmooth);
 		Serial.print("\t");
 		Serial.println(secondsForVoltage);
-	}
+	} */
 	//--------------------------------------------
 
 
+
+//FastLED.showColor(CRGB(0, 255, 0));
+voltageSmooth = 200;// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+
+
+
 	//---- start loop only when voltage is high enough
-	if (voltageSmooth > 102) {	// only fire LEDs if voltage is > 10.2V
+ 	if (voltageSmooth > 102) {	// only fire LEDs if voltage is > 10.2V
 
 		checkIncomingMIDI();
 		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
 
 		//=== ab hier wird nur alle 25 ms ausgefuehrt ======
-		
 
 
-		// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
-		flag_processFastLED = true; // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
-
-
+// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+flag_processFastLED = true; // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
 
 
 		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
@@ -5631,7 +5660,7 @@ void loop() {
 		leds[0] = CRGB::Red;
 		FastLED.show();
 		delay(500);
-	}
+	} 
 }
 //====================================================
 
