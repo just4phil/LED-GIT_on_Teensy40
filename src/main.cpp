@@ -56,7 +56,7 @@ using namespace TeensyTimerTool;
 
 #define DATA_PIN            9 // auf teensy++2 -> 12 (C2)
 #define TEST_PIN_D7         6  // internal LED
-#define MIDI_RX_PIN         2  // D2
+#define MIDI_RX_PIN         0  // auf teensy++2 -> 2 (D2)
 #define LIPO_PIN            40 // 2 = A2 // 40 // F2
 #define SECONDSFORVOLTAGE	1
 #define mw					22	// TODO: ausmerzen
@@ -401,15 +401,7 @@ void count_pixels() {
 			matrix->drawPixel(j, i, i % 3 == 0 ? (uint16_t)LED_BLUE_HIGH : i % 3 == 1 ? (uint16_t)LED_RED_HIGH : (uint16_t)LED_GREEN_HIGH);
 			// depending on the matrix size, it's too slow to display each pixel, so
 			// make the scan init faster. This will however be too fast on a small matrix.
-#ifdef ESP8266
-			if (!(j % 3)) matrix->show();
-			yield(); // reset watchdog timer
-#elif ESP32
-			delay(1);
 			matrix->show();
-#else 
-			matrix->show();
-#endif
 		}
 	}
 }
@@ -1254,7 +1246,7 @@ void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart,
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
-		FastLED.clear(true);
+		//FastLED.clear(true);
 		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
 		//nextChangeMillis = round((float)durationMillis / (float)9.65f);	// TODO: diesen wert eurieren und anpassen!!
 		nextChangeMillis = durationMillis;
@@ -1319,7 +1311,6 @@ void progFullColors(unsigned int durationMillis, byte nextPart, unsigned int del
 			b = getRandomColorValue();
 		}
 		FastLED.showColor(CRGB(r, g, b));
-		//lastTimestamp = millis();	// restart timer
 	}
 }
 
@@ -1645,71 +1636,70 @@ void progMovingLines(unsigned int durationMillis, byte nextPart) {
 	}
 	//---------------------------------------------------------------------
 
-delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
+//delay (2);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
 
 	FastLED.clear();
 
 	switch (stage) {
-
-	case 0:
-		zaehler++;
-		if (zaehler >= 26) {
-			stage = 1;
-			zaehler = 0;
+		case 0:
+			zaehler++;
+			if (zaehler >= 26) {
+				stage = 1;
+				zaehler = 0;
+				break;
+			}
+			matrix->drawLine(zaehler, 0, 25 - zaehler, 22, getRandomColor());
 			break;
-		}
-		matrix->drawLine(zaehler, 0, 25 - zaehler, 22, getRandomColor());
-		break;
 
-	case 1:
-		zaehler++;
-		if (zaehler >= 12) {
-			stage = 2;
-			zaehler = 12;
+		case 1:
+			zaehler++;
+			if (zaehler >= 12) {
+				stage = 2;
+				zaehler = 12;
+				break;
+			}
+			matrix->drawLine(25, zaehler, 0, 22 - zaehler, getRandomColor());
 			break;
-		}
-		matrix->drawLine(25, zaehler, 0, 22 - zaehler, getRandomColor());
-		break;
 
-	case 2:
-		zaehler--;
-		if (zaehler <= 0) {
-			stage = 3;
-			zaehler = 25;
+		case 2:
+			zaehler--;
+			if (zaehler <= 0) {
+				stage = 3;
+				zaehler = 25;
+				break;
+			}
+			matrix->drawLine(25, zaehler, 0, 22 - zaehler, getRandomColor());
 			break;
-		}
-		matrix->drawLine(25, zaehler, 0, 22 - zaehler, getRandomColor());
-		break;
 
-	case 3:
-		zaehler--;
-		if (zaehler <= 0) {
-			stage = 4;
-			zaehler = 0;
+		case 3:
+			zaehler--;
+			if (zaehler <= 0) {
+				stage = 4;
+				zaehler = 0;
+				break;
+			}
+			matrix->drawLine(zaehler, 0, 25 - zaehler, 22, getRandomColor());
 			break;
-		}
-		matrix->drawLine(zaehler, 0, 25 - zaehler, 22, getRandomColor());
-		break;
 
-	case 4:
-		zaehler++;
-		if (zaehler >= 11) {
-			stage = 5;
-			zaehler = 10;
+		case 4:
+			zaehler++;
+			if (zaehler >= 11) {
+				stage = 5;
+				zaehler = 10;
+				break;
+			}
+			matrix->drawLine(0, zaehler, 25, 22 - zaehler, getRandomColor());
 			break;
-		}
-		matrix->drawLine(0, zaehler, 25, 22 - zaehler, getRandomColor());
-		break;
 
-	case 5:
-		zaehler--;
-		if (zaehler <= 0) {
-			stage = 0;
-			zaehler = 0;
+		case 5:
+			zaehler--;
+			if (zaehler <= 0) {
+				stage = 0;
+				zaehler = 0;
+				break;
+			}
+			matrix->drawLine(0, zaehler, 25, 22 - zaehler, getRandomColor());
 			break;
-		}
-		matrix->drawLine(0, zaehler, 25, 22 - zaehler, getRandomColor());
-		break;
 	}
 
 	FastLED.show();
@@ -1885,6 +1875,7 @@ delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
 	}
 }
 
+//TODO: fixen
 void progRunningPixel(unsigned int durationMillis, byte nextPart) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
@@ -1904,7 +1895,7 @@ void progRunningPixel(unsigned int durationMillis, byte nextPart) {
 	FastLED.setBrightness(5); // TODO: zurueck auf 155
 	FastLED.clear();
 
-	for (int y = 0; y < MATRIX_HEIGHT; y++) {
+ 	for (int y = 0; y < MATRIX_HEIGHT; y++) {
 		for (int x = 0; x < MATRIX_WIDTH; x++) {
             //leds.DrawLine(x, y, x, y, CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue()));
             //leds.DrawLine(last_x, last_y, last_x, last_y, CRGB::Black);
@@ -1912,10 +1903,9 @@ void progRunningPixel(unsigned int durationMillis, byte nextPart) {
             matrix->drawLine(last_x, last_y, last_x, last_y, matrix->Color(0, 0, 0));
             last_x = x;
 			last_y = y;
-			//FastLED.show();
             matrix->show();
 		}
-	}
+	} 
 }
 
 void progShowText(String words, unsigned int durationMillis, int pos_x, int pos_y, int col, byte nextPart) {
@@ -3156,18 +3146,21 @@ void defaultLoop()  {
 	case 0:
 		progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
 		
-		//display_rgbBitmap(9); // cool: 5, 8, 9, 10
+		//progMovingLines(60000, 5);
+		//progRunningPixel(60000, 5);										// TODO FIXEN
+		//progFullColors(60000, 5, 10000);
+		//display_rgbBitmap(5); // cool: 5, 8, 9, 10
 		//progCircles(30000, 5, 1000, true);
 		//progRandomLines(30000, 5, 500, false);
 		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
 		//progMatrixScanner(55000, 5);
 		//progMatrixHorizontal(60000, 1);
 		//progShowROOTS(60000, 1);
-		//progFastBlingBling(15000, 10, 9); //20s -> 3:13
+		//progFastBlingBling(60000, 1, 5); //20s -> 3:13
 		//progShowText("ROOTS", 60000, 1, 13, getRandomColor(), 1);
 		//progScrollText("Pokerface by Lady Gaga", 60000, 60, getRandomColor(), 1);
 		//progScrollText("Phil", 60000, 30, getRandomColor(), 1);
-		//progPalette(10000, 11, 2);	// paletteID -> 0 - 11
+		//progPalette(60000, 11, 5);	// paletteID -> 0 - 11
 			//0 rainbow slow
 			//1 rainbow fast (ohne fades)
 			//2 rainbow fast (mit fades)
@@ -3182,7 +3175,7 @@ void defaultLoop()  {
 			//11 weiss/grün fast mit fades
 		//progStern(100000, 900, 2);
 		//progFadeOut(16615, 20);
-		//count_pixels();
+		//count_pixels();														// TODO FIXEN
 		//progWordArray(wordArrTooCLose2, 10, 570, 5714, getRandomColor(), 5);
 		//progScrollText("Nerds on Fire", 10000, getRandomColor(), 4);
 		//display_panOrBounceBitmap(8);	// 8: smiley panning around
