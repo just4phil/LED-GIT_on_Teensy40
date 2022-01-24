@@ -1250,7 +1250,7 @@ delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
 	}
 }
 
-void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart, byte addLEDs, byte maxLEDs, unsigned int del) {
+void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart, byte addLEDs, byte maxLEDs, unsigned int delayForAddingLEDs) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -1267,7 +1267,7 @@ void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart,
 	//---------------------------------------------------------------------
 
 	// anzahl LEDs ggf. erhoehen
-	if (millisCounterTimer >= del) {	//15000 // ersatz für delay()
+	if (millisCounterTimer >= delayForAddingLEDs) {	//15000 // ersatz für delay()
 		millisCounterTimer = 0;
 		if (addLEDs > 0) {
 			if (actualAnzahlLEDs + addLEDs <= maxLEDs) {
@@ -3159,7 +3159,7 @@ void defaultLoop()  {
 		//display_rgbBitmap(9); // cool: 5, 8, 9, 10
 		//progCircles(30000, 5, 1000, true);
 		//progRandomLines(30000, 5, 500, false);
-		//progFastBlingBling(20000, 1, 5, 1, 30, 2000);		 
+		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
 		//progMatrixScanner(55000, 5);
 		//progMatrixHorizontal(60000, 1);
 		//progShowROOTS(60000, 1);
@@ -5424,7 +5424,7 @@ void TEMPLATE() {
 //************* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // interrupt every 25 ms so that fastLED can process uninterrupted (takes about 18 ms)
 
-#define INCREMENT	25	// 25 // process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
+#define INCREMENT	5	// 25 // process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
                   // TODO: check speed on TEENSY 4!!
 
 /* void setupInterrupt() {
@@ -5521,7 +5521,7 @@ void setup() {
         setupInterrupt();
     interrupts();				// alle Interrupts scharf schalten */
 
-	t1.begin(callback, 25ms); // 25 ms
+	t1.begin(callback, 5ms); // 25 ms
 
 	//Setup Palette
 	currentPalette = RainbowColors_p;
@@ -5589,7 +5589,7 @@ voltageSmooth = 200;// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
 
 
 // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
-flag_processFastLED = true; // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+//flag_processFastLED = true; // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
 
 
 		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
