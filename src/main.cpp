@@ -10,7 +10,11 @@ using namespace TeensyTimerTool;
 //#include "heart24.h"
 //#include "yellowsmiley24.h"
 //#include "bluesmiley24.h"
+#include <MIDI.h>  // Add Midi Library
 
+//Create an instance of the library with default name, serial port and settings
+//midi::SerialMIDI<SerialPort, _Settings>::SerialMIDI [mit SerialPort=HardwareSerial, _Settings=midi::DefaultSerialSettings]
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
 //=============================
 //#define USELEDMATRIXCONFIG
@@ -89,9 +93,10 @@ const static int outlinePath7[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 1
 const static int outlinePath8[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 117, 126, 165, 189, 188, 187, 186, 185, 171, 157, 156, 147, 146, 137, 136, 127 };
 const static int outlinePath9[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 117, 126, 166, 167, 168, 169, 170, 157, 156, 147, 146, 137, 136, 127 };
 
+const static boolean DEBUG = true;
 
 byte songID = 0; // 0 -> default loop
-
+ 
 byte red2;
 byte blue2;
 int col1;
@@ -3001,18 +3006,55 @@ void switchToPart(byte part) {
 	progCLED_hue = 0;
 	progCLED_counter = 0;
 
-	Serial.print("switched to part: ");
-	Serial.println(part);
+	if (DEBUG) {
+		Serial.print("switched to part: ");
+		Serial.println(part);
+	}
 }
 
 void switchToSong(byte song) {
+
+	if (DEBUG) {
+		Serial.println("-------------------");
+		Serial.print("switched to song: ");
+		Serial.println(song);
+		Serial.println("-------------------");
+	}
 	//--- start song ----
 	songID = song;
-	Serial.println("-------------------");
-	Serial.print("switched to song: ");
-	Serial.println(song);
-	Serial.println("-------------------");
 	switchToPart(0);
+}
+
+// MidiDatenAuswerten is the function that will be called by the Midi Library
+// when a Continuous Controller message is received.
+// It will be passed bytes for Channel, Controller Number, and Value
+// It checks if the controller number is within the 22 to 27 range
+void MidiDatenAuswerten(byte channel, byte number, byte value) {
+
+	if (DEBUG) {
+		Serial.print(channel);
+		Serial.print("\t");
+		Serial.print(number);
+		Serial.print("\t");
+		Serial.println(value);
+	}
+
+	// with midi byte 22 the song can be changed!
+	if (number == 22 && value > 0) {
+		if (DEBUG) {
+			Serial.print("midi command to switch to song: ");
+			Serial.println(value);
+		}
+		switchToSong(value);
+	}
+	// with midi byte 23 the songpart can be changed!
+	else if (number == 23 && value >= 0) {
+		if (DEBUG) {
+			Serial.print("midi command to switch to part: ");
+			Serial.println(value);
+		}
+		switchToPart(value);
+	}
 }
 
 void checkIncomingMIDI() {	// 21.01.22 TODO: umstellen auf interrupt!!
@@ -5473,12 +5515,20 @@ void callback() // toggle the LED
 }
 
 void setup() {
-    
-    delay(1000);	// Time for serial port to work?
-    Serial1.begin(31250);	// for midi
+ 
+ 	Serial.begin(9600);
 
-    //----- to be deleted
-    //pinMode(TEST_PIN_D7, OUTPUT);// TODO: nur test mit interner LED
+    //---- MIDI ----------------
+    delay(1000);	// Time for serial port to work?
+    //Serial1.begin(31250);	// for midi
+
+	MIDI.begin(10); // Initialize the Midi Library.
+	// OMNI sets it to listen to all channels.. MIDI.begin(2) would set it
+	// to respond to notes on channel 2 only.
+	MIDI.setHandleControlChange(MidiDatenAuswerten); // This command tells the MIDI Library
+	// the function you want to call when a Continuous Controller command
+	// is received. In this case it's "MyCCFunction".
+
     //---------------------
 
     //---- check voltage @ PIN A2 as lipo safer ------
@@ -5575,8 +5625,11 @@ voltageSmooth = 200;// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
 	//---- start loop only when voltage is high enough
  	if (voltageSmooth > 102) {	// only fire LEDs if voltage is > 10.2V
 
-		checkIncomingMIDI();
+		//checkIncomingMIDI();
 		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
+		MIDI.read(); // Continuously check if Midi data has been received.
+
+
 
 		//=== ab hier wird nur alle 25 ms ausgefuehrt ======
 
