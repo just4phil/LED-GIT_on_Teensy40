@@ -61,7 +61,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define DATA_PIN            9 // auf teensy++2 -> 12 (C2)
 #define TEST_PIN_D7         6  // internal LED
 #define MIDI_RX_PIN         0  // auf teensy++2 -> 2 (D2)
-#define LIPO_PIN            40 // 2 = A2 // 40 // F2
+#define LIPO_PIN            20 // auf teensy++2 -> 40 (F2)
 #define SECONDSFORVOLTAGE	1
 #define mw					22	// TODO: ausmerzen
 #define mh				    23	// TODO: ausmerzen
@@ -5539,7 +5539,7 @@ void setup() {
     //ADCSRA = 0xC3;		// 11000011 => enable ADC free running mode + start conversion + prescaler 64
 
     //pinMode(A2, INPUT); //---- check voltage @ PIN F2 as lipo safer ------
-    voltageSmooth = map(analogRead(LIPO_PIN), 0, 1023, 0, 120);	// zu beginn mit startwert initialisieren, damit nicht mit NULL gemittelt wird
+    voltageSmooth = map(analogRead(LIPO_PIN), 0, 1023, 0, 322);	// zu beginn mit startwert initialisieren, damit nicht mit NULL gemittelt wird
 
 	//---- Define matrix width and height. --------
 #ifdef USELEDMATRIXCONFIG
@@ -5577,14 +5577,12 @@ void setup() {
 
 void loop() {
 
-	boolean debug = false;
-
 	//=== ausserhalb vom fastLED loop ====
 
 /*  	if (ISR_USART_got_a_byte) {
 		Serial.println(ISR_received_USART_byte);	// ????
 		ISR_USART_got_a_byte = false;
-	} 
+	} */
 
 	if (OneSecondHasPast) {
 		//Serial.println(diffMillis);
@@ -5605,25 +5603,23 @@ void loop() {
 		//Serial.println(adc_read(3));
 		//Serial.println(analogRead(40)); // TODO JUST TESTING
 
-		voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(analogRead(LIPO_PIN), 0, 1023, 0, 120);	// glaettungsfunktion um zittern zu vermeiden
+		voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(analogRead(LIPO_PIN), 0, 1023, 0, 322);	// glaettungsfunktion um zittern zu vermeiden
 	}
 
-	if (debug) {
-		Serial.print(voltageSmooth);
-		Serial.print("\t");
-		Serial.println(secondsForVoltage);
-	} */
+		//Serial.print(voltageSmooth);
+		//Serial.print("\t");
+		//Serial.println(secondsForVoltage);
 	//--------------------------------------------
 
 
 
 //FastLED.showColor(CRGB(0, 255, 0));
-voltageSmooth = 200;// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+//voltageSmooth = 200;// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
 
 
 
 	//---- start loop only when voltage is high enough
- 	if (voltageSmooth > 102) {	// only fire LEDs if voltage is > 10.2V
+ 	if (voltageSmooth > 45) {	// only fire LEDs if voltage is > 7,99V
 
 		//checkIncomingMIDI();
 		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
