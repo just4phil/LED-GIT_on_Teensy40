@@ -12,6 +12,7 @@ using namespace TeensyTimerTool;
 //#include "bluesmiley24.h"
 #include <MIDI.h>  // Add Midi Library
 
+
 //Create an instance of the library with default name, serial port and settings
 //midi::SerialMIDI<SerialPort, _Settings>::SerialMIDI [mit SerialPort=HardwareSerial, _Settings=midi::DefaultSerialSettings]
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
@@ -56,12 +57,13 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 //     will be rotated 180 degrees (this is normal -- simplifies wiring).
 //   See example below for these values in action.
 
+
 //===============================
 
 #define DATA_PIN            9 // auf teensy++2 -> 12 (C2)
 #define TEST_PIN_D7         6  // internal LED
 #define MIDI_RX_PIN         0  // auf teensy++2 -> 2 (D2)
-#define LIPO_PIN            20 // auf teensy++2 -> 40 (F2)
+#define LIPO_PIN            15 // auf teensy++2 -> 40 (F2)
 #define SECONDSFORVOLTAGE	1
 #define mw					22	// TODO: ausmerzen
 #define mh				    23	// TODO: ausmerzen
@@ -93,7 +95,9 @@ const static int outlinePath7[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 1
 const static int outlinePath8[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 117, 126, 165, 189, 188, 187, 186, 185, 171, 157, 156, 147, 146, 137, 136, 127 };
 const static int outlinePath9[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 117, 126, 166, 167, 168, 169, 170, 157, 156, 147, 146, 137, 136, 127 };
 
-const static boolean DEBUG = true;
+const static boolean DEBUG = false;
+
+int volt;
 
 byte songID = 0; // 0 -> default loop
  
@@ -5500,6 +5504,7 @@ void callback() // toggle the LED
     flag_processFastLED = true;	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
     //PORTD ^= 0x40;				// toggle LED every 25 ms
 
+
     // test zur messung der timing-praezision
     if (millisCounterForSeconds >= 1000) {
         //actualMillis = millis();
@@ -5531,15 +5536,15 @@ void setup() {
 
     //---------------------
 
-    //---- check voltage @ PIN A2 as lipo safer ------
-    //PINF = 0x04;		// ? set PIN F2 as input
-    //DIDR0 = 0x04;		// ? Pin F2 has analog signal
-    //ADMUX = 0xC2;		// configure mux input // C2 = 11000010 => interne 2,56v ref + PIN F2
-    //ADCSRB = 0x80;		// high speed mode
-    //ADCSRA = 0xC3;		// 11000011 => enable ADC free running mode + start conversion + prescaler 64
+pinMode(LIPO_PIN, INPUT); 
+volt = analogRead(LIPO_PIN);
+voltageSmooth = map(volt, 0, 1023, 0, 270);        // 270 shall represent 27.0 volts
 
-    //pinMode(A2, INPUT); //---- check voltage @ PIN F2 as lipo safer ------
-    voltageSmooth = map(analogRead(LIPO_PIN), 0, 1023, 0, 322);	// zu beginn mit startwert initialisieren, damit nicht mit NULL gemittelt wird
+/* 	Serial.println("# Teensy ADC test start: ");
+      analogReadRes(12);          // set ADC resolution to this many bits
+      analogReadAveraging(1);    // average this many readings */
+      
+
 
 	//---- Define matrix width and height. --------
 #ifdef USELEDMATRIXCONFIG
@@ -5575,14 +5580,10 @@ void setup() {
 }
 //====================================================
 
+
 void loop() {
 
 	//=== ausserhalb vom fastLED loop ====
-
-/*  	if (ISR_USART_got_a_byte) {
-		Serial.println(ISR_received_USART_byte);	// ????
-		ISR_USART_got_a_byte = false;
-	} */
 
 	if (OneSecondHasPast) {
 		//Serial.println(diffMillis);
@@ -5592,34 +5593,28 @@ void loop() {
 
 	//---- check voltage as lipo safer ------
 	if (secondsForVoltage >= SECONDSFORVOLTAGE) {
+		
+volt = analogRead(LIPO_PIN);
+voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(volt, 0, 1023, 0, 270);       //0.7 * voltageSmooth + 0.3 * .... is used as a smoothing function
+
+ 		Serial.print(volt);
+		Serial.print("\t");
+		Serial.println(voltageSmooth);  
+
+
+
 		secondsForVoltage = 0;
-
-		//--- analog input auslesen für voltage lipo safer
-		//uint8_t low;
-		//uint8_t analog;
-		//low = ADCL;									// must read LSB first
-		//analog = (ADCH << 8) | low;					// must read MSB only once!
-		//Serial.println(analog);					// TODO JUST TESTING
-		//Serial.println(adc_read(3));
-		//Serial.println(analogRead(40)); // TODO JUST TESTING
-
-		voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(analogRead(LIPO_PIN), 0, 1023, 0, 322);	// glaettungsfunktion um zittern zu vermeiden
 	}
-
-		//Serial.print(voltageSmooth);
-		//Serial.print("\t");
-		//Serial.println(secondsForVoltage);
 	//--------------------------------------------
 
+	
 
 
-//FastLED.showColor(CRGB(0, 255, 0));
-//voltageSmooth = 200;// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
-
+voltageSmooth = 200;// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
 
 
 	//---- start loop only when voltage is high enough
- 	if (voltageSmooth > 45) {	// only fire LEDs if voltage is > 7,99V
+ 	if (voltageSmooth > 9) {	// only fire LEDs if voltage is > 7,99V
 
 		//checkIncomingMIDI();
 		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
@@ -5627,11 +5622,7 @@ void loop() {
 
 
 
-		//=== ab hier wird nur alle 25 ms ausgefuehrt ======
-
-
-// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
-//flag_processFastLED = true; // 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
+		//=== ab hier wird nur alle 5 ms ausgefuehrt ======
 
 
 		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
@@ -5719,28 +5710,4 @@ void loop() {
 	} 
 }
 //====================================================
-
-
-//====================================================
-// Funktion zum auslesen des ADC:
-//int16_t adc_read(uint8_t mux)
-//{
-//	#define ADC_REF_POWER     (1<<REFS0)
-//	#define ADC_REF_INTERNAL  ((1<<REFS1) | (1<<REFS0))
-//	#define ADC_REF_EXTERNAL  (0)
-//
-//	// These prescaler values are for high speed mode, ADHSM = 1
-//	#define ADC_PRESCALER ((1<<ADPS2) | (1<<ADPS1))		// gilt fuer: F_CPU == 16000000L
-//
-//	static uint8_t aref = (1 << REFS0); // default to AREF = Vcc
-//	uint8_t low;
-//
-//	ADCSRA = (1 << ADEN) | ADC_PRESCALER;             // enable ADC
-//	ADCSRB = (1 << ADHSM) | (mux & 0x20);             // high speed mode
-//	ADMUX = aref | (mux & 0x1F);						// configure mux input
-//	ADCSRA = (1 << ADEN) | ADC_PRESCALER | (1 << ADSC); // start the conversion
-//	while (ADCSRA & (1 << ADSC));                    // wait for result
-//	low = ADCL;                                     // must read LSB first
-//	return (ADCH << 8) | low;                       // must read MSB only once!
-//}
 
