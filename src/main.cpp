@@ -97,8 +97,6 @@ const static int outlinePath9[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 1
 
 const static boolean DEBUG = false;
 
-int volt;
-
 byte songID = 0; // 0 -> default loop
  
 byte red2;
@@ -115,7 +113,9 @@ byte midiStatusByte;
 byte midiDataByte1;
 byte midiDataByte2;
 
-byte voltageSmooth;
+float readVolt;
+float volt;
+float voltageSmooth;
 boolean progStroboIsBlack = false;	// for strobo
 byte secondsForVoltage = 0;
 
@@ -5536,9 +5536,13 @@ void setup() {
 
     //---------------------
 
-pinMode(LIPO_PIN, INPUT); 
-volt = analogRead(LIPO_PIN);
-voltageSmooth = map(volt, 0, 1023, 0, 270);        // 270 shall represent 27.0 volts
+//pinMode(LIPO_PIN, INPUT); 
+//volt = analogRead(LIPO_PIN);
+//voltageSmooth = map(volt, 0, 1023, 0, 270);        // 270 shall represent 27.0 volts
+
+readVolt = analogRead(LIPO_PIN);
+volt = readVolt * 31.0 / 1023.0 ;  
+
 
 /* 	Serial.println("# Teensy ADC test start: ");
       analogReadRes(12);          // set ADC resolution to this many bits
@@ -5594,14 +5598,16 @@ void loop() {
 	//---- check voltage as lipo safer ------
 	if (secondsForVoltage >= SECONDSFORVOLTAGE) {
 		
-volt = analogRead(LIPO_PIN);
-voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(volt, 0, 1023, 0, 270);       //0.7 * voltageSmooth + 0.3 * .... is used as a smoothing function
+//volt = analogRead(LIPO_PIN);
+//voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(volt, 0, 1023, 0, 270);       //0.7 * voltageSmooth + 0.3 * .... is used as a smoothing function
 
- 		Serial.print(volt);
+readVolt = analogRead(LIPO_PIN);
+volt = readVolt * 31.0 / 1023.0 ;  
+//voltageSmooth += 0.3 * (volt - voltageSmooth) ;
+
+ 		Serial.print(readVolt);
 		Serial.print("\t");
-		Serial.println(voltageSmooth);  
-
-
+		Serial.println(volt);  
 
 		secondsForVoltage = 0;
 	}
