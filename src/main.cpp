@@ -113,9 +113,14 @@ byte midiStatusByte;
 byte midiDataByte1;
 byte midiDataByte2;
 
-float readVolt;
-float volt;
-float voltageSmooth;
+int adc_value = 0;
+float adc_voltage = 0.0;
+float in_voltage = 0.0;
+float ref_voltage = 3.3;
+float R1 = 33000.0;
+float R2 = 4700.0;
+float voltageSmooth = 0.0;
+
 boolean progStroboIsBlack = false;	// for strobo
 byte secondsForVoltage = 0;
 
@@ -5533,20 +5538,15 @@ void setup() {
 	MIDI.setHandleControlChange(MidiDatenAuswerten); // This command tells the MIDI Library
 	// the function you want to call when a Continuous Controller command
 	// is received. In this case it's "MyCCFunction".
-
     //---------------------
 
-//pinMode(LIPO_PIN, INPUT); 
-//volt = analogRead(LIPO_PIN);
-//voltageSmooth = map(volt, 0, 1023, 0, 270);        // 270 shall represent 27.0 volts
-
-readVolt = analogRead(LIPO_PIN);
-volt = readVolt * 31.0 / 1023.0 ;  
-
-
-/* 	Serial.println("# Teensy ADC test start: ");
-      analogReadRes(12);          // set ADC resolution to this many bits
-      analogReadAveraging(1);    // average this many readings */
+	//--- LIPO Safer ----------
+	//pinMode(LIPO_PIN, INPUT); 
+	adc_value = analogRead(LIPO_PIN);
+	adc_voltage = (adc_value * ref_voltage) / 1024.0 ;  
+	in_voltage = adc_voltage / (R2/(R1+R2));
+	voltageSmooth = in_voltage;
+	//---------------------
       
 
 
@@ -5601,26 +5601,22 @@ void loop() {
 //volt = analogRead(LIPO_PIN);
 //voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(volt, 0, 1023, 0, 270);       //0.7 * voltageSmooth + 0.3 * .... is used as a smoothing function
 
-readVolt = analogRead(LIPO_PIN);
-volt = readVolt * 31.0 / 1023.0 ;  
-//voltageSmooth += 0.3 * (volt - voltageSmooth) ;
+adc_value = analogRead(LIPO_PIN);
+adc_voltage = (adc_value * ref_voltage) / 1024.0 ;  
+in_voltage = adc_voltage / (R2/(R1+R2));
+voltageSmooth = 0.7 * voltageSmooth + 0.3 * in_voltage;
 
- 		Serial.print(readVolt);
-		Serial.print("\t");
-		Serial.println(volt);  
+ 		Serial.print("voltage = ");
+		Serial.println(voltageSmooth, 2);  
 
 		secondsForVoltage = 0;
 	}
 	//--------------------------------------------
 
-	
-
-
-voltageSmooth = 200;// 21.01.22. TODO: wieder loeschen!!!!!!!!!!!!
 
 
 	//---- start loop only when voltage is high enough
- 	if (voltageSmooth > 9) {	// only fire LEDs if voltage is > 7,99V
+ 	if (voltageSmooth > 3.5) {	// only fire LEDs if voltage is > 7,99V
 
 		//checkIncomingMIDI();
 		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
