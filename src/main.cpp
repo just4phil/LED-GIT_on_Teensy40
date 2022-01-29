@@ -124,6 +124,7 @@ float voltageSmooth = 0.0;
 boolean progStroboIsBlack = false;	// for strobo
 byte secondsForVoltage = 0;
 
+volatile unsigned int millisToReduceCPUSpeed = 0;
 volatile unsigned int millisCounterTimer = 0;	// wird von den progs fürs timing bzw. delay-ersatz verwendet
 volatile unsigned int millisCounterForProgChange = 0;		// achtung!! -> kann nur bis 65.536 zaehlen!!
 volatile unsigned int millisCounterForSeconds = 0;
@@ -405,6 +406,7 @@ void fixdrawRGBBitmap(int16_t x, int16_t y, const uint16_t* bitmap, int16_t w, i
 	matrix->drawRGBBitmap(x, y, RGB_bmp_fixed, w, h);
 }
 
+//TODO FIXEN!!!!
 // In a case of a tile of neomatrices, this test is helpful to make sure that the
 // pixels are all in sequence (to check your wiring order and the tile options you
 // gave to the constructor).
@@ -1226,10 +1228,6 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 	}
 	//---------------------------------------------------------------------
 
-
-delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
-
-
 	if (progBlingBlingColoring_rounds == 0) {
 		r = getRandomColorValue();
 		g = getRandomColorValue();
@@ -1240,7 +1238,11 @@ delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
 	// delete 1 pixel sometimes
 	if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
 
-	FastLED.show();
+	if (millisToReduceCPUSpeed > 10) {
+		millisToReduceCPUSpeed = 0;
+
+		FastLED.show();
+	}
 
 	// after DEL ms seconds change 1 part of the color randomly
 	if (millisCounterTimer >= del) {	//15000 // ersatz für delay()
@@ -1453,46 +1455,41 @@ void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int 
 		nextSongPart = nextPart;
 		nextChangeMillisAlreadyCalculated = true;
 		//		Serial.println(nextChangeMillis);
+		
+		millisToReduceCPUSpeed = 0;
 	}
 	//---------------------------------------------------------------------
-
-
-delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
-
 
 	if (millisCounterTimer >= msForChange) {	// ersatz für delay()
 		millisCounterTimer = 0;
 
-		FastLED.clear();
+			FastLED.clear();
 
-		if (!scannerGoesBack) {
+			if (!scannerGoesBack) {
 
-			zaehler++;
-			if (zaehler >= 28) scannerGoesBack = true;
+				zaehler++;
+				if (zaehler >= 28) scannerGoesBack = true;
 
-			matrix->drawLine(zaehler + 0, 0, zaehler + 0, MATRIX_HEIGHT, LED_RED_HIGH);
-			matrix->drawLine(zaehler - 1, 0, zaehler - 1, MATRIX_HEIGHT, CRGB::White);
-			matrix->drawLine(zaehler - 2, 0, zaehler - 2, MATRIX_HEIGHT, LED_RED_HIGH);
-		}
-		else {
-			zaehler--;
-			if (zaehler <= -6) scannerGoesBack = false;
+				matrix->drawLine(zaehler + 0, 0, zaehler + 0, MATRIX_HEIGHT, LED_RED_HIGH);
+				matrix->drawLine(zaehler - 1, 0, zaehler - 1, MATRIX_HEIGHT, CRGB::White);
+				matrix->drawLine(zaehler - 2, 0, zaehler - 2, MATRIX_HEIGHT, LED_RED_HIGH);
+			}
+			else {
+				zaehler--;
+				if (zaehler <= -6) scannerGoesBack = false;
 
-			matrix->drawLine(zaehler + 0, 0, zaehler + 0, MATRIX_HEIGHT, CRGB::White);
-			matrix->drawLine(zaehler - 1, 0, zaehler - 1, MATRIX_HEIGHT, LED_RED_HIGH);
-			matrix->drawLine(zaehler - 2, 0, zaehler - 2, MATRIX_HEIGHT, CRGB::White);
-		}
+				matrix->drawLine(zaehler + 0, 0, zaehler + 0, MATRIX_HEIGHT, CRGB::White);
+				matrix->drawLine(zaehler - 1, 0, zaehler - 1, MATRIX_HEIGHT, LED_RED_HIGH);
+				matrix->drawLine(zaehler - 2, 0, zaehler - 2, MATRIX_HEIGHT, CRGB::White);
+			}
 		FastLED.show();
 	}
 }
-
 void progMatrixScanner(unsigned int durationMillis, byte nextPart) {
 	progMatrixScanner(durationMillis, nextPart, 0);
 }
 
-void progStern(unsigned int durationMillis, int msForColorChange, byte nextPart) {
-
-delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
+void progStern(unsigned int durationMillis, int msForColorChange, byte nextPart, unsigned int reduceSpeed) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -1519,25 +1516,31 @@ delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
 	}
 	//-------------------------------------
 
-	zaehler++;
-	if (zaehler >= 10) zaehler = 0;
+	if (millisToReduceCPUSpeed > reduceSpeed) {
+		millisToReduceCPUSpeed = 0;
 
-	FastLED.clear();
+		zaehler++;
+		if (zaehler >= 10) zaehler = 0;
 
-	matrix->drawLine(center_x - zaehler, 0, center_x + zaehler, 22, col1);
-	matrix->drawLine(center_x - zaehler + 1, 0, center_x + zaehler + 1, 22, col2);
-	matrix->drawLine(0, zaehler + 1, 21, 22 - zaehler, col1);
-	matrix->drawLine(0, zaehler, 21, 21 - zaehler, col2);
-	matrix->drawLine(0, center_y + zaehler + 1, 21, center_y - zaehler + 1, col1);
-	matrix->drawLine(0, center_y + zaehler, 21, center_y - zaehler, col2);
-	matrix->drawLine(zaehler, 22, 22 - zaehler, 0, col1);
-	matrix->drawLine(zaehler - 1, 22, 21 - zaehler, 0, col2);
+		FastLED.clear();
 
-	FastLED.show();
+		matrix->drawLine(center_x - zaehler, 0, center_x + zaehler, 22, col1);
+		matrix->drawLine(center_x - zaehler + 1, 0, center_x + zaehler + 1, 22, col2);
+		matrix->drawLine(0, zaehler + 1, 21, 22 - zaehler, col1);
+		matrix->drawLine(0, zaehler, 21, 21 - zaehler, col2);
+		matrix->drawLine(0, center_y + zaehler + 1, 21, center_y - zaehler + 1, col1);
+		matrix->drawLine(0, center_y + zaehler, 21, center_y - zaehler, col2);
+		matrix->drawLine(zaehler, 22, 22 - zaehler, 0, col1);
+		matrix->drawLine(zaehler - 1, 22, 21 - zaehler, 0, col2);
+
+		FastLED.show();
+	}
 }
-
 void progStern(unsigned int durationMillis, byte nextPart) {
-	progStern(durationMillis, 0, nextPart);
+	progStern(durationMillis, 0, nextPart, 0);
+}
+void progStern(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
+	progStern(durationMillis, 0, nextPart, reduceSpeed);
 }
 
 void progBlack(unsigned int durationMillis, byte nextPart) {
@@ -1588,7 +1591,6 @@ void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForC
 		FastLED.show();
 	}
 }
-
 void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
 	progCircles(durationMillis, nextPart, msForChange, true);
 }
@@ -1631,12 +1633,11 @@ void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int ms
 		//lastTimestamp = millis();
 	}
 }
-
 void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
 	progRandomLines(durationMillis, nextPart, msForChange, true);
 }
 
-void progMovingLines(unsigned int durationMillis, byte nextPart) {
+void progMovingLines(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -1650,76 +1651,80 @@ void progMovingLines(unsigned int durationMillis, byte nextPart) {
 	}
 	//---------------------------------------------------------------------
 
-//delay (2);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
+	if (millisToReduceCPUSpeed > reduceSpeed) {
+		millisToReduceCPUSpeed = 0;
+		FastLED.clear();
 
-	FastLED.clear();
-
-	switch (stage) {
-		case 0:
-			zaehler++;
-			if (zaehler >= 26) {
-				stage = 1;
-				zaehler = 0;
+		switch (stage) {
+			case 0:
+				zaehler++;
+				if (zaehler >= 26) {
+					stage = 1;
+					zaehler = 0;
+					break;
+				}
+				matrix->drawLine(zaehler, 0, 25 - zaehler, 22, getRandomColor());
 				break;
-			}
-			matrix->drawLine(zaehler, 0, 25 - zaehler, 22, getRandomColor());
-			break;
 
-		case 1:
-			zaehler++;
-			if (zaehler >= 12) {
-				stage = 2;
-				zaehler = 12;
+			case 1:
+				zaehler++;
+				if (zaehler >= 12) {
+					stage = 2;
+					zaehler = 12;
+					break;
+				}
+				matrix->drawLine(25, zaehler, 0, 22 - zaehler, getRandomColor());
 				break;
-			}
-			matrix->drawLine(25, zaehler, 0, 22 - zaehler, getRandomColor());
-			break;
 
-		case 2:
-			zaehler--;
-			if (zaehler <= 0) {
-				stage = 3;
-				zaehler = 25;
+			case 2:
+				zaehler--;
+				if (zaehler <= 0) {
+					stage = 3;
+					zaehler = 25;
+					break;
+				}
+				matrix->drawLine(25, zaehler, 0, 22 - zaehler, getRandomColor());
 				break;
-			}
-			matrix->drawLine(25, zaehler, 0, 22 - zaehler, getRandomColor());
-			break;
 
-		case 3:
-			zaehler--;
-			if (zaehler <= 0) {
-				stage = 4;
-				zaehler = 0;
+			case 3:
+				zaehler--;
+				if (zaehler <= 0) {
+					stage = 4;
+					zaehler = 0;
+					break;
+				}
+				matrix->drawLine(zaehler, 0, 25 - zaehler, 22, getRandomColor());
 				break;
-			}
-			matrix->drawLine(zaehler, 0, 25 - zaehler, 22, getRandomColor());
-			break;
 
-		case 4:
-			zaehler++;
-			if (zaehler >= 11) {
-				stage = 5;
-				zaehler = 10;
+			case 4:
+				zaehler++;
+				if (zaehler >= 11) {
+					stage = 5;
+					zaehler = 10;
+					break;
+				}
+				matrix->drawLine(0, zaehler, 25, 22 - zaehler, getRandomColor());
 				break;
-			}
-			matrix->drawLine(0, zaehler, 25, 22 - zaehler, getRandomColor());
-			break;
 
-		case 5:
-			zaehler--;
-			if (zaehler <= 0) {
-				stage = 0;
-				zaehler = 0;
+			case 5:
+				zaehler--;
+				if (zaehler <= 0) {
+					stage = 0;
+					zaehler = 0;
+					break;
+				}
+				matrix->drawLine(0, zaehler, 25, 22 - zaehler, getRandomColor());
 				break;
-			}
-			matrix->drawLine(0, zaehler, 25, 22 - zaehler, getRandomColor());
-			break;
+		}
+
+		FastLED.show();
 	}
-
-	FastLED.show();
+}
+void progMovingLines(unsigned int durationMillis, byte nextPart) {
+	progMovingLines(durationMillis, nextPart, 0);
 }
 
-void progOutline(unsigned int durationMillis, byte nextPart) {
+void progOutline(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -1733,87 +1738,88 @@ void progOutline(unsigned int durationMillis, byte nextPart) {
 	}
 	//---------------------------------------------------------------------
 
-delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
+	if (millisToReduceCPUSpeed > reduceSpeed) {
+		millisToReduceCPUSpeed = 0;
 
-	int anz;
-	FastLED.clear();
+		int anz;
+		FastLED.clear();
 
-	if (!scannerGoesBack) {
+		if (!scannerGoesBack) {
 
-		//for (int y = 0; y < 9; y++) {
+			//for (int y = 0; y < 9; y++) {
 
-		switch (zaehler) {
-		case 0:
-			anz = (sizeof(outlinePath1) / sizeof(outlinePath1[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath1[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+			switch (zaehler) {
+			case 0:
+				anz = (sizeof(outlinePath1) / sizeof(outlinePath1[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath1[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
+			case 1:
+				anz = (sizeof(outlinePath2) / sizeof(outlinePath2[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath2[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
+			case 2:
+				anz = (sizeof(outlinePath3) / sizeof(outlinePath3[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath3[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
+			case 3:
+				anz = (sizeof(outlinePath4) / sizeof(outlinePath4[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath4[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
+			case 4:
+				anz = (sizeof(outlinePath5) / sizeof(outlinePath5[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath5[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
+			case 5:
+				anz = (sizeof(outlinePath6) / sizeof(outlinePath6[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath6[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
+			case 6:
+				anz = (sizeof(outlinePath7) / sizeof(outlinePath7[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath7[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
+			case 7:
+				anz = (sizeof(outlinePath8) / sizeof(outlinePath8[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath8[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
+			case 8:
+				anz = (sizeof(outlinePath9) / sizeof(outlinePath9[0]));
+				for (int i = 0; i < anz; i++) {
+					int test = outlinePath9[i];
+					leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+				}
+				break;
 			}
-			break;
-		case 1:
-			anz = (sizeof(outlinePath2) / sizeof(outlinePath2[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath2[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-			}
-			break;
-		case 2:
-			anz = (sizeof(outlinePath3) / sizeof(outlinePath3[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath3[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-			}
-			break;
-		case 3:
-			anz = (sizeof(outlinePath4) / sizeof(outlinePath4[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath4[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-			}
-			break;
-		case 4:
-			anz = (sizeof(outlinePath5) / sizeof(outlinePath5[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath5[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-			}
-			break;
-		case 5:
-			anz = (sizeof(outlinePath6) / sizeof(outlinePath6[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath6[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-			}
-			break;
-		case 6:
-			anz = (sizeof(outlinePath7) / sizeof(outlinePath7[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath7[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-			}
-			break;
-		case 7:
-			anz = (sizeof(outlinePath8) / sizeof(outlinePath8[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath8[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-			}
-			break;
-		case 8:
-			anz = (sizeof(outlinePath9) / sizeof(outlinePath9[0]));
-			for (int i = 0; i < anz; i++) {
-				int test = outlinePath9[i];
-				leds[test] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-			}
-			break;
+			FastLED.show();
+
+			zaehler++;
+			if (zaehler >= 9) scannerGoesBack = true;
 		}
-		FastLED.show();
 
-		zaehler++;
-		if (zaehler >= 9) scannerGoesBack = true;
-	}
-
-	else {
+		else {
 
 		//for (int y = 8; y > -1; y--) {
 
@@ -1887,6 +1893,10 @@ delay (7);	// TODO: FIXEN .... TEENSY IST ZU SCHNELL!!
 		zaehler--;
 		if (zaehler <= 0) scannerGoesBack = false;
 	}
+	}
+}
+void progOutline(unsigned int durationMillis, byte nextPart) {
+	progOutline(durationMillis, nextPart, 0);
 }
 
 //TODO: fixen
@@ -2422,7 +2432,7 @@ CRGB getMatrixColor(int index) {
 	return col;
 }
 
-void progMatrixHorizontal(unsigned int durationMillis, byte nextPart) {
+void progMatrixHorizontal(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
 	
 	int colorIndex, offset, row, i;
 
@@ -2441,7 +2451,7 @@ void progMatrixHorizontal(unsigned int durationMillis, byte nextPart) {
 	}
 	//---------------------------------------------------------------------
 
-	if (millisCounterTimer >= 100) {	// ersatz für delay()
+	if (millisCounterTimer >= reduceSpeed) {	// ersatz für delay()
 		millisCounterTimer = 0;
 
 		row = 0;
@@ -2666,8 +2676,11 @@ void progMatrixHorizontal(unsigned int durationMillis, byte nextPart) {
 		}
 	}	
 }
+void progMatrixHorizontal(unsigned int durationMillis, byte nextPart) {
+	progMatrixHorizontal(durationMillis, nextPart, 100);
+}
 
-void progMatrixVertical(unsigned int durationMillis, byte nextPart) {
+void progMatrixVertical(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
 
 	int colorIndex, offset, row, i;
 	const int colorIndexMin = 2;
@@ -2687,7 +2700,7 @@ void progMatrixVertical(unsigned int durationMillis, byte nextPart) {
 	}
 	//---------------------------------------------------------------------
 
-	if (millisCounterTimer >= 100) {	// ersatz für delay()
+	if (millisCounterTimer >= reduceSpeed) {	// ersatz für delay()
 		millisCounterTimer = 0;
 
 		// offsets müssen hier + sein!!
@@ -2924,6 +2937,9 @@ void progMatrixVertical(unsigned int durationMillis, byte nextPart) {
 		}
 	}
 }
+void progMatrixVertical(unsigned int durationMillis, byte nextPart) {
+	progMatrixVertical(durationMillis, nextPart, 100);
+}
 
 void progGoTo(byte nextPart) {
 
@@ -3040,13 +3056,13 @@ void switchToSong(byte song) {
 // It checks if the controller number is within the 22 to 27 range
 void MidiDatenAuswerten(byte channel, byte number, byte value) {
 
-	if (DEBUG) {
+	//if (DEBUG) {
 		Serial.print(channel);
 		Serial.print("\t");
 		Serial.print(number);
 		Serial.print("\t");
 		Serial.println(value);
-	}
+	//}
 
 	// with midi byte 22 the song can be changed!
 	if (number == 22 && value > 0) {
@@ -3196,18 +3212,26 @@ void defaultLoop()  {
 
 	case 0:
 		progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
-		
-		//progMovingLines(60000, 5);
-		//progRunningPixel(60000, 5);										// TODO FIXEN
-		//progFullColors(60000, 5, 10000);
-		//display_rgbBitmap(5); // cool: 5, 8, 9, 10
-		//progCircles(30000, 5, 1000, true);
-		//progRandomLines(30000, 5, 500, false);
+
+		//progBlingBlingColoring(60000, 5, 5000);
 		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
-		//progMatrixScanner(55000, 5);
-		//progMatrixHorizontal(60000, 1);
-		//progShowROOTS(60000, 1);
 		//progFastBlingBling(60000, 1, 5); //20s -> 3:13
+		//progFullColors(60000, 5, 5000);
+		//progWhiteGoingBright(60000, 5, 5000);
+		//progStrobo(60000, 5, 45, 255, 255, 255); // Weisser strobo
+		//progMatrixScanner(60000, 5, 0);
+		//progStern(60000, 900, 5, 20);
+		//progCircles(60000, 5, 1000, true);
+		//progRandomLines(60000, 5, 500, false);
+		//progMovingLines(60000, 5, 10);
+		//progOutline(60000, 50, 40);
+		// TODO FIXEN //progRunningPixel(60000, 5);
+		//count_pixels();	// TODO FIXEN
+		//progMatrixHorizontal(60000, 1, 45);
+		//progMatrixVertical(60000, 1, 75);
+
+		//display_rgbBitmap(5); // cool: 5, 8, 9, 10
+		//progShowROOTS(60000, 1);
 		//progShowText("ROOTS", 60000, 1, 13, getRandomColor(), 1);
 		//progScrollText("Pokerface by Lady Gaga", 60000, 60, getRandomColor(), 1);
 		//progScrollText("Phil", 60000, 30, getRandomColor(), 1);
@@ -3224,15 +3248,12 @@ void defaultLoop()  {
 			//9 weiss/blau/beige fast ohne fades (interessante farben)
 			//10 weiss/blau/beige fast mit fades (interessante farben)
 			//11 weiss/grün fast mit fades
-		//progStern(100000, 900, 2);
 		//progFadeOut(16615, 20);
-		//count_pixels();														// TODO FIXEN
 		//progWordArray(wordArrTooCLose2, 10, 570, 5714, getRandomColor(), 5);
 		//progScrollText("Nerds on Fire", 10000, getRandomColor(), 4);
 		//display_panOrBounceBitmap(8);	// 8: smiley panning around
 		//display_bitmap(4, getRandomColor());
 		//display_rgbBitmap(10); // cool: 5, 8, 9, 10
-		//progBlingBlingColoring(60000, 1);//3    59,5hz
 		break;
 
 	case 5:
@@ -5505,6 +5526,7 @@ void callback() // toggle the LED
 	millisCounterTimer = millisCounterTimer + INCREMENT;	// wird von den progs fürs timing bzw. delay-ersatz verwendet
     millisCounterForSeconds = millisCounterForSeconds + INCREMENT;
     millisCounterForProgChange = millisCounterForProgChange + INCREMENT;
+	millisToReduceCPUSpeed = millisToReduceCPUSpeed + INCREMENT;
 
     flag_processFastLED = true;	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
     //PORTD ^= 0x40;				// toggle LED every 25 ms
@@ -5616,7 +5638,7 @@ voltageSmooth = 0.7 * voltageSmooth + 0.3 * in_voltage;
 
 
 	//---- start loop only when voltage is high enough
- 	if (voltageSmooth > 3.5) {	// only fire LEDs if voltage is > 7,99V
+ 	if (voltageSmooth > 1) {	// !!! TODO !!!! //only fire LEDs if voltage is > 7,99V
 
 		//checkIncomingMIDI();
 		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
