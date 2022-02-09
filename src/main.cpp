@@ -63,7 +63,10 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define DATA_PIN            9 // auf teensy++2 -> 12 (C2)
 #define TEST_PIN_D7         6  // internal LED
 #define MIDI_RX_PIN         0  // auf teensy++2 -> 2 (D2)
-#define LIPO_PIN            15 // auf teensy++2 -> 40 (F2)
+#define LED1_PIN            14
+#define LED2_PIN            15
+#define LED3_PIN            16
+#define LIPO_PIN            19 // auf teensy++2 -> 40 (F2)
 #define SECONDSFORVOLTAGE	1
 #define mw					22	// TODO: ausmerzen
 #define mh				    23	// TODO: ausmerzen
@@ -136,6 +139,13 @@ volatile byte prog = 0;
 volatile boolean OneSecondHasPast = false;
 //volatile byte ISR_received_USART_byte;
 //volatile boolean ISR_USART_got_a_byte = false;
+
+volatile unsigned int LED1_millis = 0;
+volatile unsigned int LED2_millis = 0;
+volatile unsigned int LED3_millis = 0;
+volatile boolean LED1_on = false;
+volatile boolean LED2_on = false;
+volatile boolean LED3_on = false;
 
 unsigned int lastLEDchange = millis();
 int ledState = LOW;             // ledState used to set the LED --TODO: nur test mit interner LED
@@ -3070,6 +3080,11 @@ void MidiDatenAuswerten(byte channel, byte number, byte value) {
 			Serial.print("midi command to switch to song: ");
 			Serial.println(value);
 		}
+
+		digitalWrite(LED3_PIN, HIGH);
+		LED3_on = true;
+		LED3_millis = millis();
+
 		switchToSong(value);
 	}
 	// with midi byte 23 the songpart can be changed!
@@ -3078,84 +3093,81 @@ void MidiDatenAuswerten(byte channel, byte number, byte value) {
 			Serial.print("midi command to switch to part: ");
 			Serial.println(value);
 		}
+
+		digitalWrite(LED3_PIN, HIGH);
+		LED3_on = true;
+		LED3_millis = millis();
+
 		switchToPart(value);
 	}
 }
 
-void checkIncomingMIDI() {	// 21.01.22 TODO: umstellen auf interrupt!!
+// void checkIncomingMIDI() {	// 21.01.22 TODO: umstellen auf interrupt!!
+// 	boolean debug = false;
+// 	do {
+// 		if (Serial1.available()) {
+// 			incomingMidiByte = Serial1.read(); //read first byte
+// 			if (debug) Serial.println(incomingMidiByte);
+// 			if (incomingMidiByte != 255) {	// wir filtern eigenartige 255er eingänge raus
+// 				if (incomingMidiByte > 127) {	// es wurde ein statusbyte erkannt
+// 					midiStatusByte = incomingMidiByte;
+// 					midiDataByte1 = 0;	// neues Statusbyte => lösche alte datenbytes
+// 					midiDataByte2 = 0;  // neues Statusbyte => lösche alte datenbytes
+// 					if (debug) Serial.println(midiStatusByte);
+// 				}
+// 				else if (incomingMidiByte < 128) {	// es wurde ein datenbyte erkannt
+// 					if (midiDataByte1 == 0) midiDataByte1 = incomingMidiByte;
+// 					else if (midiDataByte2 == 0) midiDataByte2 = incomingMidiByte;
+// 					if (debug) {
+// 						Serial.print(midiStatusByte);
+// 						Serial.print("\t");
+// 						Serial.print(midiDataByte1);
+// 						Serial.print("\t");
+// 						Serial.println(midiDataByte2);
+// 					}
+// 					// with midi byte 22 the song can be changed!
+// 					if (midiStatusByte == 185 && midiDataByte1 == 22 && midiDataByte2 > 0) {
+// 						switchToSong(midiDataByte2);
+// 						if (debug) {
+// 							Serial.print("switch to song: ");
+// 							Serial.println(midiDataByte2);
+// 						}
+// 					}
+// 					// with midi byte 23 the songpart can be changed!
+// 					else if (midiStatusByte == 185 && midiDataByte1 == 23 && midiDataByte2 >= 0) {
+// 						switchToPart(midiDataByte2);
+// 						if (debug) {
+// 							Serial.print("switch to part: ");
+// 							Serial.println(midiDataByte2);
+// 						}
+// 					}
+// 					// hier war die idee sond und part gleichzeitig zu aendern
+// 					//else if (midiStatusByte == 185 && midiDataByte1 > 30 && midiDataByte1 < 64 && midiDataByte2 >= 0) {
+// 					//	midiDataByte1 = midiDataByte1 - 30;
+// 					//	switchToSongAndPart(midiDataByte1, midiDataByte2);
+// 					//	if (debug) {
+// 					//		Serial.print("switched to song: ");
+// 					//		Serial.print(midiDataByte1);
+// 					//		Serial.print(" / part: ");
+// 					//		Serial.println(midiDataByte2);
+// 					//	}
+// 					//}
+// 				}
+// 			}
+// 		}
+// 	} while (Serial1.available());
+// }
 
-	boolean debug = false;
-
-	do {
-		if (Serial1.available()) {
-			incomingMidiByte = Serial1.read(); //read first byte
-
-			if (debug) Serial.println(incomingMidiByte);
-
-			if (incomingMidiByte != 255) {	// wir filtern eigenartige 255er eingänge raus
-
-				if (incomingMidiByte > 127) {	// es wurde ein statusbyte erkannt
-					midiStatusByte = incomingMidiByte;
-					midiDataByte1 = 0;	// neues Statusbyte => lösche alte datenbytes
-					midiDataByte2 = 0;  // neues Statusbyte => lösche alte datenbytes
-
-					if (debug) Serial.println(midiStatusByte);
-				}
-				else if (incomingMidiByte < 128) {	// es wurde ein datenbyte erkannt
-					if (midiDataByte1 == 0) midiDataByte1 = incomingMidiByte;
-					else if (midiDataByte2 == 0) midiDataByte2 = incomingMidiByte;
-
-					if (debug) {
-						Serial.print(midiStatusByte);
-						Serial.print("\t");
-						Serial.print(midiDataByte1);
-						Serial.print("\t");
-						Serial.println(midiDataByte2);
-					}
-					// with midi byte 22 the song can be changed!
-					if (midiStatusByte == 185 && midiDataByte1 == 22 && midiDataByte2 > 0) {
-						switchToSong(midiDataByte2);
-						if (debug) {
-							Serial.print("switch to song: ");
-							Serial.println(midiDataByte2);
-						}
-					}
-					// with midi byte 23 the songpart can be changed!
-					else if (midiStatusByte == 185 && midiDataByte1 == 23 && midiDataByte2 >= 0) {
-						switchToPart(midiDataByte2);
-						if (debug) {
-							Serial.print("switch to part: ");
-							Serial.println(midiDataByte2);
-						}
-					}
-
-					// hier war die idee sond und part gleichzeitig zu aendern
-					//else if (midiStatusByte == 185 && midiDataByte1 > 30 && midiDataByte1 < 64 && midiDataByte2 >= 0) {
-					//	midiDataByte1 = midiDataByte1 - 30;
-					//	switchToSongAndPart(midiDataByte1, midiDataByte2);
-					//	if (debug) {
-					//		Serial.print("switched to song: ");
-					//		Serial.print(midiDataByte1);
-					//		Serial.print(" / part: ");
-					//		Serial.println(midiDataByte2);
-					//	}
-					//}
-				}
-			}
-		}
-	} while (Serial1.available());
-}
-
-void checkIncomingMIDITEST() {
-	//Serial.println("check");
-	do {
-		if (Serial1.available()) {
-			incomingMidiByte = Serial1.read(); //read first byte
-			Serial.println(incomingMidiByte);
-			Serial.println("check");
-		}
-	} while (Serial1.available());
-}
+// void checkIncomingMIDITEST() {
+// 	//Serial.println("check");
+// 	do {
+// 		if (Serial1.available()) {
+// 			incomingMidiByte = Serial1.read(); //read first byte
+// 			Serial.println(incomingMidiByte);
+// 			Serial.println("check");
+// 		}
+// 	} while (Serial1.available());
+// }
 //====================================================
 
 const static char wordFeels[] = { "Feels" };
@@ -5529,8 +5541,10 @@ void callback() // toggle the LED
 	millisToReduceCPUSpeed = millisToReduceCPUSpeed + INCREMENT;
 
     flag_processFastLED = true;	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
-    //PORTD ^= 0x40;				// toggle LED every 25 ms
 
+	digitalWrite(LED2_PIN, HIGH);
+	LED2_on = true;
+	LED2_millis = millis();
 
     // test zur messung der timing-praezision
     if (millisCounterForSeconds >= 1000) {
@@ -5540,7 +5554,10 @@ void callback() // toggle the LED
         //Serial.println(millisCounterForSeconds);
         millisCounterForSeconds = 0;
         OneSecondHasPast = true;
-		//PORTD ^= 0x40;
+
+		digitalWrite(LED1_PIN, HIGH);
+		LED1_on = true;
+		LED1_millis = millis();
     }
 
 	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
@@ -5568,9 +5585,11 @@ void setup() {
 	adc_voltage = (adc_value * ref_voltage) / 1024.0 ;  
 	in_voltage = adc_voltage / (R2/(R1+R2));
 	voltageSmooth = in_voltage;
-	//---------------------
-      
-
+	
+	//--- Development LEDs setup -------
+	pinMode(LED1_PIN, OUTPUT); 
+	pinMode(LED2_PIN, OUTPUT); 
+	pinMode(LED3_PIN, OUTPUT); 
 
 	//---- Define matrix width and height. --------
 #ifdef USELEDMATRIXCONFIG
@@ -5610,6 +5629,26 @@ void setup() {
 void loop() {
 
 	//=== ausserhalb vom fastLED loop ====
+
+	//--- LEDs ggf. wieder ausschalten ---
+	if (LED1_on == true) {
+		if (millis() - LED1_millis >= 500) {
+			digitalWrite(LED1_PIN, LOW);
+			LED1_on = false;
+		}
+	}
+	if (LED2_on == true) {
+		if (millis() - LED2_millis >= 1) {
+			digitalWrite(LED2_PIN, LOW);
+			LED2_on = false;
+		}
+	}
+	if (LED3_on == true) {
+		if (millis() - LED3_millis >= 500) {
+			digitalWrite(LED3_PIN, LOW);
+			LED3_on = false;
+		}
+	}
 
 	if (OneSecondHasPast) {
 		//Serial.println(diffMillis);
