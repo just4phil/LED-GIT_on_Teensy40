@@ -5675,6 +5675,9 @@ voltageSmooth = 0.7 * voltageSmooth + 0.3 * in_voltage;
 	//--------------------------------------------
 
 
+//!!! TODO: just 4 testing!!
+voltageSmooth = 10;
+
 
 	//---- start loop only when voltage is high enough
  	if (voltageSmooth > 1) {	// !!! TODO !!!! //only fire LEDs if voltage is > 7,99V
