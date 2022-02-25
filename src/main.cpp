@@ -1,21 +1,48 @@
 #include <Arduino.h>
+#include <Adafruit_I2CDevice.h>	
 #include <Adafruit_GFX.h>
-#include <Adafruit_I2CDevice.h>
 #include <FastLED_NeoMatrix.h>	// FastLED_NeoMatrix example for single NeoPixel Shield. By Marc MERLIN <marc_soft@merlins.org> Contains code (c) Adafruit, license BSD
 #include <FastLED.h>
-#include "TeensyTimerTool.h"
+#include "TeensyTimerTool.h"	// fuer timer / interrupts via library
 using namespace TeensyTimerTool;
 #include "smileytongue24.h"
 // Choose your prefered pixmap
 //#include "heart24.h"
 //#include "yellowsmiley24.h"
 //#include "bluesmiley24.h"
+
+
+//------ fuer midi-in via library --------
 #include <MIDI.h>  // Add Midi Library
-
-
 //Create an instance of the library with default name, serial port and settings
 //midi::SerialMIDI<SerialPort, _Settings>::SerialMIDI [mit SerialPort=HardwareSerial, _Settings=midi::DefaultSerialSettings]
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
+//-------------------------------------------
+
+
+//------- fuer audio-in ----------
+// #include <Audio.h>
+// #include <Wire.h>
+// #include <SPI.h>
+// #include <SD.h>
+// #include <SerialFlash.h>
+// // GUItool: begin automatically generated code
+// AudioInputAnalog         adc1(A4);       //xy=99,55
+// AudioAnalyzeFFT1024      fft;            //xy=265,75
+// AudioAnalyzePeak         peak1;          //xy=239,195
+// AudioAnalyzeNoteFrequency notefreq1;      //xy=242.00000762939453,301.00000953674316
+// AudioConnection          patchCord1(adc1, peak1);
+// AudioConnection          patchCord2(adc1, fft);
+// AudioConnection          patchCord3(adc1, notefreq1);
+// GUItool: end automatically generated code
+//-----------------------------------------------------
+
+//-----fuer oled display -----------------
+//#include <Wire.h>               // SCL pin 19, SDA pin 18   
+// #include <Adafruit_SSD1306.h>   
+// Adafruit_SSD1306 display(128, 64, &Wire, -1, 1000000);  // 1MHz I2C clock
+//---------------------------------------
+
 
 //=============================
 //#define USELEDMATRIXCONFIG
@@ -120,7 +147,7 @@ int adc_value = 0;
 float adc_voltage = 0.0;
 float in_voltage = 0.0;
 float ref_voltage = 3.3;
-float R1 = 33000.0;
+float R1 = 22000.0;
 float R2 = 4700.0;
 float voltageSmooth = 0.0;
 
@@ -133,6 +160,7 @@ volatile unsigned int millisCounterForProgChange = 0;		// achtung!! -> kann nur 
 volatile unsigned int millisCounterForSeconds = 0;
 volatile unsigned int nextChangeMillis = 100000;		// start value = 10 sec
 volatile boolean flag_processFastLED = false;
+volatile boolean flag_update_display = true;	 // TODO: kann wohl wieder raus ...nur fuer oled display
 volatile boolean nextChangeMillisAlreadyCalculated = false;
 volatile byte nextSongPart = 0;
 volatile byte prog = 0;
@@ -1546,11 +1574,11 @@ void progStern(unsigned int durationMillis, int msForColorChange, byte nextPart,
 		FastLED.show();
 	}
 }
-void progStern(unsigned int durationMillis, byte nextPart) {
-	progStern(durationMillis, 0, nextPart, 0);
-}
 void progStern(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
 	progStern(durationMillis, 0, nextPart, reduceSpeed);
+}
+void progStern(unsigned int durationMillis, byte nextPart) {
+	progStern(durationMillis, 0, nextPart, 0);
 }
 
 void progBlack(unsigned int durationMillis, byte nextPart) {
@@ -3273,7 +3301,7 @@ void defaultLoop()  {
 		break;
 
 	case 10:	
-		progStern(15000, 2000, 15);
+		progStern(15000, 15);
 		break;
 
 	case 15:// random farbiger strobo
@@ -5555,9 +5583,11 @@ void callback() // toggle the LED
         millisCounterForSeconds = 0;
         OneSecondHasPast = true;
 
-		digitalWrite(LED1_PIN, HIGH);
-		LED1_on = true;
-		LED1_millis = millis();
+		digitalWrite(LED3_PIN, HIGH);
+		LED3_on = true;
+		LED3_millis = millis();
+
+		flag_update_display = true; // TODO: kann wohl wieder raus ...nur fuer oled display
     }
 
 	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
@@ -5580,12 +5610,19 @@ void setup() {
     //---------------------
 
 	//--- LIPO Safer ----------
-	//pinMode(LIPO_PIN, INPUT); 
-	adc_value = analogRead(LIPO_PIN);
-	adc_voltage = (adc_value * ref_voltage) / 1024.0 ;  
-	in_voltage = adc_voltage / (R2/(R1+R2));
-	voltageSmooth = in_voltage;
+	adc_value = analogRead(LIPO_PIN);     
+	voltageSmooth = map(adc_value, 0, 440, 0, 90); // 440 entspricht 9,0 Volt
 	
+	//---- fuer OLED Display --------
+	//   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+	//   delay(100);
+	//   display.clearDisplay();
+	//   display.display();
+	//------------------------------
+
+	// the audio library needs to be given memory to start working
+	//   AudioMemory(12);
+
 	//--- Development LEDs setup -------
 	pinMode(LED1_PIN, OUTPUT); 
 	pinMode(LED2_PIN, OUTPUT); 
@@ -5626,6 +5663,19 @@ void setup() {
 //====================================================
 
 
+//----- fuer audio in -----------
+// float band[8];
+// void printNumber(float n) {
+//   if (n >= 0.024) {
+//     Serial.print(n, 3);
+//     Serial.print(" ");
+//   } else {
+//     Serial.print("   -  "); // don't print "0.00"
+//   }
+// }
+//-----------------------------
+
+
 void loop() {
 
 	//=== ausserhalb vom fastLED loop ====
@@ -5659,28 +5709,18 @@ void loop() {
 	//---- check voltage as lipo safer ------
 	if (secondsForVoltage >= SECONDSFORVOLTAGE) {
 		
-//volt = analogRead(LIPO_PIN);
-//voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(volt, 0, 1023, 0, 270);       //0.7 * voltageSmooth + 0.3 * .... is used as a smoothing function
-
-adc_value = analogRead(LIPO_PIN);
-adc_voltage = (adc_value * ref_voltage) / 1024.0 ;  
-in_voltage = adc_voltage / (R2/(R1+R2));
-voltageSmooth = 0.7 * voltageSmooth + 0.3 * in_voltage;
-
- 		Serial.print("voltage = ");
-		Serial.println(voltageSmooth, 2);  
+		adc_value = analogRead(LIPO_PIN);     
+		voltageSmooth = 0.7 * voltageSmooth + 0.3 * map(adc_value, 0, 440, 0, 90); // 440 entspricht 9,0 Volt
+											//0.7 * voltageSmooth + 0.3 * .... is used as a smoothing function
+ 		//  Serial.print("voltage = ");
+		//  Serial.println(voltageSmooth);  
 
 		secondsForVoltage = 0;
 	}
 	//--------------------------------------------
 
-
-//!!! TODO: just 4 testing!!
-voltageSmooth = 10;
-
-
 	//---- start loop only when voltage is high enough
- 	if (voltageSmooth > 1) {	// !!! TODO !!!! //only fire LEDs if voltage is > 7,99V
+ 	if (voltageSmooth > 94) {	// !!! TODO !!!! //only fire LEDs if voltage is > 7,99V
 
 		//checkIncomingMIDI();
 		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
@@ -5774,6 +5814,58 @@ voltageSmooth = 10;
 		FastLED.show();
 		delay(500);
 	} 
+
+
+
+//---- fuer audio in -------------------------
+//   if (fft.available()) {
+//     Serial.print("FFT: ");
+//     for (int i = 0; i < 8; i++) { // 0-25  -->  DC to 1.25 kHz
+//       float n = fft.read(i);
+//       //printNumber((1- n)* 1000);
+//       band[0] = fft.read(0);      //0  //0
+//       band[1] = fft.read(1);      //0  //1
+//       band[2] = fft.read(2, 3);   //1  //2
+//       band[3] = fft.read(3, 5);   //2  //3
+//       band[4] = fft.read(4, 6);   //3  //4
+//       band[5] = fft.read(6, 14);  //6  //6
+//       band[6] = fft.read(14, 32); //12 //10
+//       band[7] = fft.read(32, 45); //23 //18
+//       printNumber(band[i]);
+//     }
+//     Serial.println();
+//   }
+//---------------------------------------------
+
+
+
+//----- fuer oled-display -------------------
+// if (flag_update_display == true) {
+//   display.clearDisplay(); // clear buffer
+//   for (int r = 0; r < 9; r++)
+//   {
+//     for (int y = 0; y < 8; y++) // fill buffer completely withs chars
+//     {
+//       display.setTextSize(1);
+//       display.setTextColor(1);
+//       display.setCursor(0, (y * 8));
+//       display.print("012345678901234567890");
+//     }
+//     display.setTextSize(1); // erase one line at the time
+//     display.setTextColor(0);
+//     display.setCursor(0, (r * 8));
+//     display.print("012345678901234567890");
+
+//     display.display();
+//     //delay(200);
+//   }
+//   flag_update_display = false;
+// }
+//------------------------------------------
+
+
 }
 //====================================================
+
+
 
