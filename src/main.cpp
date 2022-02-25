@@ -3251,12 +3251,12 @@ void defaultLoop()  {
  	switch (prog) { 
 
 	case 0:
-		progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
+		//progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
 
 		//progBlingBlingColoring(60000, 5, 5000);
 		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
 		//progFastBlingBling(60000, 1, 5); //20s -> 3:13
-		//progFullColors(60000, 5, 5000);
+		progFullColors(60000, 5, 2000);
 		//progWhiteGoingBright(60000, 5, 5000);
 		//progStrobo(60000, 5, 45, 255, 255, 255); // Weisser strobo
 		//progMatrixScanner(60000, 5, 0);
@@ -5530,7 +5530,7 @@ void TEMPLATE() {
 // interrupt every 25 ms so that fastLED can process uninterrupted (takes about 18 ms)
 
 #define INCREMENT	5	// 25 // process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
-                  // TODO: check speed on TEENSY 4!!
+	//  => !!!! IMMER AUCH IN SETUP DEN CALLBACK AUFRUF ANPASSEN !!!!!
 
 /* void setupInterrupt() {
     TCCR3A = 0;
@@ -5570,24 +5570,10 @@ void callback() // toggle the LED
 
     flag_processFastLED = true;	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
 
-	digitalWrite(LED2_PIN, HIGH);
-	LED2_on = true;
-	LED2_millis = millis();
-
     // test zur messung der timing-praezision
     if (millisCounterForSeconds >= 1000) {
-        //actualMillis = millis();
-        //diffMillis = actualMillis - lastMillis;
-        //lastMillis = actualMillis;
-        //Serial.println(millisCounterForSeconds);
         millisCounterForSeconds = 0;
         OneSecondHasPast = true;
-
-		digitalWrite(LED3_PIN, HIGH);
-		LED3_on = true;
-		LED3_millis = millis();
-
-		flag_update_display = true; // TODO: kann wohl wieder raus ...nur fuer oled display
     }
 
 	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
@@ -5651,7 +5637,7 @@ void setup() {
         setupInterrupt();
     interrupts();				// alle Interrupts scharf schalten */
 
-	t1.begin(callback, 5ms); // 25 ms
+	t1.begin(callback, 5ms); // 25 ms => !!!! IMMER AUCH define INCREMENT ANPASSEN !!!!!
 
 	//Setup Palette
 	currentPalette = RainbowColors_p;
@@ -5687,12 +5673,12 @@ void loop() {
 			LED1_on = false;
 		}
 	}
-	if (LED2_on == true) {
-		if (millis() - LED2_millis >= 1) {
-			digitalWrite(LED2_PIN, LOW);
-			LED2_on = false;
-		}
-	}
+	// if (LED2_on == true) {
+	// 	if (millis() - LED2_millis >= 1) {
+	// 		digitalWrite(LED2_PIN, LOW);
+	// 		LED2_on = false;
+	// 	}
+	// }
 	if (LED3_on == true) {
 		if (millis() - LED3_millis >= 500) {
 			digitalWrite(LED3_PIN, LOW);
@@ -5701,9 +5687,12 @@ void loop() {
 	}
 
 	if (OneSecondHasPast) {
-		//Serial.println(diffMillis);
 		secondsForVoltage++;	// count seconds for voltage lipo safer 
 		OneSecondHasPast = false;
+		//--- LED einschalten
+		// digitalWrite(LED3_PIN, HIGH);
+		// LED3_on = true;
+		// LED3_millis = millis();
 	}
 
 	//---- check voltage as lipo safer ------
@@ -5727,12 +5716,15 @@ void loop() {
 		MIDI.read(); // Continuously check if Midi data has been received.
 
 
-
 		//=== ab hier wird nur alle 5 ms ausgefuehrt ======
-
 
 		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
 			
+			//--- debugging: LED ein
+			digitalWrite(LED2_PIN, HIGH);
+			LED2_on = true;
+			LED2_millis = millis();
+
 			FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
 
 			switch (songID) {
@@ -5803,6 +5795,9 @@ void loop() {
 				break;
 			}
 			flag_processFastLED = false;
+			
+			//-- debugging: LED aus
+			digitalWrite(LED2_PIN, LOW);
 		}
 	}
 	else {	// if voltage is too low let LED 0 blink red
