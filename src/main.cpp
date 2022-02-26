@@ -99,7 +99,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define mh				    23	// TODO: ausmerzen
 #define MATRIX_WIDTH        22
 #define MATRIX_HEIGHT       23
-#define BRIGHTNESS			15    // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
+#define BRIGHTNESS			15 //50    // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
 
 #define MATRIX_TYPE         HORIZONTAL_ZIGZAG_MATRIX
 #define MATRIX_SIZE         (MATRIX_WIDTH * MATRIX_HEIGHT)
@@ -1276,11 +1276,13 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 	// delete 1 pixel sometimes
 	if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
 
-	if (millisToReduceCPUSpeed > 10) {
-		millisToReduceCPUSpeed = 0;
+	// das hier ist quatsch ... wenn es zeigt die änderungen nur alle x ms an
+	// if (millisToReduceCPUSpeed > 10) {
+	// 	millisToReduceCPUSpeed = 0;
+	// 	FastLED.show();
+	// }
 
-		FastLED.show();
-	}
+	FastLED.show();
 
 	// after DEL ms seconds change 1 part of the color randomly
 	if (millisCounterTimer >= del) {	//15000 // ersatz für delay()
@@ -3251,31 +3253,31 @@ void defaultLoop()  {
  	switch (prog) { 
 
 	case 0:
-		//progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
+		progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
 
 		//progBlingBlingColoring(60000, 5, 5000);
 		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
 		//progFastBlingBling(60000, 1, 5); //20s -> 3:13
-		progFullColors(60000, 5, 2000);
+		//progFullColors(60000, 5, 2000);
 		//progWhiteGoingBright(60000, 5, 5000);
 		//progStrobo(60000, 5, 45, 255, 255, 255); // Weisser strobo
 		//progMatrixScanner(60000, 5, 0);
-		//progStern(60000, 900, 5, 20);
+		//progStern(60000, 900, 5, 15);	
 		//progCircles(60000, 5, 1000, true);
 		//progRandomLines(60000, 5, 500, false);
 		//progMovingLines(60000, 5, 10);
 		//progOutline(60000, 50, 40);
 		// TODO FIXEN //progRunningPixel(60000, 5);
 		//count_pixels();	// TODO FIXEN
-		//progMatrixHorizontal(60000, 1, 45);
-		//progMatrixVertical(60000, 1, 75);
+		//progMatrixHorizontal(60000, 5, 40);
+		//progMatrixVertical(60000, 5, 80);
 
 		//display_rgbBitmap(5); // cool: 5, 8, 9, 10
 		//progShowROOTS(60000, 1);
 		//progShowText("ROOTS", 60000, 1, 13, getRandomColor(), 1);
 		//progScrollText("Pokerface by Lady Gaga", 60000, 60, getRandomColor(), 1);
 		//progScrollText("Phil", 60000, 30, getRandomColor(), 1);
-		//progPalette(60000, 11, 5);	// paletteID -> 0 - 11
+		//progPalette(60000, 11, 5);	// paletteID -> 0 - 11	// SCHNELL!
 			//0 rainbow slow
 			//1 rainbow fast (ohne fades)
 			//2 rainbow fast (mit fades)
@@ -3297,20 +3299,20 @@ void defaultLoop()  {
 		break;
 
 	case 5:
-		progMatrixHorizontal(30000, 10);
+		progMatrixHorizontal(30000, 10, 40);
 		break;
 
 	case 10:	
-		progStern(15000, 15);
+		progStern(15000, 15, 15);
 		break;
 
-	case 15:// random farbiger strobo
+	case 15:// random farbiger strobo TODO
 		//progStrobo(5000, 20, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		progBlingBlingColoring(10000, 20, 500);
 		//progCLED(10000, 4);	// matrix colors
 		break;
 
-	case 20:
+	case 20: // TODO
 		progMatrixScanner(15000, 25);
 		break;
 
@@ -3330,11 +3332,11 @@ void defaultLoop()  {
 		progFastBlingBling(15000, 5, 45); //20s -> 3:13
 		break;
 
-	case 45:
+	case 45: // TODO
 		progOutline(10000, 50);
 		break;
 
-	case 50:
+	case 50: // TODO
 		progMovingLines(10000, 55);
 		break;
 
@@ -3342,7 +3344,7 @@ void defaultLoop()  {
 		progRandomLines(15000, 60, 500);
 		break;
 	
-	case 60:
+	case 60: // TODO
 		progBlingBlingColoring(60000, 100, 7625);//3    59,5hz
 		break;
 		
@@ -5583,6 +5585,9 @@ void setup() {
  
  	Serial.begin(9600);
 
+	//--- interrupt-timer fuer callback
+	t1.begin(callback, 5ms); // 25 ms => !!!! IMMER AUCH define INCREMENT ANPASSEN !!!!!
+
     //---- MIDI ----------------
     delay(1000);	// Time for serial port to work?
     //Serial1.begin(31250);	// for midi
@@ -5615,31 +5620,18 @@ void setup() {
 	pinMode(LED3_PIN, OUTPUT); 
 
 	//---- Define matrix width and height. --------
-#ifdef USELEDMATRIXCONFIG
-	matrix_setup();	// dies gilt nur in verbindung mit #define LEDMATRIX und #include "neomatrix_config.h" (ganz oben!)
-#else
 	matrix = new FastLED_NeoMatrix(leds, MATRIX_WIDTH, MATRIX_HEIGHT, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG);
 
 	//----- initialize LEDs ---------
 	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUMMATRIX).setCorrection(TypicalLEDStrip);
 	//NEOPIXEL	//WS2812B
-
 	matrix->begin();
 	matrix->setBrightness(BRIGHTNESS);
-#endif
 	    
     matrix->setTextWrap(false);
     matrix->setRemapFunction(myRemapFn);	// fuer meine spezifische matrix!
-    //-----------------------
 
-//******* 21.01.22 TODO: WIEDER AKTIVIEREN !!!!!!!!!!!!!!!!!!!!
-/*     noInterrupts();				// Alle Interrupts temporär abschalten
-        setupInterrupt();
-    interrupts();				// alle Interrupts scharf schalten */
-
-	t1.begin(callback, 5ms); // 25 ms => !!!! IMMER AUCH define INCREMENT ANPASSEN !!!!!
-
-	//Setup Palette
+	//------ Setup Palette
 	currentPalette = RainbowColors_p;
 	currentBlending = LINEARBLEND;
 	
@@ -5706,7 +5698,6 @@ void loop() {
 
 		secondsForVoltage = 0;
 	}
-	//--------------------------------------------
 
 	//---- start loop only when voltage is high enough
  	if (voltageSmooth > 94) {	// !!! TODO !!!! //only fire LEDs if voltage is > 7,99V
@@ -5718,12 +5709,12 @@ void loop() {
 
 		//=== ab hier wird nur alle 5 ms ausgefuehrt ======
 
-		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
-			
+		//if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
+
 			//--- debugging: LED ein
 			digitalWrite(LED2_PIN, HIGH);
-			LED2_on = true;
-			LED2_millis = millis();
+			// LED2_on = true;
+			// LED2_millis = millis();
 
 			FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
 
@@ -5798,7 +5789,7 @@ void loop() {
 			
 			//-- debugging: LED aus
 			digitalWrite(LED2_PIN, LOW);
-		}
+		//}
 	}
 	else {	// if voltage is too low let LED 0 blink red
 		FastLED.clear();
@@ -5809,7 +5800,6 @@ void loop() {
 		FastLED.show();
 		delay(500);
 	} 
-
 
 
 //---- fuer audio in -------------------------
@@ -5832,8 +5822,6 @@ void loop() {
 //   }
 //---------------------------------------------
 
-
-
 //----- fuer oled-display -------------------
 // if (flag_update_display == true) {
 //   display.clearDisplay(); // clear buffer
@@ -5850,14 +5838,12 @@ void loop() {
 //     display.setTextColor(0);
 //     display.setCursor(0, (r * 8));
 //     display.print("012345678901234567890");
-
 //     display.display();
 //     //delay(200);
 //   }
 //   flag_update_display = false;
 // }
 //------------------------------------------
-
 
 }
 //====================================================
