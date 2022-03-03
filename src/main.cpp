@@ -3298,21 +3298,21 @@ void defaultLoop()  {
 		//display_rgbBitmap(10); // cool: 5, 8, 9, 10
 		break;
 
-	case 5:
+	case 5: // TODO: FIXEN am anfang doppelstreifen!?
 		progMatrixHorizontal(30000, 10, 40);
 		break;
 
-	case 10:	
+	case 10: // TODO: FIXEN: bleibt manchmal einfach stehen?
 		progStern(15000, 15, 15);
 		break;
 
-	case 15:// random farbiger strobo TODO
+	case 15: // TODO: FIXEN
 		//progStrobo(5000, 20, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		progBlingBlingColoring(10000, 20, 500);
 		//progCLED(10000, 4);	// matrix colors
 		break;
 
-	case 20: // TODO
+	case 20: // TODO: FIXEN
 		progMatrixScanner(15000, 25);
 		break;
 
@@ -3332,11 +3332,11 @@ void defaultLoop()  {
 		progFastBlingBling(15000, 5, 45); //20s -> 3:13
 		break;
 
-	case 45: // TODO
+	case 45:  // TODO: FIXEN
 		progOutline(10000, 50);
 		break;
 
-	case 50: // TODO
+	case 50:  // TODO: FIXEN
 		progMovingLines(10000, 55);
 		break;
 
@@ -3344,7 +3344,7 @@ void defaultLoop()  {
 		progRandomLines(15000, 60, 500);
 		break;
 	
-	case 60: // TODO
+	case 60:  // TODO: FIXEN
 		progBlingBlingColoring(60000, 100, 7625);//3    59,5hz
 		break;
 		
