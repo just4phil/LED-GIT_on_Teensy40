@@ -1251,7 +1251,7 @@ void setDurationAndNextPart(unsigned int durationMillis, byte nextPart) {
 int progBlingBlingColoring_rounds = 0;
 // leds werden zufällig mit der selben farbe eingeschaltet und einige wenige zufällig ausgeschaltet
 // alle x sekunden wird die eine der drei farbkomponenten zufällig geändert
-void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned int del) {
+void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned int msForColorChange, unsigned int msToReduceSpeed) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -1266,26 +1266,25 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 	}
 	//---------------------------------------------------------------------
 
-	if (progBlingBlingColoring_rounds == 0) {
-		r = getRandomColorValue();
-		g = getRandomColorValue();
-		b = getRandomColorValue();
+	if (millisToReduceCPUSpeed >= msToReduceSpeed) {	// ersatz für delay()
+		millisToReduceCPUSpeed = 0;
+
+		if (progBlingBlingColoring_rounds == 0) {
+			r = getRandomColorValue();
+			g = getRandomColorValue();
+			b = getRandomColorValue();
+		}
+
+		//set random pixel to defined color
+		leds[random(0, anz_LEDs)] = CRGB(r, g, b);	
+		// delete 1 pixel sometimes
+		if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
+
+		FastLED.show();
 	}
-	leds[random(0, anz_LEDs)] = CRGB(r, g, b);	//set random pixel to defined color
-
-	// delete 1 pixel sometimes
-	if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
-
-	// das hier ist quatsch ... wenn es zeigt die änderungen nur alle x ms an
-	// if (millisToReduceCPUSpeed > 10) {
-	// 	millisToReduceCPUSpeed = 0;
-	// 	FastLED.show();
-	// }
-
-	FastLED.show();
 
 	// after DEL ms seconds change 1 part of the color randomly
-	if (millisCounterTimer >= del) {	//15000 // ersatz für delay()
+	if (millisCounterTimer >= msForColorChange) {	//15000 // ersatz für delay()
 		millisCounterTimer = 0;
 		progBlingBlingColoring_rounds++;
 		if (progBlingBlingColoring_rounds == 4) progBlingBlingColoring_rounds = 1;
@@ -1296,6 +1295,9 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 		else if (progBlingBlingColoring_rounds == 2) g = getRandomColorValue();
 		else if (progBlingBlingColoring_rounds == 3) r = getRandomColorValue();
 	}
+}
+void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned int msForColorChange) {
+	progBlingBlingColoring(durationMillis, nextPart, msForColorChange, 20);
 }
 
 void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart, byte addLEDs, byte maxLEDs, unsigned int delayForAddingLEDs) {
@@ -1481,10 +1483,7 @@ void progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, in
 	}
 }
 
-//TODO: Fixen
-
-//msForChange bremst hier aber bringt eigentlich nix!!, da entweder schnell, oder zu langsam!!
-void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
+void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -1500,7 +1499,7 @@ void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int 
 	}
 	//---------------------------------------------------------------------
 
-	if (millisCounterTimer >= msForChange) {	// ersatz für delay()
+	if (millisCounterTimer >= reduceSpeed) {	// ersatz für delay()
 		millisCounterTimer = 0;
 
 			FastLED.clear();
@@ -3253,7 +3252,7 @@ void defaultLoop()  {
  	switch (prog) { 
 
 	case 0:
-		progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
+		//progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
 
 		//progBlingBlingColoring(60000, 5, 5000);
 		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
@@ -3261,7 +3260,7 @@ void defaultLoop()  {
 		//progFullColors(60000, 5, 2000);
 		//progWhiteGoingBright(60000, 5, 5000);
 		//progStrobo(60000, 5, 45, 255, 255, 255); // Weisser strobo
-		//progMatrixScanner(60000, 5, 0);
+		//progMatrixScanner(60000, 5, 25);
 		//progStern(60000, 900, 5, 15);	
 		//progCircles(60000, 5, 1000, true);
 		//progRandomLines(60000, 5, 500, false);
@@ -3269,7 +3268,7 @@ void defaultLoop()  {
 		//progOutline(60000, 50, 40);
 		// TODO FIXEN //progRunningPixel(60000, 5);
 		//count_pixels();	// TODO FIXEN
-		//progMatrixHorizontal(60000, 5, 40);
+		//progMatrixHorizontal(60000, 5, 70);
 		//progMatrixVertical(60000, 5, 80);
 
 		//display_rgbBitmap(5); // cool: 5, 8, 9, 10
@@ -3299,24 +3298,24 @@ void defaultLoop()  {
 		break;
 
 	case 5: // TODO: FIXEN am anfang doppelstreifen!?
-		progMatrixHorizontal(30000, 10, 40);
+		progMatrixHorizontal(30000, 10, 70);
 		break;
 
 	case 10: // TODO: FIXEN: bleibt manchmal einfach stehen?
 		progStern(15000, 15, 15);
 		break;
 
-	case 15: // TODO: FIXEN
+	case 15: // OK
 		//progStrobo(5000, 20, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		progBlingBlingColoring(10000, 20, 500);
 		//progCLED(10000, 4);	// matrix colors
 		break;
 
-	case 20: // TODO: FIXEN
+	case 20: // OK
 		progMatrixScanner(15000, 25);
 		break;
 
-	case 25:
+	case 25: // OK
 		progFullColors(15000, 35, 2000);
 		break;
 
@@ -3324,11 +3323,11 @@ void defaultLoop()  {
 	//	progStrobo(5000, 35, 50, 255, 255, 255);	// Weisser strobo
 	//	break;
 
-	case 35:
+	case 35: // OK
 		progCircles(15000, 40, 1000);
 		break;
 
-	case 40:
+	case 40: // OK
 		progFastBlingBling(15000, 5, 45); //20s -> 3:13
 		break;
 
