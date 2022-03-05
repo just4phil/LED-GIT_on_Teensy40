@@ -3095,13 +3095,13 @@ void switchToSong(byte song) {
 // It checks if the controller number is within the 22 to 27 range
 void MidiDatenAuswerten(byte channel, byte number, byte value) {
 
-	//if (DEBUG) {
+	if (DEBUG) {
 		Serial.print(channel);
 		Serial.print("\t");
 		Serial.print(number);
 		Serial.print("\t");
 		Serial.println(value);
-	//}
+	}
 
 	// with midi byte 22 the song can be changed!
 	if (number == 22 && value > 0) {
@@ -3110,9 +3110,9 @@ void MidiDatenAuswerten(byte channel, byte number, byte value) {
 			Serial.println(value);
 		}
 
-		digitalWrite(LED3_PIN, HIGH);
-		LED3_on = true;
-		LED3_millis = millis();
+		// digitalWrite(LED3_PIN, HIGH);
+		// LED3_on = true;
+		// LED3_millis = millis();
 
 		switchToSong(value);
 	}
@@ -3123,9 +3123,9 @@ void MidiDatenAuswerten(byte channel, byte number, byte value) {
 			Serial.println(value);
 		}
 
-		digitalWrite(LED3_PIN, HIGH);
-		LED3_on = true;
-		LED3_millis = millis();
+		// digitalWrite(LED3_PIN, HIGH);
+		// LED3_on = true;
+		// LED3_millis = millis();
 
 		switchToPart(value);
 	}
@@ -3252,7 +3252,7 @@ void defaultLoop()  {
  	switch (prog) { 
 
 	case 0:
-		//progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
+		progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
 
 		//progBlingBlingColoring(60000, 5, 5000);
 		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
@@ -3331,11 +3331,11 @@ void defaultLoop()  {
 		progFastBlingBling(15000, 5, 45); //20s -> 3:13
 		break;
 
-	case 45:  // TODO: FIXEN
+	case 45: 
 		progOutline(10000, 50);
 		break;
 
-	case 50:  // TODO: FIXEN
+	case 50: 
 		progMovingLines(10000, 55);
 		break;
 
@@ -3343,8 +3343,8 @@ void defaultLoop()  {
 		progRandomLines(15000, 60, 500);
 		break;
 	
-	case 60:  // TODO: FIXEN
-		progBlingBlingColoring(60000, 100, 7625);//3    59,5hz
+	case 60: 
+		progBlingBlingColoring(60000, 100, 7625);
 		break;
 		
 	case 100:
@@ -5708,12 +5708,10 @@ void loop() {
 
 		//=== ab hier wird nur alle 5 ms ausgefuehrt ======
 
-		//if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
+		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
 
 			//--- debugging: LED ein
-			digitalWrite(LED2_PIN, HIGH);
-			// LED2_on = true;
-			// LED2_millis = millis();
+			//digitalWrite(LED2_PIN, HIGH);
 
 			FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
 
@@ -5787,8 +5785,8 @@ void loop() {
 			flag_processFastLED = false;
 			
 			//-- debugging: LED aus
-			digitalWrite(LED2_PIN, LOW);
-		//}
+			//digitalWrite(LED2_PIN, LOW);
+		}
 	}
 	else {	// if voltage is too low let LED 0 blink red
 		FastLED.clear();
