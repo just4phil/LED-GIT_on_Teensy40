@@ -1528,7 +1528,7 @@ void progMatrixScanner(unsigned int durationMillis, byte nextPart) {
 	progMatrixScanner(durationMillis, nextPart, 0);
 }
 
-void progStern(unsigned int durationMillis, int msForColorChange, byte nextPart, unsigned int reduceSpeed) {
+void progStern(unsigned int durationMillis, unsigned int msForColorChange, unsigned char nextPart, unsigned char reduceSpeed) {
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -1575,10 +1575,10 @@ void progStern(unsigned int durationMillis, int msForColorChange, byte nextPart,
 		FastLED.show();
 	}
 }
-void progStern(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
+void progStern(unsigned int durationMillis, unsigned char nextPart, unsigned char reduceSpeed) {
 	progStern(durationMillis, 0, nextPart, reduceSpeed);
 }
-void progStern(unsigned int durationMillis, byte nextPart) {
+void progStern(unsigned int durationMillis, unsigned char nextPart) {
 	progStern(durationMillis, 0, nextPart, 0);
 }
 
@@ -1596,8 +1596,8 @@ void progBlack(unsigned int durationMillis, byte nextPart) {
 	}
 	//---------------------------------------------------------------------
 
-	FastLED.clear();	// TODO fixen
-	FastLED.show();
+	// FastLED.clear();	// hier nicht nötig
+	// FastLED.show();
 }
 
 void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange, boolean clearEach) {
@@ -1649,7 +1649,6 @@ void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int ms
 	}
 	//---------------------------------------------------------------------
 
-	//if (millis() - lastTimestamp > msForChange) {
 	if (millisCounterTimer >= msForChange) {	// ersatz für delay()
 		millisCounterTimer = 0;
 
@@ -1668,8 +1667,6 @@ void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int ms
 		matrix->drawLine(x1, 0, x2, 22, col1);
 		matrix->drawLine(x1 + 1, 0, x2 + 1, 22, col1);
 		FastLED.show();
-
-		//lastTimestamp = millis();
 	}
 }
 void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
@@ -3070,10 +3067,10 @@ void switchToPart(byte part) {
 	progCLED_hue = 0;
 	progCLED_counter = 0;
 
-	if (DEBUG) {
-		Serial.print("switched to part: ");
-		Serial.println(part);
-	}
+	// if (DEBUG) {
+	// 	Serial.print("switched to part: ");
+	// 	Serial.println(part);
+	// }
 }
 
 void switchToSong(byte song) {
@@ -5147,9 +5144,7 @@ void sober() {
 
 
 	case 14:// chorus 1b	10225
-		progStern(10225, 650, 16);
-		//progCircles(10225, 16, 500);
-		//progStrobo(16000, 10, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		progStern(10225, 650, 16, 15);
 		break;
 
 	case 16: // verse 2a	2550
@@ -5168,9 +5163,6 @@ void sober() {
 
 	case 22: // verse 2b	10225
 		progPalette(10225, 4, 24);
-		//progCircles(10225, 24, 650); // auch cool
-		//progRandomLines(1000, 18, 50);
-		//progStrobo(1000, 18, 50, 255, 255, 255);
 		break;
 
 	case 24: // ah…the night is calling	10200
@@ -5196,9 +5188,6 @@ void sober() {
 
 	case 34: // fx	625
 		progStrobo(625, 36, 75, 255, 255, 255);
-		//progPalette(6000, 8, 30);
-		//progMatrixHorizontal(6000, 30);
-		//progMovingLines(6000, 30);
 		break;
 
 	case 36: // chorus 2a	5100
@@ -5206,7 +5195,7 @@ void sober() {
 		break;
 
 	case 38: // chorus 2b	4475
-		progStern(4475, 650, 40);
+		progStern(4475, 650, 40, 15);
 		break;
 
 	case 40: // fx	650
@@ -5214,7 +5203,7 @@ void sober() {
 		break;
 
 	case 42: // chorus 2b	3825
-		progStern(3825, 650, 44);
+		progStern(3825, 650, 44, 15);
 		break;
 
 	case 44: // begin slide	625
@@ -5227,9 +5216,6 @@ void sober() {
 
 	case 48: // coming down	8925
 		progCircles(8925, 50, 150, true);
-		//progPalette(3250, 8, 40);
-		//progMatrixHorizontal(8925, 50);
-		//progMovingLines(8000, 44);
 		break;
 
 	case 50: // fx	1300
@@ -5237,8 +5223,6 @@ void sober() {
 		break;
 
 	case 52: // coming down	10200
-		//progMatrixHorizontal(7500, 48);
-		//progPalette(7500, 8, 48);
 		progRandomLines(10200, 54, 150, true);
 		break;
 
@@ -5254,8 +5238,6 @@ void sober() {
 
 	case 58: // trommelwirbel	650
 		progStrobo(650, 60, 100, 255, 255, 255);
-		//progCircles(1000, 54, 50); // auch cool
-		//progStrobo(1000, 54, 50, 255, 255, 255);
 		break;
 
 	case 60: // chorus 3a	4450
@@ -5279,7 +5261,7 @@ void sober() {
 		break;
 
 	case 70: // chorus 3b	3850
-		progStern(3850, 650, 72);
+		progStern(3850, 650, 72, 15);
 		//progFullColors(3850, 72, 325);
 		break;
 
@@ -5316,21 +5298,21 @@ void sober() {
 	}
 }
 
-//#18 -> TODO!
+//#18 -> ok: 5.3.22
 void prisoner() {
 
 	switch (prog) {
 
 	case 0: //black	3525
-		progBlack(3525, 2);
+		progBlack(5390, 2);
 		break;
 
 	case 2: //  text	15925
-		progScrollText("Prisoner by Miley Cyrus ", 15925, 90, getRandomColor(), 4);
+		progScrollText("Prisoner by Miley Cyrus ", 14065, 90, getRandomColor(), 4);
 		break;
 
 	case 4: // black	2825
-		progBlack(2825, 6);
+		progBlack(2810, 6);
 		break;
 
 	case 6: // auftakt	1875
@@ -5338,19 +5320,19 @@ void prisoner() {
 		break;
 
 	case 8: // v1: strung out on a ceiling	7500 
-		progRandomLines(7500, 10, 475, false);
+		progRandomLines(7500, 10, 470, false);
 		break;
 
 	case 10: // 10	oh i cant control it 	7500
-		progStern(7500, 475, 12);
+		progStern(7500, 940, 12, 15);
 		break;
 
 	case 12:// 12	i try to replace it	7500
-		progCircles(7500, 14, 475);
+		progCircles(7500, 14, 470);
 		break;
 
 	case 14:// 14	oh i cant control it 	7500
-		progStern(7500, 475, 16);
+		progStern(7500, 470, 16, 15);
 		break;
 
 	case 16: // 16	u keep making it hard	11250
@@ -5359,27 +5341,27 @@ void prisoner() {
 		break;
 
 	case 18: // 18	Chorus 1 a	14050
-		progFullColors(14050, 20, 225);
+		progFullColors(14065, 20, 235);
 		break;
 
 	case 20: // 20	fx	950
-		progStrobo(950, 22, 50, 255, 255, 255);
+		progStrobo(935, 22, 75, 255, 255, 255);
 		break;
 
 	case 22: // 22	Chorus 1 b	14050
-		progCircles(14050, 24, 225); // auch cool
+		progCircles(14065, 24, 235); // auch cool
 		break;
 
 	case 24: // 24	fx	950
-		progStrobo(950, 26, 75, 255, 255, 255);
+		progStrobo(935, 26, 75, 255, 255, 255);
 		break;
 
 	case 26: // 26	v2: i tasted heaven	7500
-		progRandomLines(7500, 28, 475, false);
+		progRandomLines(7500, 28, 470, false);
 		break;
 
 	case 28: // 28	oh i cant control it 	7500
-		progStern(7500, 475, 30);
+		progStern(7500, 940, 30, 15);
 		break;
 
 	case 30: // 30	u keep making it hard	11250
@@ -5391,11 +5373,11 @@ void prisoner() {
 		break;
 
 	case 34: // 34	Chorus 2 a	10300
-		progStern(10300, 475, 36);
+		progStern(10315, 470, 36, 15);
 		break;
 
 	case 36: // 36	fx	950
-		progStrobo(950, 38, 75, 255, 255, 255);
+		progStrobo(935, 38, 75, 255, 255, 255);
 		break;
 
 	case 38: // 38	Chorus 2 b	14050
@@ -5403,19 +5385,19 @@ void prisoner() {
 		break;
 
 	case 40: // 40	fx	950
-		progStrobo(950, 42, 75, 255, 255, 255);
+		progStrobo(935, 42, 75, 255, 255, 255);
 		break;
 
 	case 42: // 42	Chorus 3 a	14050
-		progFastBlingBling(14050, 8, 44);
+		progFastBlingBling(14065, 8, 44);
 		break;
 
 	case 44: // 44	fx	950
-		progStrobo(950, 46, 75, 255, 255, 255);
+		progStrobo(935, 46, 75, 255, 255, 255);
 		break;
 
 	case 46: // 46	let me go	5625
-		progMatrixScanner(5625, 48);
+		progMatrixScanner(5625, 48, 30);
 		break;
 
 	case 48: // 50	TEXT: let me go	2575
