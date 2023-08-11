@@ -99,7 +99,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define mh				    23	// TODO: ausmerzen
 #define MATRIX_WIDTH        22
 #define MATRIX_HEIGHT       23
-#define BRIGHTNESS			15 //50    // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
+#define BRIGHTNESS			40 //15    // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
 
 #define MATRIX_TYPE         HORIZONTAL_ZIGZAG_MATRIX
 #define MATRIX_SIZE         (MATRIX_WIDTH * MATRIX_HEIGHT)
@@ -3309,7 +3309,7 @@ void defaultLoop()  {
 		break;
 
 	case 20: // OK
-		progMatrixScanner(15000, 25);
+		progMatrixScanner(15000, 25, 25);
 		break;
 
 	case 25: // OK
@@ -3362,23 +3362,24 @@ void LearnToFly() {
 		break;
 
 	case 2: //2	intro	7050
-		progStern(7050, 875, 5);
+		progStern(7050, 880, 5, 15);
+		//progStern(60000, 900, 5, 15);
 		break;
 
 	case 5: //5	verse	28250
-		progMatrixScanner(28250, 10);
+		progMatrixScanner(28250, 10, 25);
 		break;
 
 	case 10: //10	chorus	24700
-		progFullColors(24700, 15, 450);
+		progFullColors(24700, 15, 440);
 		break;
 
 	case 15: //15	intro 2	14125
-		progStern(14125, 875, 20);
+		progStern(14125, 880, 20, 15);
 		break;
 
 	case 20: // 20	verse 2	28225
-		progRandomLines(28225, 25, 450);
+		progRandomLines(28225, 25, 440);
 		break;
 
 	case 25: //25	chorus 2	30000
@@ -3394,7 +3395,7 @@ void LearnToFly() {
 		break;
 
 	case 40: // 40	chorus 3	24700
-		progFullColors(24700, 45, 450);
+		progFullColors(24700, 45, 440);
 		break;
 
 	case 45: //45	chorus 4	21175
@@ -3435,7 +3436,7 @@ void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
 		break;
 
 	case 10://10	verse 1	14775
-		progMatrixScanner(14775, 15);
+		progMatrixScanner(14775, 15, 25);
 		break;
 
 	case 15://15	chor 1	16625
@@ -3448,7 +3449,7 @@ void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
 		break;
 
 	case 25://25	chorus 1	12925
-		progCircles(12925, 30, 450);
+		progCircles(12925, 30, 460);
 		break;
 
 	case 30://30	im headed straight for the castle	1825
@@ -3456,11 +3457,11 @@ void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
 		break;
 
 	case 35://35	chorus 1	14775
-		progCircles(14775, 40, 450);
+		progCircles(14775, 40, 460);
 		break;
 
 	case 40://40	verse 2	29550
-		progMatrixScanner(29550, 45);
+		progMatrixScanner(29550, 45, 25);
 		break;
 
 	case 45://45	chor 2	12925
@@ -3474,7 +3475,7 @@ void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
 
 	case 55://55	chorus 2	12900
 		//progCircles(12900, 56, 450);
-		progRandomLines(12900, 56, 450);
+		progRandomLines(12900, 56, 460);
 		break;
 
 	case 56://56		1850
@@ -3483,11 +3484,11 @@ void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
 
 	case 58://58		14775
 		//progCircles(14775, 60, 450);
-		progRandomLines(14775, 60, 450);
+		progRandomLines(14775, 60, 460);
 		break;
 
 	case 60://60	bridge	19850
-		progStern(19850, 1850, 65);
+		progStern(19850, 1845, 65, 15);
 		break;
 
 	case 65://65	git kreischen 1	3700
@@ -3499,7 +3500,7 @@ void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
 		break;
 
 	case 75://75	bridge weiter voc	14750
-		progStern(14750, 925, 80);
+		progStern(14750, 925, 80, 15);
 		break;
 
 	case 80://80	schrei	3700
@@ -3508,7 +3509,7 @@ void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
 		break;
 
 	case 85://85	chorus 3	29550
-		progCircles(29550, 90, 450, false);
+		progCircles(29550, 90, 460, false);
 		//progCircles(29550, 90, 450);
 		break;
 
@@ -3518,7 +3519,7 @@ void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
 		break;
 
 	case 95://95	text_straight for the castle	13850
-		progWordArray(wordArrCastle, 100, 325, 60000, getRandomColor(), 9);
+		progWordArray(wordArrCastle, 100, 325, 60000, getRandomColor(), 100);
 		break;
 
 	case 100:
@@ -3563,7 +3564,7 @@ void TooClose() {
 		break;
 
 	case 30: // 30	chorus 2	24750
-		progStern(24750, 1900, 35);				// 4558
+		progStern(24750, 1900, 35, 15);				// 4558
 		break;
 
 	case 35: // 35	hardcore 1	15250
@@ -3621,11 +3622,11 @@ void Pokerface() {
 
 	case 6://2	intro2	8075
 		progPalette(8075, 2, 8);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5);
+		//progMatrixScanner(24202, 5, 25);
 		break;
 
 	case 8:// 5	verse	16125
-		progCircles(16125, 10, 500);
+		progCircles(16125, 10, 505);
 		break;
 
 	case 10://10	reggea	16125
@@ -3634,7 +3635,7 @@ void Pokerface() {
 		break;
 
 	case 15://15	pre chorus	16150
-		progFullColors(16150, 20, 500);
+		progFullColors(16150, 20, 505);
 		break;
 
 	case 20://20	chorus	16125
@@ -3642,7 +3643,7 @@ void Pokerface() {
 		break;
 
 	case 25://25	verse 2	16125
-		progCircles(16125, 30, 500);
+		progCircles(16125, 30, 505);
 		break;
 
 	case 30://30	reggea	16150
@@ -3652,17 +3653,17 @@ void Pokerface() {
 		break;
 
 	case 35://35	pre chorus	16125
-		progFullColors(16125, 40, 500);
+		progFullColors(16125, 40, 505);
 		//progCircles(14769, 40, 450);
 		break;
 
 	case 40://40	chorus	16150
 		progStrobo(16150, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40);
+		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45://45	pause	8050
-		progMatrixScanner(8050, 50);
+		progMatrixScanner(8050, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
@@ -3672,7 +3673,7 @@ void Pokerface() {
 		break;
 
 	case 55://55	pre chorus	16125
-		progFullColors(16125, 60, 500);
+		progFullColors(16125, 60, 505);
 		//progRandomLines(16134, 56, 450);
 		break;
 
@@ -3711,11 +3712,11 @@ void UseSomebody() {
 
 	case 2://verse 1a		27826
 		progPalette(27826, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5);
+		//progMatrixScanner(24202, 5, 25);
 		break;
 
 	case 5://verse 1b		27826
-		progCircles(27826, 10, 425);
+		progCircles(27826, 10, 435);
 		break;
 
 	case 10://chorus		27826
@@ -3723,7 +3724,7 @@ void UseSomebody() {
 		break;
 
 	case 15://verse 2		13913
-		progFullColors(13913, 20, 425);
+		progFullColors(13913, 20, 435);
 		break;
 
 	case 20://verse 2b		13913
@@ -3731,7 +3732,7 @@ void UseSomebody() {
 		break;
 
 	case 25://chorus 2		27826
-		progCircles(27826, 30, 425);
+		progCircles(27826, 30, 435);
 		break;
 
 	case 30://bridge		13913
@@ -3740,34 +3741,19 @@ void UseSomebody() {
 		break;
 
 	case 35://solo		13913
-		progFullColors(13913, 40, 425);
-		//progCircles(13913, 40, 425);
+		progFullColors(13913, 40, 435);
+		//progCircles(13913, 40, 435);
 		break;
 
 	case 40://solo b		17391
 		progStrobo(17391, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(17391, 40);
+		//progMatrixScanner(17391, 40, 25);
 		break;
 
 	case 45://outr		13913
-		progMatrixScanner(13913, 70);
+		progMatrixScanner(13913, 70, 25);
 		//progBlack(13913, 50);
 		break;
-
-	//case 50://gaga	16134
-	//	progFastBlingBling(16125, 7, 55);
-	//	//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
-	//	break;
-	//case 55://pre chorus	16134
-	//	progFullColors(16134, 60, 500);
-	//	//progRandomLines(16134, 56, 450);
-	//	break;
-	//case 60://chorus	12101
-	//	progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-	//	break;
-	//case 65://chorus	4034
-	//	progFastBlingBling(4025, 12, 70);
-	//	break;
 
 	case 70://ende schwarz
 		progBlack(10000, 100);
@@ -3795,11 +3781,11 @@ void NoRoots() {
 
 	case 2://verse 1a		16552
 		progPalette(16550, 6, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(16552, 5);
+		//progMatrixScanner(16552, 5, 25);
 		break;
 
 	case 5:// verse 1b		16552
-		progCircles(16550, 6, 500);
+		progCircles(16550, 6, 515);
 		break;
 
 	case 6://bridge		7759
@@ -3811,7 +3797,7 @@ void NoRoots() {
 		break;
 
 	case 8://chorus a	2575	2586
-		progFullColors(2575, 9, 500);
+		progFullColors(2575, 9, 515);
 		break;
 
 	case 9://ROOTS 2	1550	1552
@@ -3819,7 +3805,7 @@ void NoRoots() {
 		break;
 
 	case 10://chorus a	3100	3103
-		progFullColors(3100, 11, 500);
+		progFullColors(3100, 11, 515);
 		break;
 
 	case 11://chorus rooooots		7759
@@ -3831,7 +3817,7 @@ void NoRoots() {
 		break;
 
 	case 13://chorus a	2575	2586
-		progFullColors(2575, 14, 500);
+		progFullColors(2575, 14, 515);
 		break;
 
 	case 14://ROOTS 2	1550	1552
@@ -3839,7 +3825,7 @@ void NoRoots() {
 		break;
 
 	case 15://chorus a	3100	3103
-		progFullColors(3100, 18, 500);
+		progFullColors(3100, 18, 515);
 		break;
 
 	case 18://chorus rooooots		8276
@@ -3851,7 +3837,7 @@ void NoRoots() {
 		break;
 
 	case 25://verse 2b		16552
-		progCircles(16550, 27, 500);
+		progCircles(16550, 27, 515);
 		break;
 
 	case 27://bridge		7759
@@ -3864,7 +3850,7 @@ void NoRoots() {
 		break;
 
 	case 31://chorus a	2575	2586
-		progFullColors(2575, 33, 500);
+		progFullColors(2575, 33, 515);
 		break;
 
 	case 33://ROOTS 2	1550	1552
@@ -3872,7 +3858,7 @@ void NoRoots() {
 		break;
 
 	case 35://chorus a	3100	3103
-		progFullColors(3100, 37, 500);
+		progFullColors(3100, 37, 515);
 		break;
 
 	case 37://chorus rooooots		7759
@@ -3884,7 +3870,7 @@ void NoRoots() {
 		break;
 
 	case 41://chorus a	2575	2586
-		progFullColors(2575, 43, 500);
+		progFullColors(2575, 43, 515);
 		break;
 
 	case 43://ROOTS 2	1550	1552
@@ -3892,7 +3878,7 @@ void NoRoots() {
 		break;
 
 	case 45://chorus a	3100	3103
-		progFullColors(3100, 47, 500);
+		progFullColors(3100, 47, 515);
 		break;
 
 	case 47://chorus rooooots		8276
@@ -3905,12 +3891,12 @@ void NoRoots() {
 		break;
 
 	case 51://solo		16552
-		progMatrixScanner(16550, 53);
+		progMatrixScanner(16550, 53, 15);
 		break;
 
 	case 53://chorus		8276
-		//progFullColors(8276, 48, 525);
-		progStern(8275, 500, 55);
+		//progFullColors(8276, 48, 515);
+		progStern(8275, 500, 55, 15);
 		break;
 
 	case 55://chorus		8276
@@ -3918,8 +3904,8 @@ void NoRoots() {
 		break;
 
 	case 57://chorus		8276
-		//progFullColors(8276, 50, 525);
-		progStern(8275, 250, 59);
+		//progFullColors(8276, 50, 515);
+		progStern(8275, 250, 59, 15);
 		break;
 
 	case 59://chorus		7759
@@ -3946,20 +3932,20 @@ void Firework() {
 	switch (prog) {
 
 	case 0://text		7500
-		progScrollText("Firework by Katey Perry", 7500, 50, getRandomColor(), 5);
+		progScrollText("Firework by K.Perry", 7500, 70, getRandomColor(), 5);
 		break;
 
 	case 5:// intro1		15484
-		progStern(15475, 950, 10); 
+		progStern(15475, 970, 10, 15); 
 		break;
 	//----------------------------------
 
 	case 10://verse 1a		15484
-		progCircles(15475, 15, 500);
+		progCircles(15475, 15, 485);
 		break;
 
 	case 15://verse 1b		15484
-		progFullColors(15475, 20, 500);
+		progFullColors(15475, 20, 485);
 		break;
 
 	case 20://bridge		13548
@@ -3985,11 +3971,11 @@ void Firework() {
 		//----------------------------------
 
 	case 30://verse 1a		15484
-		progFullColors(15475, 32, 500);
+		progFullColors(15475, 32, 485);
 		break;
 
 	case 32://verse 1b		15484
-		progCircles(15475, 34, 500);
+		progCircles(15475, 34, 485);
 		break;
 
 	case 34://bridge		15484
@@ -3998,7 +3984,7 @@ void Firework() {
 
 	case 35://übergang		1935
 		progStrobo(1925, 36, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progCircles(2125, 30, 500);
+		//progCircles(2125, 30, 485);
 		break;
 
 	case 36://chorus 1		14516
@@ -4073,7 +4059,7 @@ void Diamonds() {
 
 	case 2://intro2	8067
 		progPalette(19200, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5);
+		//progMatrixScanner(24202, 5, 25);
 		break;
 
 	case 5:
@@ -4113,12 +4099,12 @@ void Diamonds() {
 
 	case 40:
 		progStrobo(1200, 45, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40);
+		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45:
 		progFullColors(19200, 50, 150);
-		//progMatrixScanner(8050, 50);
+		//progMatrixScanner(8050, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
@@ -4159,7 +4145,7 @@ void SetFire() {
 	case 2://v1: my hands	115	16696
 		progPalette(16696, 8, 5);	// paletteID -> 0 - 10
 		//progPalette(16696, 11, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5);
+		//progMatrixScanner(24202, 5, 25);
 		break;
 
 	case 5: // tremolo bridge	115	14609
@@ -4168,7 +4154,7 @@ void SetFire() {
 		break;
 
 	case 10: // chorus 1	115	16696
-		progStern(16696, 525, 15);
+		progStern(16696, 520, 15, 15);
 		break;
 
 	case 15://v2: as i lay …	115	16696
@@ -4183,17 +4169,17 @@ void SetFire() {
 		break;
 
 	case 25://chorus 2 a	115	16696
-		progCircles(16696, 30, 525);
+		progCircles(16696, 30, 520);
 		break;
 
 	case 30://chorus 2 b	115	16696
-		progStern(16696, 525, 35);
+		progStern(16696, 520, 35, 15);
 		//progPalette(16696, 11, 35);
 		//progPalette(16696, 4, 35);	// paletteID -> 0 - 10
 		break;
 
 	case 35://sometimes	115	16696
-		progFullColors(16696, 40, 525);
+		progFullColors(16696, 40, 520);
 		//progCircles(14769, 40, 450);
 		break;
 
@@ -4201,23 +4187,23 @@ void SetFire() {
 		//progBlack(2087, 45);
 		progMovingLines(2087, 45);
 		//progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40);
+		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45://chorus 3 a	115	16696
-		progCircles(16696, 50, 250);
-		//progMatrixScanner(8050, 50);
+		progCircles(16696, 50, 260);
+		//progMatrixScanner(8050, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
 	case 50://chorus 3 b	115	16696
-		progRandomLines(16696, 55, 250, true);
+		progRandomLines(16696, 55, 260, true);
 		//progFastBlingBling(16125, 7, 55);
 		//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
 		break;
 
 	case 55://SOLO a	115	16696
-		progFullColors(16696, 60, 525);
+		progFullColors(16696, 60, 520);
 		//progRandomLines(16134, 56, 450);
 		break;
 
@@ -4228,12 +4214,12 @@ void SetFire() {
 		break;
 
 	case 65://chorus 4 a	115	16696
-		progRandomLines(16696, 70, 250, false);
+		progRandomLines(16696, 70, 260, false);
 		//progFastBlingBling(4025, 12, 70);
 		break;
 
 	case 70://chorus 4 b	115	16696
-		progCircles(16696, 75, 250, false);
+		progCircles(16696, 75, 260, false);
 		//progFastBlingBling(4025, 12, 75);
 		break;
 
@@ -4269,12 +4255,12 @@ void Chandelier() {
 
 	case 2://intro2	8067
 		progPalette(8067, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5);
+		//progMatrixScanner(24202, 5, 25);
 		break;
 
 		//case 3://verse	16134
 		//	progPalette(8067, 8, 5);	// paletteID -> 0 - 10
-		//	//progMatrixScanner(24202, 5);
+		//	//progMatrixScanner(24202, 5, 25);
 		//	break;
 
 	case 5:// verse	16134
@@ -4309,11 +4295,11 @@ void Chandelier() {
 
 	case 40://chorus	16134
 		progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40);
+		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45://pause	8067
-		progMatrixScanner(8050, 50);
+		progMatrixScanner(8050, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
@@ -4370,7 +4356,7 @@ void Titanium() {
 		break;
 
 	case 20://im bulletproof	15250
-		progMatrixScanner(15250, 25);
+		progMatrixScanner(15250, 25, 25);
 		//progStrobo(16134, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 
@@ -4394,11 +4380,11 @@ void Titanium() {
 	case 40://v2: race your voice	15250
 		progPalette(15250, 3, 45);
 		//progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40);
+		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45://im bulletproof	15225
-		progMatrixScanner(15225, 50);
+		progMatrixScanner(15225, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
@@ -4465,12 +4451,12 @@ void SomeoneYouLoved() {
 
 	case 2://intro2	8067
 		progPalette(8067, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5);
+		//progMatrixScanner(24202, 5, 25);
 		break;
 
 		//case 3://verse	16134
 		//	progPalette(8067, 8, 5);	// paletteID -> 0 - 10
-		//	//progMatrixScanner(24202, 5);
+		//	//progMatrixScanner(24202, 5, 25);
 		//	break;
 
 	case 5:// verse	16134
@@ -4505,11 +4491,11 @@ void SomeoneYouLoved() {
 
 	case 40://chorus	16134
 		progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40);
+		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45://pause	8067
-		progMatrixScanner(8050, 50);
+		progMatrixScanner(8050, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
@@ -4542,7 +4528,7 @@ void SomeoneYouLoved() {
 	}
 }
 
-//#13 -> TODO!
+//#13 -> TODO -> ist noch unfertig!!
 void ShouldntStop() {
 
 	switch (prog) {
@@ -4558,12 +4544,12 @@ void ShouldntStop() {
 
 	case 2://intro2	8067
 		progPalette(8067, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5);
+		//progMatrixScanner(24202, 5, 25);
 		break;
 
 		//case 3://verse	16134
 		//	progPalette(8067, 8, 5);	// paletteID -> 0 - 10
-		//	//progMatrixScanner(24202, 5);
+		//	//progMatrixScanner(24202, 5, 25);
 		//	break;
 
 	case 5:// verse	16134
@@ -4598,11 +4584,11 @@ void ShouldntStop() {
 
 	case 40://chorus	16134
 		progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40);
+		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45://pause	8067
-		progMatrixScanner(8050, 50);
+		progMatrixScanner(8050, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
@@ -4698,7 +4684,7 @@ void SunAlwaysShinesOnTV() {
 		break;
 
 	case 28:// ch1: strobo	126	5250
-		progStrobo(5250, 30, 250, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		progStrobo(5250, 30, 240, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 
 	case 30:// BLACK	126	2375
@@ -4706,7 +4692,7 @@ void SunAlwaysShinesOnTV() {
 		break;
 
 	case 32:// chorus:stern	126	13325
-		progStern(13325, 475, 34);
+		progStern(13325, 475, 34, 15);
 		break;
 
 	case 34:// strobo fast	126	3800
@@ -4734,7 +4720,7 @@ void SunAlwaysShinesOnTV() {
 		break;
 
 	case 46:// ch1: strobo	126	5225
-		progStrobo(5225, 48, 250, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		progStrobo(5225, 48, 240, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		//progStrobo(5225, 48, 300, 255, 255, 255);
 		break;
 
@@ -4743,7 +4729,7 @@ void SunAlwaysShinesOnTV() {
 		break;
 
 	case 50:// chorus:stern	126	13325
-		progStern(13325, 475, 52);
+		progStern(13325, 475, 52, 15);
 		break;
 
 	case 52:// strobo fast	126	3800
@@ -4755,7 +4741,7 @@ void SunAlwaysShinesOnTV() {
 		break;
 
 	case 56: // pre-Solo	126	11425
-		progMatrixScanner(11425, 58);
+		progMatrixScanner(11425, 58, 25);
 		break;
 		
 	case 58:// SOLO	126	13325
@@ -4771,7 +4757,7 @@ void SunAlwaysShinesOnTV() {
 		break;
 
 	case 64:// chorus:stern	126	2850
-		progStern(2850, 475, 66);
+		progStern(2850, 475, 66, 15);
 		break;
 
 	case 66:// TREMOLO	126	950
@@ -4779,7 +4765,7 @@ void SunAlwaysShinesOnTV() {
 		break;
 
 	case 68:// chorus:stern	126	10475
-		progStern(10475, 475, 70);
+		progStern(10475, 475, 70, 15);
 		break;
 
 	case 70:// TREMOLO	126	950
@@ -4787,7 +4773,7 @@ void SunAlwaysShinesOnTV() {
 		break;
 
 	case 72:// 	126	14300
-		progStern(14300, 475, 74);
+		progStern(14300, 475, 74, 15);
 		break;
 
 	case 74:// 	126	950
@@ -4805,7 +4791,7 @@ void SunAlwaysShinesOnTV() {
 	}
 }
 
-//#15 -> FERTIG: 05.05.2021 +  6.5.21 -> zeitplan perfektioniert!!!!!!
+//#15 -> TODO: Anfang hat Fehler // FERTIG: 05.05.2021 +  6.5.21 -> zeitplan perfektioniert!!!!!!
 void peopleArePeople() {
 
 	switch (prog) {
@@ -4816,7 +4802,7 @@ void peopleArePeople() {
 		break;
 
 	case 2: // intro	17750	scanner
-		progMatrixScanner(17750, 4);
+		progMatrixScanner(17750, 4, 25);
 		break;
 
 	case 4: // chorus 1	15250
@@ -4828,7 +4814,7 @@ void peopleArePeople() {
 		break;
 
 	case 6: // 3er übergang	3125
-		progStern(3125, 1000, 7);
+		progStern(3125, 1000, 7, 15);
 		break;
 
 	case 7: // bam bam FX	875
@@ -4836,7 +4822,7 @@ void peopleArePeople() {
 		break;
 
 	case 8: // 3er übergang	1875
-		progStern(1875, 1000, 9);
+		progStern(1875, 1000, 9, 15);
 		break;
 
 	case 9:// verse 1	16000
@@ -4906,11 +4892,11 @@ void peopleArePeople() {
 		break;
 
 	case 36: // chorus 2	16000
-		progStern(16000, 500, 38);
+		progStern(16000, 500, 38, 15);
 		break;
 
 	case 38: // übergang	3250
-		progMatrixScanner(3250, 40);
+		progMatrixScanner(3250, 40, 25);
 		break;
 
 	case 40: // bam bam FX	750
@@ -4991,7 +4977,7 @@ void enjoyTheSilence() {
 		break;
 
 	case 15:// all i ever wanted	8500
-		progFullColors(8500, 20, 1050);
+		progFullColors(8500, 20, 1060);
 		break;
 
 	case 20://words are very	7975
@@ -5006,6 +4992,8 @@ void enjoyTheSilence() {
 		progMovingLines(2125, 35);
 		break;
 
+		// TODO: auf trommelwirbel -> fast circles wie in people are people
+
 	case 35://synth	16975
 		progFastBlingBling(16975, 5, 40); //20s -> 3:13
 		break;
@@ -5019,7 +5007,7 @@ void enjoyTheSilence() {
 		break;
 
 	case 50://all i ever wanted	8500
-		progFullColors(8500, 55, 1050);
+		progFullColors(8500, 55, 1060);
 		break;
 
 	case 55://words are very	8500
@@ -5043,7 +5031,7 @@ void enjoyTheSilence() {
 		break;
 
 	case 80:// all i ever wanted	8500
-		progFullColors(8500, 85, 1050);
+		progFullColors(8500, 85, 1060);
 		break;
 
 	case 85://words are very	8500
@@ -5051,7 +5039,7 @@ void enjoyTheSilence() {
 		break;
 
 	case 90:// all i ever wanted	8475
-		progFullColors(8475, 95, 1050);
+		progFullColors(8475, 95, 1060);
 		break;
 
 	case 95://words are very	8500
@@ -5108,7 +5096,7 @@ void sober() {
 
 	case 2: //  text	9575
 		progScrollText("Sober by Pink", 9575, 90, getRandomColor(), 4);
-		//progMatrixScanner(17750, 4);
+		//progMatrixScanner(17750, 4, 25);
 		break;
 
 	case 4: // v1a: i dont wanna be	10200
@@ -5122,12 +5110,12 @@ void sober() {
 		break;
 
 	case 8: // ah…the sun is blinding	10200
-		//progStern(10200, 1000, 10);
-		progCircles(10200, 10, 650, false);
+		//progStern(10200, 1000, 10, 15);
+		progCircles(10200, 10, 640, false);
 		break;
 
 	case 10: // oh.. Im finding	9575 
-		progRandomLines(9575, 11, 650, false);
+		progRandomLines(9575, 11, 640, false);
 		break;
 
 	case 11:// fx 650
@@ -5135,8 +5123,8 @@ void sober() {
 		break;
 
 	case 12: // chorus 1a	10200
-		progFullColors(10200, 14, 650);
-		//progStern(10200, 650, 14);
+		progFullColors(10200, 14, 640);
+		//progStern(10200, 650, 14, 15);
 		break;
 
 		
@@ -5144,7 +5132,7 @@ void sober() {
 
 
 	case 14:// chorus 1b	10225
-		progStern(10225, 650, 16, 15);
+		progStern(10225, 640, 16, 15);
 		break;
 
 	case 16: // verse 2a	2550
@@ -5166,11 +5154,11 @@ void sober() {
 		break;
 
 	case 24: // ah…the night is calling	10200
-		progCircles(10200, 26, 650, false);
+		progCircles(10200, 26, 640, false);
 		break;
 
 	case 26: // ah …im falling	7675
-		progRandomLines(7675, 28, 650, false);
+		progRandomLines(7675, 28, 640, false);
 		break;
 
 	case 28: // blaaaaame	1900
@@ -5183,7 +5171,7 @@ void sober() {
 
 	case 32: // chorus 2a	4475
 		//progRandomLines(4475, 34, 500);
-		progFullColors(4475, 34, 650);
+		progFullColors(4475, 34, 640);
 		break;
 
 	case 34: // fx	625
@@ -5191,11 +5179,11 @@ void sober() {
 		break;
 
 	case 36: // chorus 2a	5100
-		progFullColors(5100, 38, 650);
+		progFullColors(5100, 38, 640);
 		break;
 
 	case 38: // chorus 2b	4475
-		progStern(4475, 650, 40, 15);
+		progStern(4475, 640, 40, 15);
 		break;
 
 	case 40: // fx	650
@@ -5203,11 +5191,11 @@ void sober() {
 		break;
 
 	case 42: // chorus 2b	3825
-		progStern(3825, 650, 44, 15);
+		progStern(3825, 640, 44, 15);
 		break;
 
 	case 44: // begin slide	625
-		progMatrixScanner(625, 46);
+		progMatrixScanner(625, 46, 25);
 		break;
 
 	case 46: // trommelwirbel	650
@@ -5241,7 +5229,7 @@ void sober() {
 		break;
 
 	case 60: // chorus 3a	4450
-		progFullColors(4450, 62, 325);
+		progFullColors(4450, 62, 330);
 		break;
 
 	case 62: // fx	650
@@ -5249,11 +5237,11 @@ void sober() {
 		break;
 
 	case 64: // chorus 3a	5100
-		progFullColors(5100, 66, 325);
+		progFullColors(5100, 66, 330);
 		break;
 
 	case 66: // chorus 3b	4475
-		progFullColors(4475, 68, 325);
+		progFullColors(4475, 68, 330);
 		break;
 
 	case 68: // fx	625
@@ -5261,7 +5249,7 @@ void sober() {
 		break;
 
 	case 70: // chorus 3b	3850
-		progStern(3850, 650, 72, 15);
+		progStern(3850, 640, 72, 15);
 		//progFullColors(3850, 72, 325);
 		break;
 
@@ -5431,12 +5419,12 @@ void TEMPLATE() {
 
 	case 2://intro2	8067
 		progPalette(8067, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5);
+		//progMatrixScanner(24202, 5, 25);
 		break;
 
 		//case 3://verse	16134
 		//	progPalette(8067, 8, 5);	// paletteID -> 0 - 10
-		//	//progMatrixScanner(24202, 5);
+		//	//progMatrixScanner(24202, 5, 25);
 		//	break;
 
 	case 5:// verse	16134
@@ -5471,11 +5459,11 @@ void TEMPLATE() {
 
 	case 40://chorus	16134
 		progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40);
+		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45://pause	8067
-		progMatrixScanner(8050, 50);
+		progMatrixScanner(8050, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
