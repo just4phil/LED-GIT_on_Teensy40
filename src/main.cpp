@@ -99,7 +99,7 @@ const static int outlinePath7[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 1
 const static int outlinePath8[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 117, 126, 165, 189, 188, 187, 186, 185, 171, 157, 156, 147, 146, 137, 136, 127 };
 const static int outlinePath9[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 117, 126, 166, 167, 168, 169, 170, 157, 156, 147, 146, 137, 136, 127 };
 
-const static boolean DEBUG = false;
+const static boolean DEBUG = true;
 
 //--- boolean LEDGITBOARD -> für board oder für lichstreifen komilieren?
 // false: es wird für die LED-STRIPE-Git kompiliert
@@ -3516,10 +3516,10 @@ void switchToPart(byte part) {
 	progCLED_hue = 0;
 	progCLED_counter = 0;
 
-	// if (DEBUG) {
-	// 	Serial.print("switched to part: ");
-	// 	Serial.println(part);
-	// }
+	if (DEBUG) {
+		Serial.print("switched to part: ");
+		Serial.println(part);
+	}
 }
 
 void switchToSong(byte song) {
@@ -3668,19 +3668,56 @@ String wordArrCastle[] = { castle_w1, castle_w2, castle_w3, castle_w4, castle_w5
 //==============================================
 
 
+// 0 defaultLoop();
+// ---
+// 1 PhysicalMitTrailer();
+// 2 Physical();
+// 3 - 
+// 4 Pokerface();
+// 5 UseSomebody();
+// 6 NoRoots();
+// 7 Firework();
+// 8 DancingOnMyOwn();
+// 9 SetFire();
+// 10 BloodyMary();
+// 11 Titanium();
+// 12 SuchAshame();
+// 13 InTheDark();
+// 14 SunAlwaysShinesOnTV();
+// 15 Abcdefu();
+// 16 enjoyTheSilence();
+// 17 sober();
+// 18 prisoner();
+// ---
+// 20 TEMPLATE();
+
 
 void defaultLoopTEST()  {
 
  	switch (prog) { 
 
 	case 0:
-		
 		if (LEDGITBOARD) {
 			progScrollText("Nerds on Fire", 5000, 90, getRandomColor(), 5);
 		}
 		else {
 			progBlingBlingColoring(50000, 5, 5000);
 		}
+		break;
+
+	case 5: // TODO: FIXEN am anfang doppelstreifen!?
+		progMatrixHorizontal(5000, 100, 70);
+		break;
+		
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
+
+
+
 		//progPalette(5000, 10, 5);
 		//progBlingBlingColoring(5000, 5, 5000);
 		//progFastBlingBling(5000, 1, 5, 1, 15, 2000);		 
@@ -3724,62 +3761,7 @@ void defaultLoopTEST()  {
 		//display_panOrBounceBitmap(8);	// 8: smiley panning around
 		//display_bitmap(4, getRandomColor());
 		//display_rgbBitmap(10); // cool: 5, 8, 9, 10
-		break;
 
-	case 5: // TODO: FIXEN am anfang doppelstreifen!?
-		progMatrixHorizontal(5000, 10, 70);
-		break;
-
-	case 10: // TODO: FIXEN: bleibt manchmal einfach stehen?
-		progStern(5000, 15, 15);
-		break;
-
-	case 15: // OK
-		progBlingBlingColoring(5000, 20, 500);
-		break;
-
-	case 20: // OK
-		progMatrixScanner(5000, 25, 25);
-		break;
-
-	case 25: // OK
-		progFullColors(5000, 35, 2000);
-		break;
-
-	case 30:
-		progStrobo(5000, 35, 50, 255, 255, 255);	// Weisser strobo
-		break;
-
-	case 35: // OK
-		progCircles(5000, 40, 1000);
-		break;
-
-	case 40: // OK
-		progFastBlingBling(5000, 5, 45); //20s -> 3:13
-		break;
-
-	case 45: 
-		progOutline(5000, 50);
-		break;
-
-	case 50: 
-		progMovingLines(5000, 55);
-		break;
-
-	case 55:
-		progRandomLines(5000, 60, 500);
-		break;
-	
-	case 60: 
-		progBlingBlingColoring(5000, 100, 7625);
-		break;
-		
-	case 100:
-		FastLED.clear();
-		switchToSong(0);	// SongID 0 == DEFAULT loop
-		break;
-	}
-}
 
 //#0
 void defaultLoop()  {
@@ -3787,54 +3769,12 @@ void defaultLoop()  {
  	switch (prog) { 
 
 	case 0:
-		
 		if (LEDGITBOARD) {
 			progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
 		}
 		else {
 			progPalette(19500, 10, 5);
 		}
-		//progBlingBlingColoring(60000, 5, 5000);
-		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
-		//progFastBlingBling(60000, 1, 5); //20s -> 3:13
-		//progFullColors(60000, 5, 2000);
-		//progWhiteGoingBright(60000, 5, 5000);
-		//progStrobo(60000, 5, 45, 255, 255, 255); // Weisser strobo
-		//progMatrixScanner(60000, 5, 25);
-		//progStern(60000, 900, 5, 15);	
-		//progCircles(60000, 5, 1000, true);
-		//progRandomLines(60000, 5, 500, false);
-		//progMovingLines(60000, 5, 10);
-		//progOutline(60000, 50, 40);
-		// TODO FIXEN //progRunningPixel(60000, 5);
-		//count_pixels();	// TODO FIXEN
-		//progMatrixHorizontal(60000, 5, 70);
-		//progMatrixVertical(60000, 5, 80);
-
-		//display_rgbBitmap(5); // cool: 5, 8, 9, 10
-		//progShowROOTS(60000, 1);
-		//progShowText("ROOTS", 60000, 1, 13, getRandomColor(), 1);
-		//progScrollText("Pokerface by Lady Gaga", 60000, 60, getRandomColor(), 1);
-		//progScrollText("Phil", 60000, 30, getRandomColor(), 1);
-		//progPalette(60000, 11, 5);	// paletteID -> 0 - 11	// SCHNELL!
-			//0 rainbow slow
-			//1 rainbow fast (ohne fades)
-			//2 rainbow fast (mit fades)
-			//3 lila/grün Fast mit fades
-			//4 blau/lila/rot/orange mit fades Fast
-			//5 white fast ohne fades
-			//6 white fast mit fades
-			//7 blau/weiss slow mit fades
-			//8 blau/lila/rot/orange mit fades slow
-			//9 weiss/blau/beige fast ohne fades (interessante farben)
-			//10 weiss/blau/beige fast mit fades (interessante farben)
-			//11 weiss/grün fast mit fades
-		//progFadeOut(16615, 20);
-		//progWordArray(wordArrTooCLose2, 10, 570, 5714, getRandomColor(), 5);
-		//progScrollText("Nerds on Fire", 10000, getRandomColor(), 4);
-		//display_panOrBounceBitmap(8);	// 8: smiley panning around
-		//display_bitmap(4, getRandomColor());
-		//display_rgbBitmap(10); // cool: 5, 8, 9, 10
 		break;
 
 	case 5: // TODO: FIXEN am anfang doppelstreifen!?
@@ -3895,7 +3835,124 @@ void defaultLoop()  {
 }
 //==============================================
 
-//#3 -> 08.06.2021 OK!
+// 1 PhysicalMitTrailer();
+void PhysicalMitTrailer() {
+	switch (prog) {
+
+	case 0:
+		progBlack(3060, 2);
+		// if (LEDGITBOARD) {
+		// 	progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 2);
+		// }
+		// else {
+		// 	progPalette(19500, 0, 2);
+		// }
+		break;
+
+//progCircles(25725, 5, 815); 
+//progRandomLines(45700, 10, 475); 
+	case 2: // FOUR
+		progStrobo(410, 3, 40, 255, 255, 255);
+		break;
+	case 3: // 
+		progBlack(1225, 4);
+		break;
+
+	case 4: // THREE
+		progStrobo(410, 5, 40, 255, 255, 255);
+		break;
+	case 5: // 
+		progBlack(1220, 6);
+		break;
+
+	case 6: // TWO
+		progStrobo(410, 7, 40, 255, 255, 255);
+		break;
+	case 7: // 
+		progBlack(1225, 8);
+		break;
+
+	case 8: // ONE
+		progStrobo(410, 9, 40, 255, 255, 255);
+		break;
+	
+	case 9: // 
+		progPalette(12650, 6, 10);
+		break;
+	case 10: // 
+		progPalette(13060, 0, 12);
+		break;
+	case 12: // 
+		progPalette(16330, 2, 15);
+		break;
+
+	case 15: //
+		progCircles(13060, 20, 815); 
+		break;
+
+	case 20: // 
+		progRandomLines(6530, 22, 410);
+		break;
+
+	case 22: //
+		progCircles(5715, 25, 205); 
+		break;
+
+	case 25: // 
+		progStrobo(815, 30, 40, 255, 255, 255);
+		break;
+
+	case 30: // 
+		progStern(26125, 1635, 35, 15);	
+		break;
+
+	case 35: // 
+		progBlack(2445, 40);
+		break;
+
+	case 40: // 
+		progStrobo(820, 45, 75, 255, 255, 255); 
+		//progFullColors(15225, 45, 950);		// 15238
+		break;
+
+
+//TODO weiter ab hier
+
+
+	case 45: // 45	halftime	7625
+		progPalette(12650, 6, 50);
+		//progFastBlingBling(17625, 5, 50);		// 395
+		break;
+
+	case 50: // 50	chorus weiter	7625
+		progFullColors(7625, 55, 475);		// 7619
+		break;
+
+	case 55: // 55	hardcore 2	7600
+		progStrobo(7600, 60, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); // 5861
+		break;
+
+	case 60: // 60	outro	17150
+		progBlingBlingColoring(17150, 65, 7625); // 65535 is max for unsigned int!
+		break;
+
+	case 65: // 60	outro	17150
+		progBlack(10000, 100);
+		break;
+
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
+
+
+// 2 Physical();
+
+// 3 - 
+
+//08.06.2021 OK!
 void TooClose() {
 	//FastLED.setBrightness(BRIGHTNESS); // zur sicherheit in jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
 
@@ -4410,7 +4467,11 @@ void Firework() {
 	}
 }
 
-//#8 -> FERTIG: 01.05.2021
+
+// 8 DancingOnMyOwn();
+
+
+//FERTIG: 01.05.2021
 void Diamonds() {
 
 	switch (prog) {
@@ -4605,6 +4666,11 @@ void SetFire() {
 	}
 }
 
+
+
+// 10 BloodyMary();
+
+
 //#11 -> FERTIG: 02.05.2021 +  6.5.21 -> zeitplan perfektioniert!!!!!!
 void Titanium() {
 
@@ -4707,6 +4773,14 @@ void Titanium() {
 		break;
 	}
 }
+
+
+
+// 12 SuchAshame();
+
+
+// 13 InTheDark();
+
 
 //#14 -> FERTIG: 03.05.2021 +  4.5.21 -> zeitplan perfektioniert!!!!!!
 void SunAlwaysShinesOnTV() {
@@ -4877,6 +4951,12 @@ void SunAlwaysShinesOnTV() {
 		break;
 	}
 }
+
+
+
+// 15 Abcdefu();
+
+
 
 //#16 -> FERTIG: 6.5.21 -> zeitplan perfektioniert!!!!!!
 void enjoyTheSilence() {
@@ -5594,16 +5674,17 @@ void loop() {
 
 			switch (songID) {
 			case 0:
-				defaultLoopTEST(); //defaultLoop();
+				//defaultLoopTEST(); 
+				defaultLoop();
 				break;
 			case 1:
-	
+				PhysicalMitTrailer();
 				break;
 			case 2:
-				
+				//Physical();
 				break;
 			case 3:
-				TooClose();
+				//
 				break;
 			case 4:
 				Pokerface();
@@ -5618,28 +5699,28 @@ void loop() {
 				Firework();
 				break;
 			case 8:
-				Diamonds();
+				//DancingOnMyOwn();
 				break;
 			case 9:
 				SetFire();
 				break;
 			case 10:
-				
+				//BloodyMary();
 				break;
 			case 11:
 				Titanium();
 				break;
 			case 12:
-				
+				//SuchAshame();
 				break;
 			case 13:
-				
+				//InTheDark();
 				break;
 			case 14:
 				SunAlwaysShinesOnTV();
 				break;
 			case 15:
-				
+				//Abcdefu();
 				break;
 			case 16:
 				enjoyTheSilence();
