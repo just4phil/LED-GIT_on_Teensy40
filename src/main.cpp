@@ -11,38 +11,12 @@ using namespace TeensyTimerTool;
 //#include "yellowsmiley24.h"
 //#include "bluesmiley24.h"
 
-
 //------ fuer midi-in via library --------
 #include <MIDI.h>  // Add Midi Library
 //Create an instance of the library with default name, serial port and settings
 //midi::SerialMIDI<SerialPort, _Settings>::SerialMIDI [mit SerialPort=HardwareSerial, _Settings=midi::DefaultSerialSettings]
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 //-------------------------------------------
-
-
-//------- fuer audio-in ----------
-// #include <Audio.h>
-// #include <Wire.h>
-// #include <SPI.h>
-// #include <SD.h>
-// #include <SerialFlash.h>
-// // GUItool: begin automatically generated code
-// AudioInputAnalog         adc1(A4);       //xy=99,55
-// AudioAnalyzeFFT1024      fft;            //xy=265,75
-// AudioAnalyzePeak         peak1;          //xy=239,195
-// AudioAnalyzeNoteFrequency notefreq1;      //xy=242.00000762939453,301.00000953674316
-// AudioConnection          patchCord1(adc1, peak1);
-// AudioConnection          patchCord2(adc1, fft);
-// AudioConnection          patchCord3(adc1, notefreq1);
-// GUItool: end automatically generated code
-//-----------------------------------------------------
-
-//-----fuer oled display -----------------
-//#include <Wire.h>               // SCL pin 19, SDA pin 18   
-// #include <Adafruit_SSD1306.h>   
-// Adafruit_SSD1306 display(128, 64, &Wire, -1, 1000000);  // 1MHz I2C clock
-//---------------------------------------
-
 
 //=============================
 //#define USELEDMATRIXCONFIG
@@ -99,7 +73,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define mh				    23	// TODO: ausmerzen
 #define MATRIX_WIDTH        22
 #define MATRIX_HEIGHT       23
-#define BRIGHTNESS			40 //15    // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
+#define BRIGHTNESS			20 //40   // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
 
 #define MATRIX_TYPE         HORIZONTAL_ZIGZAG_MATRIX
 #define MATRIX_SIZE         (MATRIX_WIDTH * MATRIX_HEIGHT)
@@ -107,7 +81,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define NUMPIXELS           MATRIX_SIZE // TODO: ausmerzen
 #define COLOR_ORDER         RGB
 #define CHIPSET             WS2812B
-#define anz_LEDs			278
+#define anz_LEDs			157 //fuer die stripe-git // git-board hat: 278
 
 CRGB leds[NUMMATRIX];
 //=============================================
@@ -126,6 +100,11 @@ const static int outlinePath8[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 1
 const static int outlinePath9[] = { 82, 83, 84, 85, 86, 96, 97, 106, 107, 116, 117, 126, 166, 167, 168, 169, 170, 157, 156, 147, 146, 137, 136, 127 };
 
 const static boolean DEBUG = false;
+
+//--- boolean LEDGITBOARD -> für board oder für lichstreifen komilieren?
+// false: es wird für die LED-STRIPE-Git kompiliert
+// true: es wird für die LED-BOARD-Git kompiliert
+const static boolean LEDGITBOARD = false; 
 
 byte songID = 0; // 0 -> default loop
  
@@ -724,9 +703,10 @@ void display_panOrBounceBitmap(uint8_t bitmapSize) {
 }
 
 
-//====================================================== war frueher mal in LEDMatrix.h
- //========== Andres remapping function =================
- //======================================================
+
+//============================================================================= war frueher mal in LEDMatrix.h
+ //========== Andres remapping function für das LED-GIT-BOARD =================
+ //============================================================================
 const int MISSING_LED = 300;
 uint16_t myRemapFn(uint16_t x, uint16_t y) {
 
@@ -1130,6 +1110,413 @@ uint16_t myRemapFn(uint16_t x, uint16_t y) {
 //==========================
 
 
+
+//============================================================================= war frueher mal in LEDMatrix.h
+ //========== Andres remapping function für das LED-GIT-BOARD =================
+ //============================================================================
+// const int MISSING_LED = 300;
+// uint16_t myRemapFn(uint16_t x, uint16_t y) {
+
+//     switch (y) {
+//     case 0:
+//         switch (x) {
+//         case 4: return 2;
+//         case 5: return 1;
+//         case 6: return 0;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 1:
+//         switch (x) {
+//         case 2: return 3;
+//         case 3: return 4;
+//         case 4: return 5;
+//         case 5: return 6;
+//         case 6: return 7;
+//         case 7: return 8;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 2:
+//         switch (x) {
+//         case 1: return 16;
+//         case 2: return 15;
+//         case 3: return 14;
+//         case 4: return 13;
+//         case 5: return 12;
+//         case 6: return 11;
+//         case 7: return 10;
+//         case 8: return 9;
+//         case 16: return 26;
+//         case 17: return 27;
+//         case 18: return 28;
+//         case 19: return 29;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 3:
+//         switch (x) {
+//         case 1: return 17;
+//         case 2: return 18;
+//         case 3: return 19;
+//         case 4: return 20;
+//         case 5: return 21;
+//         case 6: return 22;
+//         case 7: return 23;
+//         case 8: return 24;
+//         case 9: return 25;
+//         case 15: return 36;
+//         case 16: return 35;
+//         case 17: return 34;
+//         case 18: return 33;
+//         case 19: return 32;
+//         case 20: return 31;
+//         case 21: return 30;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 4:
+//         switch (x) {
+//         case 0: return 56;
+//         case 1: return 55;
+//         case 2: return 54;
+//         case 3: return 53;
+//         case 4: return 52;
+//         case 5: return 51;
+//         case 6: return 50;
+//         case 7: return 49;
+//         case 8: return 48;
+//         case 9: return 47;
+//         case 10: return 46;
+//         case 11: return 45;
+//         case 12: return 44;
+//         case 13: return 43;
+//         case 14: return 42;
+//         case 15: return 41;
+//         case 16: return 40;
+//         case 17: return 39;
+//         case 18: return 38;
+//         case 19: return 37;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 5:
+//         switch (x) {
+//         case 0: return 57;
+//         case 1: return 58;
+//         case 2: return 59;
+//         case 3: return 60;
+//         case 4: return 61;
+//         case 5: return 62;
+//         case 6: return 63;
+//         case 7: return 64;
+//         case 8: return 65;
+//         case 9: return 66;
+//         case 10: return 67;
+//         case 11: return 68;
+//         case 12: return 69;
+//         case 13: return 70;
+//         case 14: return 71;
+//         case 15: return 72;
+//         case 16: return 73;
+//         case 17: return 74;
+//         case 18: return 75;
+//         case 19: return 76;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 6:
+//         switch (x) {
+//         case 0: return 91;
+//         case 1: return 90;
+//         case 2: return 89;
+//         case 3: return 88;
+//         case 4: return 87;
+//         case 5: return 86;
+//         case 6: return 85;
+//         case 7: return 84;
+//         case 8: return 83;
+//         case 9: return 82;
+//         case 10: return 81;
+//         case 11: return 80;
+//         case 12: return 79;
+//         case 13: return 78;
+//         case 14: return 77;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 7:
+//         switch (x) {
+//         case 0: return 92;
+//         case 1: return 93;
+//         case 2: return 94;
+//         case 3: return 95;
+//         case 4: return 96;
+//         case 10: return 127;
+//         case 11: return 128;
+//         case 12: return 129;
+//         case 13: return 130;
+//         case 14: return 131;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 8:
+//         switch (x) {
+//         case 0: return 101;
+//         case 1: return 100;
+//         case 2: return 99;
+//         case 3: return 98;
+//         case 4: return 97;
+//         case 10: return 136;
+//         case 11: return 135;
+//         case 12: return 134;
+//         case 13: return 133;
+//         case 14: return 132;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 9:
+//         switch (x) {
+//         case 0: return 102;
+//         case 1: return 103;
+//         case 2: return 104;
+//         case 3: return 105;
+//         case 4: return 106;
+//         case 10: return 137;
+//         case 11: return 138;
+//         case 12: return 139;
+//         case 13: return 140;
+//         case 14: return 141;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 10:
+//         switch (x) {
+//         case 0: return 111;
+//         case 1: return 110;
+//         case 2: return 109;
+//         case 3: return 108;
+//         case 4: return 107;
+//         case 10: return 146;
+//         case 11: return 145;
+//         case 12: return 144;
+//         case 13: return 143;
+//         case 14: return 142;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 11:
+//         switch (x) {
+//         case 0: return 112;
+//         case 1: return 113;
+//         case 2: return 114;
+//         case 3: return 115;
+//         case 4: return 116;
+//         case 10: return 147;
+//         case 11: return 148;
+//         case 12: return 149;
+//         case 13: return 150;
+//         case 14: return 151;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 12:
+//         switch (x) {
+//         case 0: return 121;
+//         case 1: return 120;
+//         case 2: return 119;
+//         case 3: return 118;
+//         case 4: return 117;
+//         case 10: return 156;
+//         case 11: return 155;
+//         case 12: return 154;
+//         case 13: return 153;
+//         case 14: return 152;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 13:
+//         switch (x) {
+//         case 0: return 122;
+//         case 1: return 123;
+//         case 2: return 124;
+//         case 3: return 125;
+//         case 4: return 126;
+//         case 10: return 157;
+//         case 11: return 158;
+//         case 12: return 159;
+//         case 13: return 160;
+//         case 14: return 161;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 14:
+//         switch (x) {
+//         case 1: return 162;
+//         case 2: return 163;
+//         case 3: return 164;
+//         case 4: return 165;
+//         case 5: return 166;
+//         case 6: return 167;
+//         case 7: return 168;
+//         case 8: return 169;
+//         case 9: return 170;
+//         case 10: return 171;
+//         case 11: return 172;
+//         case 12: return 173;
+//         case 13: return 174;
+//         case 14: return 175;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 15:
+//         switch (x) {
+//         case 2: return 192;
+//         case 3: return 191;
+//         case 4: return 190;
+//         case 5: return 189;
+//         case 6: return 188;
+//         case 7: return 187;
+//         case 8: return 186;
+//         case 9: return 185;
+//         case 10: return 184;
+//         case 11: return 183;
+//         case 12: return 182;
+//         case 13: return 181;
+//         case 14: return 180;
+//         case 15: return 179;
+//         case 16: return 178;
+//         case 17: return 177;
+//         case 18: return 176;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 16:
+//         switch (x) {
+//         case 1: return 193;
+//         case 2: return 194;
+//         case 3: return 195;
+//         case 4: return 196;
+//         case 5: return 197;
+//         case 6: return 198;
+//         case 7: return 199;
+//         case 8: return 200;
+//         case 9: return 201;
+//         case 10: return 202;
+//         case 11: return 203;
+//         case 12: return 204;
+//         case 13: return 205;
+//         case 14: return 206;
+//         case 15: return 207;
+//         case 16: return 208;
+//         case 17: return 209;
+//         case 18: return 210;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 17:
+//         switch (x) {
+//         case 1: return 229;
+//         case 2: return 228;
+//         case 3: return 227;
+//         case 4: return 226;
+//         case 5: return 225;
+//         case 6: return 224;
+//         case 7: return 223;
+//         case 8: return 222;
+//         case 9: return 221;
+//         case 10: return 220;
+//         case 11: return 219;
+//         case 12: return 218;
+//         case 13: return 217;
+//         case 14: return 216;
+//         case 15: return 215;
+//         case 16: return 214;
+//         case 17: return 213;
+//         case 18: return 212;
+//         case 19: return 211;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 18:
+//         switch (x) {
+//         case 1: return 230;
+//         case 2: return 231;
+//         case 3: return 232;
+//         case 4: return 233;
+//         case 5: return 234;
+//         case 6: return 235;
+//         case 7: return 236;
+//         case 8: return 237;
+//         case 9: return 238;
+//         case 10: return 239;
+//         case 11: return 240;
+//         case 12: return 241;
+//         case 13: return 242;
+//         case 14: return 243;
+//         case 15: return 244;
+//         case 16: return 245;
+//         case 17: return 246;
+//         case 18: return 247;
+//         case 19: return 248;
+//         case 20: return 249;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 19:
+//         switch (x) {
+//         case 1: return 262;
+//         case 2: return 261;
+//         case 3: return 260;
+//         case 4: return 259;
+//         case 5: return 258;
+//         case 6: return 257;
+//         case 7: return 256;
+//         case 8: return 255;
+//         case 9: return 254;
+//         case 16: return 253;
+//         case 17: return 252;
+//         case 18: return 251;
+//         case 19: return 250;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 20:
+//         switch (x) {
+//         case 2: return 263;
+//         case 3: return 264;
+//         case 4: return 265;
+//         case 5: return 266;
+//         case 6: return 267;
+//         case 7: return 268;
+//         case 8: return 269;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 21:
+//         switch (x) {
+//         case 3: return 274;
+//         case 4: return 273;
+//         case 5: return 272;
+//         case 6: return 271;
+//         case 7: return 270;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     case 22:
+//         switch (x) {
+//         case 4: return 275;
+//         case 5: return 276;
+//         case 6: return 277;
+//         default: return MISSING_LED;
+//         }
+//         break;
+//     }
+//     return MISSING_LED;	// not neccessary but to avoid error
+//}
+
+
+
 //=====================================================================
 //=========== HELPER FUNCTIONS ========================================
 //=====================================================================
@@ -1247,6 +1634,21 @@ void setDurationAndNextPart(unsigned int durationMillis, byte nextPart) {
 // snake, tetris, pong, pac man, scrolltext -> FastLED GFX zum laufen bekommen!!
 // myRemapping table  von hier aus an die lib übergeben!
 
+//==================================
+// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+void turnOffGitBlindingLEDs() {
+	if (LEDGITBOARD == false) {	// nur ausfuehren, wenn dies für die led-stripe-git kompiliert wurde!
+		for (int i = 50; i < 74; i++) {
+			leds[i] = CRGB(0, 0, 0); //BLACK
+		}
+		leds[55] = CRGB::Blue;
+		leds[56] = CRGB::Blue;
+		leds[65] = CRGB::Red;
+		//leds[69] = CRGB::;
+	}
+}
+//===================================
+
 //--- progBlingBlingColoring -----
 int progBlingBlingColoring_rounds = 0;
 // leds werden zufällig mit der selben farbe eingeschaltet und einige wenige zufällig ausgeschaltet
@@ -1280,6 +1682,7 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 		// delete 1 pixel sometimes
 		if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
 
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 	}
 
@@ -1296,6 +1699,7 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 		else if (progBlingBlingColoring_rounds == 3) r = getRandomColorValue();
 	}
 }
+
 void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned int msForColorChange) {
 	progBlingBlingColoring(durationMillis, nextPart, msForColorChange, 20);
 }
@@ -1333,6 +1737,8 @@ void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart,
 	for (int i = 0; i < actualAnzahlLEDs; i++) {
 		leds[random(0, anz_LEDs)] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); //LED_RED_HIGH;
 	}
+
+	turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 	FastLED.show();
 }
 
@@ -1368,7 +1774,18 @@ void progFullColors(unsigned int durationMillis, byte nextPart, unsigned int del
 			g = getRandomColorValue();
 			b = getRandomColorValue();
 		}
-		FastLED.showColor(CRGB(r, g, b));
+		
+		if (LEDGITBOARD) {
+			FastLED.showColor(CRGB(r, g, b)); // für LED-Stripe-Git deaktiviert, da hiermit turnOffGitBlindingLEDs() nicht funktioniert
+		}
+		else {
+			// für LED-stripe-git einfach alle LEDs in loop manuell setzen:
+			for (int i = 0; i < anz_LEDs; i++) {
+				leds[i] = CRGB(r, g, b);
+			}
+			turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+			FastLED.show();
+		}
 	}
 }
 
@@ -1473,11 +1890,33 @@ void progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, in
 
 		//--- switch color ---
 		if (progStroboIsBlack) {
-			FastLED.showColor(CRGB(red, green, blue));
+			
+			if (LEDGITBOARD) {
+				FastLED.showColor(CRGB(red, green, blue)); // für LED-Stripe-Git deaktiviert, da hiermit turnOffGitBlindingLEDs() nicht funktioniert
+			}
+			else {
+				// für LED-stripe-git einfach alle LEDs in loop manuell setzen:
+				for (int i = 0; i < anz_LEDs; i++) {
+					leds[i] = CRGB(red, green, blue);
+				}
+				turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+				FastLED.show();
+			}
 			progStroboIsBlack = false;
+
 		}
 		else {
-			FastLED.showColor(CRGB::Black);
+			if (LEDGITBOARD) {
+				FastLED.showColor(CRGB::Black); // für LED-Stripe-Git deaktiviert, da hiermit turnOffGitBlindingLEDs() nicht funktioniert
+			}
+			else {
+				// für LED-stripe-git einfach alle LEDs in loop manuell setzen:
+				for (int i = 0; i < anz_LEDs; i++) {
+					leds[i] = CRGB(0, 0, 0);
+				}
+				turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+				FastLED.show();
+			}
 			progStroboIsBlack = true;
 		}
 	}
@@ -1521,6 +1960,8 @@ void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int 
 				matrix->drawLine(zaehler - 1, 0, zaehler - 1, MATRIX_HEIGHT, LED_RED_HIGH);
 				matrix->drawLine(zaehler - 2, 0, zaehler - 2, MATRIX_HEIGHT, CRGB::White);
 			}
+
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 	}
 }
@@ -1572,6 +2013,7 @@ void progStern(unsigned int durationMillis, unsigned int msForColorChange, unsig
 		matrix->drawLine(zaehler, 22, 22 - zaehler, 0, col1);
 		matrix->drawLine(zaehler - 1, 22, 21 - zaehler, 0, col2);
 
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 	}
 }
@@ -1627,6 +2069,8 @@ void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForC
 		}
 
 		matrix->fillCircle(random(0, 21), random(0, 22), random(3, 10), col1);
+
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 	}
 }
@@ -1666,6 +2110,8 @@ void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int ms
 		matrix->drawLine(x1 - 1, 0, x2 - 1, 22, col1);
 		matrix->drawLine(x1, 0, x2, 22, col1);
 		matrix->drawLine(x1 + 1, 0, x2 + 1, 22, col1);
+
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 	}
 }
@@ -1753,6 +2199,7 @@ void progMovingLines(unsigned int durationMillis, byte nextPart, unsigned int re
 				break;
 		}
 
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 	}
 }
@@ -1849,6 +2296,8 @@ void progOutline(unsigned int durationMillis, byte nextPart, unsigned int reduce
 				}
 				break;
 			}
+
+			turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 			FastLED.show();
 
 			zaehler++;
@@ -1924,6 +2373,8 @@ void progOutline(unsigned int durationMillis, byte nextPart, unsigned int reduce
 			}
 			break;
 		}
+
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 
 		zaehler--;
@@ -2196,6 +2647,7 @@ void progFadeOut(unsigned int durationMillis, byte nextPart) {
 		// delete 1 pixel sometimes
 		//if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
 
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 	}
 }
@@ -2298,11 +2750,11 @@ void FillLEDsFromPaletteColors(uint8_t colorInd) {
 	//10 weiss/blau/beige fast mit fades (interessante farben)
 	//11 weiss/grün fast mit fades
 
-	uint8_t brightness = 255;
+	uint8_t brightness = 255;	// TODO: Achtung hier wird NICHT die allgemeine CONST für BRIGHTNESS genutzt (ggf. weil dann zu dunkel!?)
 
 	for (int i = 0; i < anz_LEDs; i++) {
 		leds[i] = ColorFromPalette(currentPalette, colorInd, brightness, currentBlending);
-		colorInd += 3;
+		colorInd += 3;	//3; / je hoeher dieser wert desto kuerzer sind die farbabschnitte (beeinflusst die subjektive geschwindigkeit)
 	}
 }
 void progPalette(unsigned int durationMillis, uint8_t paletteID, byte nextPart) {
@@ -2384,9 +2836,10 @@ void progPalette(unsigned int durationMillis, uint8_t paletteID, byte nextPart) 
 	//---------------------------------------------------------------------
 
 	zaehler++;
-	if (zaehler > 1000) zaehler = 0;
+	if (zaehler > 1000) zaehler = 0;	// der wert 1000 beinflusst  dei geschwindigkeit
 	FillLEDsFromPaletteColors(zaehler);
 
+	turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
     FastLED.show();
 }
 
@@ -2699,6 +3152,7 @@ void progMatrixHorizontal(unsigned int durationMillis, byte nextPart, unsigned i
 		}
 		//--------------------------
 
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 
 		zaehler++;
@@ -2719,7 +3173,7 @@ void progMatrixHorizontal(unsigned int durationMillis, byte nextPart) {
 void progMatrixVertical(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
 
 	int colorIndex, offset, row, i;
-	const int colorIndexMin = 2;
+	//const int colorIndexMin = 2;
 
 	//--- standard-part um dauer und naechstes programm zu speichern ----
 	if (!nextChangeMillisAlreadyCalculated) {
@@ -2960,6 +3414,7 @@ void progMatrixVertical(unsigned int durationMillis, byte nextPart, unsigned int
 
 		//--------------------------
 
+		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 		FastLED.show();
 
 		zaehler++;
@@ -2991,58 +3446,52 @@ void progGoTo(byte nextPart) {
 //=== progCLED =====================
 uint8_t progCLED_hue;
 int16_t progCLED_counter;
-//void progCLED(unsigned int durationMillis, byte nextPart) {
-//
-//	//--- standard-part um dauer und naechstes programm zu speichern ----
-//	if (!nextChangeMillisAlreadyCalculated) {
-//		FastLED.clear(true);
-//		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
-//		//nextChangeMillis = round((float)durationMillis / (float)2.25f);	// TODO: diesen wert eurieren und anpassen!!
-//		nextChangeMillis = durationMillis;
-//		nextSongPart = nextPart;
-//		nextChangeMillisAlreadyCalculated = true;
-//		//		Serial.println(nextChangeMillis);
-//	}
-//	//---------------------------------------------------------------------
-//
-//	int16_t x, y;
-//	uint8_t h;
-//	FastLED.clear();
-//
-//	h = progCLED_hue;
-//	if (progCLED_counter < 1125) {
-//		// ** Fill LED's with diagonal stripes
-//		for (x = 0; x < (leds.Width() + leds.Height()); ++x)
-//		{
-//			matrix->DrawLine(x - leds.Height(), leds.Height() - 1, x, 0, CHSV(h, 255, 255));
-//			h += 16;
-//		}
-//	}
-//	else {
-//		// ** Fill LED's with horizontal stripes
-//		for (y = 0; y < leds.Height(); ++y)
-//		{
-//			leds.DrawLine(0, y, leds.Width() - 1, y, CHSV(h, 255, 255));
-//			h += 16;
-//		}
-//	}
-//	progCLED_hue += 4;
-//
-//	if (progCLED_counter < 375) leds.HorizontalMirror();
-//	else if (progCLED_counter < 625) leds.VerticalMirror();
-//	else if (progCLED_counter < 875) leds.QuadrantMirror();
-//	else if (progCLED_counter < 1125) leds.QuadrantRotateMirror();
-//	else if (progCLED_counter < 1500) leds.TriangleTopMirror();
-//	else if (progCLED_counter < 1750) leds.TriangleBottomMirror();
-//	else if (progCLED_counter < 2000) leds.QuadrantTopTriangleMirror();
-//	else if (progCLED_counter < 2250) leds.QuadrantBottomTriangleMirror();
-//
-//	progCLED_counter++;
-//	if (progCLED_counter >= 2250) progCLED_counter = 0;
-//
-//	FastLED.show();
-//}
-
+// void progCLED(unsigned int durationMillis, byte nextPart) {
+// 	//--- standard-part um dauer und naechstes programm zu speichern ----
+// 	if (!nextChangeMillisAlreadyCalculated) {
+// 		FastLED.clear(true);
+// 		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
+// 		//nextChangeMillis = round((float)durationMillis / (float)2.25f);	// TODO: diesen wert eurieren und anpassen!!
+// 		nextChangeMillis = durationMillis;
+// 		nextSongPart = nextPart;
+// 		nextChangeMillisAlreadyCalculated = true;
+// 		//		Serial.println(nextChangeMillis);
+// 	}
+// 	//---------------------------------------------------------------------
+// 	int16_t x, y;
+// 	uint8_t h;
+// 	FastLED.clear();
+// 	h = progCLED_hue;
+// 	if (progCLED_counter < 1125) {
+// 		// ** Fill LED's with diagonal stripes
+// 		for (x = 0; x < (leds.Width() + leds.Height()); ++x)
+// 		{
+// 			matrix->DrawLine(x - leds.Height(), leds.Height() - 1, x, 0, CHSV(h, 255, 255));
+// 			h += 16;
+// 		}
+// 	}
+// 	else {
+// 		// ** Fill LED's with horizontal stripes
+// 		for (y = 0; y < leds.Height(); ++y)
+// 		{
+// 			leds.DrawLine(0, y, leds.Width() - 1, y, CHSV(h, 255, 255));
+// 			h += 16;
+// 		}
+// 	}
+// 	progCLED_hue += 4;
+// 	if (progCLED_counter < 375) leds.HorizontalMirror();
+// 	else if (progCLED_counter < 625) leds.VerticalMirror();
+// 	else if (progCLED_counter < 875) leds.QuadrantMirror();
+// 	else if (progCLED_counter < 1125) leds.QuadrantRotateMirror();
+// 	else if (progCLED_counter < 1500) leds.TriangleTopMirror();
+// 	else if (progCLED_counter < 1750) leds.TriangleBottomMirror();
+// 	else if (progCLED_counter < 2000) leds.QuadrantTopTriangleMirror();
+// 	else if (progCLED_counter < 2250) leds.QuadrantBottomTriangleMirror();
+// 	progCLED_counter++;
+// 	if (progCLED_counter >= 2250) progCLED_counter = 0;
+// 	turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+// 	FastLED.show();
+// }
 //==========================================================================
 
 //void switchToSongAndPart(byte song, byte part) {
@@ -3218,30 +3667,119 @@ const static char castle_w6[] = { "castle" };
 String wordArrCastle[] = { castle_w1, castle_w2, castle_w3, castle_w4, castle_w5, castle_w6 };
 //==============================================
 
- 
-//void defaultLoop() {
-//	//FastLED.setBrightness(BRIGHTNESS); // zur sicherheit in jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
-//
-//	switch (prog) {
-//
-//	case 0:
-//		//progOutline(500000, 100);
-//		//progMovingLines(50000, 100);
-//		//progWhiteGoingBright(10000000, 100, 2000); // only for ampere testing
-//		//progFullColors(3000047, 100, 10000);
-//		progMatrixScanner(50000, 100);
-//		//progBlingBlingColoring(2000, 100);//3    59,5hz
-//        //progRunningPixel(100000, 100);
-//        //progFastBlingBling(200000, 100); //20s -> 3:13
-//		break;
-//
-//	case 100:
-//		FastLED.clear();
-//		switchToSong(0);	// SongID 0 == DEFAULT loop
-//		break;
-//	}
-//}
 
+
+void defaultLoopTEST()  {
+
+ 	switch (prog) { 
+
+	case 0:
+		
+		if (LEDGITBOARD) {
+			progScrollText("Nerds on Fire", 5000, 90, getRandomColor(), 5);
+		}
+		else {
+			progBlingBlingColoring(50000, 5, 5000);
+		}
+		//progPalette(5000, 10, 5);
+		//progBlingBlingColoring(5000, 5, 5000);
+		//progFastBlingBling(5000, 1, 5, 1, 15, 2000);		 
+		//progFastBlingBling(5000, 1, 5); //20s -> 3:13
+		//progFullColors(5000, 5, 2000);
+		//progWhiteGoingBright(5000, 5, 5000);
+		//progStrobo(5000, 5, 45, 255, 255, 255); // Weisser strobo
+		//progMatrixScanner(5000, 5, 25);
+		//progStern(5000, 900, 5, 15);	
+		//progCircles(5000, 5, 1000, true);
+		//progRandomLines(5000, 5, 500, false);
+		//progMovingLines(5000, 5, 10);
+		//progOutline(5000, 50, 40);
+		// TODO FIXEN //progRunningPixel(5000, 5);
+		//count_pixels();	// TODO FIXEN
+		//progMatrixHorizontal(5000, 5, 70);
+		//progMatrixVertical(5000, 5, 80);
+		//progCLED(5000, 5);	// matrix colors // aktuell nicht gefixt!
+
+		//display_rgbBitmap(5); // cool: 5, 8, 9, 10
+		//progShowROOTS(5000, 1);
+		//progShowText("ROOTS", 5000, 1, 13, getRandomColor(), 1);
+		//progScrollText("Pokerface by Lady Gaga", 5000, 60, getRandomColor(), 1);
+		//progScrollText("Phil", 5000, 30, getRandomColor(), 1);
+		//progPalette(5000, 11, 5);	// paletteID -> 0 - 11	// SCHNELL!
+			//0 rainbow slow
+			//1 rainbow fast (ohne fades)
+			//2 rainbow fast (mit fades)
+			//3 lila/grün Fast mit fades
+			//4 blau/lila/rot/orange mit fades Fast
+			//5 white fast ohne fades
+			//6 white fast mit fades
+			//7 blau/weiss slow mit fades
+			//8 blau/lila/rot/orange mit fades slow
+			//9 weiss/blau/beige fast ohne fades (interessante farben)
+			//10 weiss/blau/beige fast mit fades (interessante farben)
+			//11 weiss/grün fast mit fades
+		//progFadeOut(5000, 20);
+		//progWordArray(wordArrTooCLose2, 10, 570, 5000, getRandomColor(), 5);
+		//progScrollText("Nerds on Fire", 5000, getRandomColor(), 4);
+		//display_panOrBounceBitmap(8);	// 8: smiley panning around
+		//display_bitmap(4, getRandomColor());
+		//display_rgbBitmap(10); // cool: 5, 8, 9, 10
+		break;
+
+	case 5: // TODO: FIXEN am anfang doppelstreifen!?
+		progMatrixHorizontal(5000, 10, 70);
+		break;
+
+	case 10: // TODO: FIXEN: bleibt manchmal einfach stehen?
+		progStern(5000, 15, 15);
+		break;
+
+	case 15: // OK
+		progBlingBlingColoring(5000, 20, 500);
+		break;
+
+	case 20: // OK
+		progMatrixScanner(5000, 25, 25);
+		break;
+
+	case 25: // OK
+		progFullColors(5000, 35, 2000);
+		break;
+
+	case 30:
+		progStrobo(5000, 35, 50, 255, 255, 255);	// Weisser strobo
+		break;
+
+	case 35: // OK
+		progCircles(5000, 40, 1000);
+		break;
+
+	case 40: // OK
+		progFastBlingBling(5000, 5, 45); //20s -> 3:13
+		break;
+
+	case 45: 
+		progOutline(5000, 50);
+		break;
+
+	case 50: 
+		progMovingLines(5000, 55);
+		break;
+
+	case 55:
+		progRandomLines(5000, 60, 500);
+		break;
+	
+	case 60: 
+		progBlingBlingColoring(5000, 100, 7625);
+		break;
+		
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
 
 //#0
 void defaultLoop()  {
@@ -3249,8 +3787,13 @@ void defaultLoop()  {
  	switch (prog) { 
 
 	case 0:
-		progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
-
+		
+		if (LEDGITBOARD) {
+			progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progPalette(19500, 10, 5);
+		}
 		//progBlingBlingColoring(60000, 5, 5000);
 		//progFastBlingBling(60000, 1, 5, 1, 15, 2000);		 
 		//progFastBlingBling(60000, 1, 5); //20s -> 3:13
@@ -3351,183 +3894,6 @@ void defaultLoop()  {
 	}
 }
 //==============================================
-
-//#1 ... TODO: 30.05.2021: TODO: strobe am Ende zerlegen in kleinere Teile!
-void LearnToFly() {
-
-	switch (prog) {
-
-	case 0: //0	text	13675
-		progScrollText("Learn to fly by Foo Fighters", 13675, 75, getRandomColor(), 2);
-		break;
-
-	case 2: //2	intro	7050
-		progStern(7050, 880, 5, 15);
-		//progStern(60000, 900, 5, 15);
-		break;
-
-	case 5: //5	verse	28250
-		progMatrixScanner(28250, 10, 25);
-		break;
-
-	case 10: //10	chorus	24700
-		progFullColors(24700, 15, 440);
-		break;
-
-	case 15: //15	intro 2	14125
-		progStern(14125, 880, 20, 15);
-		break;
-
-	case 20: // 20	verse 2	28225
-		progRandomLines(28225, 25, 440);
-		break;
-
-	case 25: //25	chorus 2	30000
-		progFastBlingBling(30000, 5, 30);
-		break;
-
-	case 30: //30	leise stelle	28250
-		progBlingBlingColoring(28250, 35, 5000);
-		break;
-
-	case 35: //35	steigerung rein	3525
-		progStrobo(3525, 40, 75, 255, 255, 255); // Weisser strobo
-		break;
-
-	case 40: // 40	chorus 3	24700
-		progFullColors(24700, 45, 440);
-		break;
-
-	case 45: //45	chorus 4	21175
-		progFastBlingBling(21175, 5, 50);
-		break;
-
-		// TODO: Strobo zerlegen in kleinere Teile!!!
-	case 50: //50	abschluss chorus	14125
-		progStrobo(14125, 55, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 55: //55	outro	17650
-		progBlingBlingColoring(25000, 100, 5000); // 65535 is max for unsigned int!
-		break;
-
-	case 100:
-		FastLED.clear();
-		switchToSong(0);	// SongID 0 == DEFAULT loop
-		break;
-	}
-}
-
-//#2 ... TODO: optimieren + ende falsch (scrolltext)
-void Castle() {	//TODO: weiter mit letztem chorus ...fastbling eher ans ende
-
-	switch (prog) {
-
-	case 0://0	text_straight for the castle	11075
-		progScrollText("Castle by Halsey", 11075, 100, getRandomColor(), 1);
-		break;
-
-	case 1://1	vorspann	9225
-		progBlingBlingColoring(9225, 5, 3000);
-		break;
-
-	case 5:// 5	intro	22150
-		progCircles(22150, 10, 925);
-		break;
-
-	case 10://10	verse 1	14775
-		progMatrixScanner(14775, 15, 25);
-		break;
-
-	case 15://15	chor 1	16625
-		progBlingBlingColoring(16625, 20, 3000);
-		//progBlack(16615, 20);
-		break;
-
-	case 20://20	im headed straight for the castle	1850
-		progWordArray(wordArrCastle, 6, 325, 1850, getRandomColor(), 25);
-		break;
-
-	case 25://25	chorus 1	12925
-		progCircles(12925, 30, 460);
-		break;
-
-	case 30://30	im headed straight for the castle	1825
-		progStrobo(1825, 35, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 35://35	chorus 1	14775
-		progCircles(14775, 40, 460);
-		break;
-
-	case 40://40	verse 2	29550
-		progMatrixScanner(29550, 45, 25);
-		break;
-
-	case 45://45	chor 2	12925
-		//progBlack(12925, 50);
-		progBlingBlingColoring(12925, 50, 3000);
-		break;
-
-	case 50://50	im headed straight for the castle	1850
-		progWordArray(wordArrCastle, 6, 325, 1850, getRandomColor(), 55);
-		break;
-
-	case 55://55	chorus 2	12900
-		//progCircles(12900, 56, 450);
-		progRandomLines(12900, 56, 460);
-		break;
-
-	case 56://56		1850
-		progStrobo(1850, 58, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 58://58		14775
-		//progCircles(14775, 60, 450);
-		progRandomLines(14775, 60, 460);
-		break;
-
-	case 60://60	bridge	19850
-		progStern(19850, 1845, 65, 15);
-		break;
-
-	case 65://65	git kreischen 1	3700
-		progStrobo(3700, 70, 50, 255, 255, 255); // Weisser strobo
-		break;
-
-	case 70://70	git kreischen 2	6000
-		progStrobo(6000, 75, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 75://75	bridge weiter voc	14750
-		progStern(14750, 925, 80, 15);
-		break;
-
-	case 80://80	schrei	3700
-		//progFastBlingBling(3700, 85);
-		progStrobo(3700, 85, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 85://85	chorus 3	29550
-		progCircles(29550, 90, 460, false);
-		//progCircles(29550, 90, 450);
-		break;
-
-	case 90://90	chorus 4	28600
-		//progOutline(28600, 95);
-		progFastBlingBling(28600, 5, 95);
-		break;
-
-	case 95://95	text_straight for the castle	13850
-		progWordArray(wordArrCastle, 100, 325, 60000, getRandomColor(), 100);
-		break;
-
-	case 100:
-		FastLED.clear();
-		switchToSong(0);	// SongID 0 == DEFAULT loop
-		break;
-	}
-}
 
 //#3 -> 08.06.2021 OK!
 void TooClose() {
@@ -4239,99 +4605,6 @@ void SetFire() {
 	}
 }
 
-//#10 -> ist raus!
-void Chandelier() {
-
-	switch (prog) {
-
-	case 0://Text	15630
-		progScrollText("Chandelier by Sia", 15630, 75, getRandomColor(), 1);
-		break;
-
-	case 1://intro1	8067
-		//progBlingBlingColoring(24202, 5);
-		progPalette(8067, 3, 2);	// paletteID -> 0 - 10
-		break;
-
-	case 2://intro2	8067
-		progPalette(8067, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5, 25);
-		break;
-
-		//case 3://verse	16134
-		//	progPalette(8067, 8, 5);	// paletteID -> 0 - 10
-		//	//progMatrixScanner(24202, 5, 25);
-		//	break;
-
-	case 5:// verse	16134
-		progCircles(16134, 10, 500);
-		break;
-
-	case 10://reggea	16134
-		progMovingLines(16134, 15);
-		break;
-
-	case 15://pre chorus	16134
-		progFullColors(16134, 20, 500);
-		break;
-
-	case 20://chorus	16134
-		progStrobo(16134, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 25://verse 2	16134
-		progCircles(16134, 30, 500);
-		break;
-
-	case 30://reggea	16134
-		//progMovingLines(16134, 35);
-		progPalette(16134, 4, 35);	// paletteID -> 0 - 10
-		break;
-
-	case 35://pre chorus	16134
-		progFullColors(16134, 40, 500);
-		//progCircles(14769, 40, 450);
-		break;
-
-	case 40://chorus	16134
-		progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40, 25);
-		break;
-
-	case 45://pause	8067
-		progMatrixScanner(8050, 50, 25);
-		//progBlack(12923, 50);
-		break;
-
-	case 50://gaga	16134
-		progFastBlingBling(16125, 7, 55);
-		//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
-		break;
-
-	case 55://pre chorus	16134
-		progFullColors(16134, 60, 500);
-		//progRandomLines(16134, 56, 450);
-		break;
-
-	case 60://chorus	12101
-		progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 65://chorus	4034
-		progFastBlingBling(4025, 12, 70);
-		break;
-
-	case 70://ende schwarz
-		progBlack(10000, 100);
-		break;
-
-	case 100:
-		FastLED.clear();
-		switchToSong(0);	// SongID 0 == DEFAULT loop
-		break;
-	}
-}
-
 //#11 -> FERTIG: 02.05.2021 +  6.5.21 -> zeitplan perfektioniert!!!!!!
 void Titanium() {
 
@@ -4425,192 +4698,6 @@ void Titanium() {
 		break;
 
 	case 85://BLACK	126	28571
-		progBlack(10000, 100);
-		break;
-
-	case 100:
-		FastLED.clear();
-		switchToSong(0);	// SongID 0 == DEFAULT loop
-		break;
-	}
-}
-
-//#12 -> is raus!
-void SomeoneYouLoved() {
-
-	switch (prog) {
-
-	case 0://Text	15630
-		progScrollText("Someone you loved by Lewis Capaldi", 15630, 75, getRandomColor(), 1);
-		break;
-
-	case 1://intro1	8067
-		//progBlingBlingColoring(24202, 5);
-		progPalette(8067, 3, 2);	// paletteID -> 0 - 10
-		break;
-
-	case 2://intro2	8067
-		progPalette(8067, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5, 25);
-		break;
-
-		//case 3://verse	16134
-		//	progPalette(8067, 8, 5);	// paletteID -> 0 - 10
-		//	//progMatrixScanner(24202, 5, 25);
-		//	break;
-
-	case 5:// verse	16134
-		progCircles(16134, 10, 500);
-		break;
-
-	case 10://reggea	16134
-		progMovingLines(16134, 15);
-		break;
-
-	case 15://pre chorus	16134
-		progFullColors(16134, 20, 500);
-		break;
-
-	case 20://chorus	16134
-		progStrobo(16134, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 25://verse 2	16134
-		progCircles(16134, 30, 500);
-		break;
-
-	case 30://reggea	16134
-		//progMovingLines(16134, 35);
-		progPalette(16134, 4, 35);	// paletteID -> 0 - 10
-		break;
-
-	case 35://pre chorus	16134
-		progFullColors(16134, 40, 500);
-		//progCircles(14769, 40, 450);
-		break;
-
-	case 40://chorus	16134
-		progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40, 25);
-		break;
-
-	case 45://pause	8067
-		progMatrixScanner(8050, 50, 25);
-		//progBlack(12923, 50);
-		break;
-
-	case 50://gaga	16134
-		progFastBlingBling(16125, 7, 55);
-		//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
-		break;
-
-	case 55://pre chorus	16134
-		progFullColors(16134, 60, 500);
-		//progRandomLines(16134, 56, 450);
-		break;
-
-	case 60://chorus	12101
-		progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 65://chorus	4034
-		progFastBlingBling(4025, 12, 70);
-		break;
-
-	case 70://ende schwarz
-		progBlack(10000, 100);
-		break;
-
-	case 100:
-		FastLED.clear();
-		switchToSong(0);	// SongID 0 == DEFAULT loop
-		break;
-	}
-}
-
-//#13 -> TODO -> ist noch unfertig!!
-void ShouldntStop() {
-
-	switch (prog) {
-
-	case 0://Text	15630
-		progScrollText("Shouldn't stop moving by Nerds on Fire", 15630, 75, getRandomColor(), 1);
-		break;
-
-	case 1://intro1	8067
-		//progBlingBlingColoring(24202, 5);
-		progPalette(8067, 3, 2);	// paletteID -> 0 - 10
-		break;
-
-	case 2://intro2	8067
-		progPalette(8067, 4, 5);	// paletteID -> 0 - 10
-		//progMatrixScanner(24202, 5, 25);
-		break;
-
-		//case 3://verse	16134
-		//	progPalette(8067, 8, 5);	// paletteID -> 0 - 10
-		//	//progMatrixScanner(24202, 5, 25);
-		//	break;
-
-	case 5:// verse	16134
-		progCircles(16134, 10, 500);
-		break;
-
-	case 10://reggea	16134
-		progMovingLines(16134, 15);
-		break;
-
-	case 15://pre chorus	16134
-		progFullColors(16134, 20, 500);
-		break;
-
-	case 20://chorus	16134
-		progStrobo(16134, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 25://verse 2	16134
-		progCircles(16134, 30, 500);
-		break;
-
-	case 30://reggea	16134
-		//progMovingLines(16134, 35);
-		progPalette(16134, 4, 35);	// paletteID -> 0 - 10
-		break;
-
-	case 35://pre chorus	16134
-		progFullColors(16134, 40, 500);
-		//progCircles(14769, 40, 450);
-		break;
-
-	case 40://chorus	16134
-		progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40, 25);
-		break;
-
-	case 45://pause	8067
-		progMatrixScanner(8050, 50, 25);
-		//progBlack(12923, 50);
-		break;
-
-	case 50://gaga	16134
-		progFastBlingBling(16125, 7, 55);
-		//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
-		break;
-
-	case 55://pre chorus	16134
-		progFullColors(16134, 60, 500);
-		//progRandomLines(16134, 56, 450);
-		break;
-
-	case 60://chorus	12101
-		progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 65://chorus	4034
-		progFastBlingBling(4025, 12, 70);
-		break;
-
-	case 70://ende schwarz
 		progBlack(10000, 100);
 		break;
 
@@ -4787,174 +4874,6 @@ void SunAlwaysShinesOnTV() {
 	case 100:
 		FastLED.clear();
 		switchToSong(0);	// SongID 0 == DEFAULT loop 
-		break;
-	}
-}
-
-//#15 -> TODO: Anfang hat Fehler // FERTIG: 05.05.2021 +  6.5.21 -> zeitplan perfektioniert!!!!!!
-void peopleArePeople() {
-
-	switch (prog) {
-
-	case 0: // 0	scrolltext	21500
-		progScrollText("People are people by Depeche Mode", 21500, 90, getRandomColor(), 2);
-		//progBlack(8000, 2);
-		break;
-
-	case 2: // intro	17750	scanner
-		progMatrixScanner(17750, 4, 25);
-		break;
-
-	case 4: // chorus 1	15250
-		progFullColors(15250, 5, 250);
-		break;
-
-	case 5: // bam bam FX	875
-		progStrobo(875, 6, 125, 255, 255, 255);
-		break;
-
-	case 6: // 3er übergang	3125
-		progStern(3125, 1000, 7, 15);
-		break;
-
-	case 7: // bam bam FX	875
-		progStrobo(875, 8, 125, 255, 255, 255);
-		break;
-
-	case 8: // 3er übergang	1875
-		progStern(1875, 1000, 9, 15);
-		break;
-
-	case 9:// verse 1	16000
-		progCircles(16000, 10, 500);
-		//progStrobo(16000, 10, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 10: // i cant understand…	6000
-		progPalette(6000, 7, 12);
-		//progMovingLines(6000, 12);
-		break;
-
-	case 12: // bam bam FX	500
-		progStrobo(500, 14, 125, 255, 255, 255);	// Weisser strobo
-		//progFullColors(15000, 30, 2000);
-		break;
-
-	case 14: // black	500
-		progBlack(500, 16);
-		break;
-
-	case 16: // snarewirbel	1000
-		progCircles(1000, 18, 50); // auch cool
-		//progRandomLines(1000, 18, 50);
-		//progStrobo(1000, 18, 50, 255, 255, 255);
-		break;
-
-	case 18: // chorus 2	15250
-		progFullColors(15250, 20, 250);
-		//progCircles(15250, 20, 500);
-		break;
-
-	case 20: // bam bam FX	750
-		//progStrobo(750, 22, 125, 255, 255, 255);
-		progStrobo(750, 22, 125, getRandomColorValue(), 255, getRandomColorValue());
-		break;
-
-	case 22: // 3er übergang	6000
-		progBlingBlingColoring(28000, 26, 2000);
-		//progOutline(6000, 24);
-		break;
-
-	case 24: // help me understand	22000
-		
-		break;
-
-	case 26: // verse 2	16000
-		progRandomLines(16000, 28, 500);
-		break;
-
-	case 28: // i cant understand…	6000
-		progPalette(6000, 8, 30);
-		//progMatrixHorizontal(6000, 30);
-		//progMovingLines(6000, 30);
-		break;
-
-	case 30: // bam bam FX	500
-		progStrobo(500, 32, 125, getRandomColorValue(), getRandomColorValue(), 255);
-		break;
-
-	case 32: // black	500
-		progBlack(500, 34);
-		break;
-
-	case 34: // snarewirbel	1000
-		progStrobo(1000, 36, 50, 255, 255, 255);
-		break;
-
-	case 36: // chorus 2	16000
-		progStern(16000, 500, 38, 15);
-		break;
-
-	case 38: // übergang	3250
-		progMatrixScanner(3250, 40, 25);
-		break;
-
-	case 40: // bam bam FX	750
-		progStrobo(750, 42, 125, getRandomColorValue(), getRandomColorValue(), 255);
-		break;
-
-	case 42: // i cant understand…	8000
-		//progPalette(3250, 8, 40);
-		progMatrixHorizontal(8000, 44);
-		//progMovingLines(8000, 44);
-		break;
-
-	case 44: // bam bam FX	500
-		progStrobo(500, 46, 125, getRandomColorValue(), getRandomColorValue(), 255);
-		break;
-
-	case 46: // i cant understand…	7500
-		progMatrixHorizontal(7500, 48);
-		//progPalette(7500, 8, 48);
-		//progRandomLines(7500, 48, 500, true);
-		break;
-
-	case 48: // bam bam FX	500
-		progStrobo(500, 50, 125, getRandomColorValue(), getRandomColorValue(), 255);
-		break;
-
-	case 50: // black	500
-		progBlack(500, 52);
-		break;
-
-	case 52: // snarewirbel	1000
-		progCircles(1000, 54, 50); // auch cool
-		//progStrobo(1000, 54, 50, 255, 255, 255);
-		break;
-
-	case 54: // chorus 3	15500
-		progFullColors(15500, 55, 250);
-		break;
-
-	case 55: // bam bam FX	500
-		progStrobo(500, 56, 100, 255, 255, 255);
-		break;
-
-	case 56: // chorus 4	15000
-		progFastBlingBling(15000, 1, 58, 1, 100, 1500);
-		break;
-
-	case 58: // snarewirbel	1000
-		progStrobo(1000, 60, 50, 255, 255, 255);
-		break;
-
-	case 60: // BLACK	10000
-		progBlack(10000, 100);
-		break;
-
-	case 100:
-		FastLED.clear();
-		switchToSong(0);	// SongID 0 == DEFAULT loop
 		break;
 	}
 }
@@ -5596,9 +5515,11 @@ void setup() {
 	//NEOPIXEL	//WS2812B
 	matrix->begin();
 	matrix->setBrightness(BRIGHTNESS);
-	    
     matrix->setTextWrap(false);
-    matrix->setRemapFunction(myRemapFn);	// fuer meine spezifische matrix!
+
+    if (LEDGITBOARD) {
+		matrix->setRemapFunction(myRemapFn);	// muss für das Git-BOARD aktiviert werden!!! (fuer meine spezifische matrix!)
+	}
 
 	//------ Setup Palette
 	currentPalette = RainbowColors_p;
@@ -5608,20 +5529,6 @@ void setup() {
 	switchToSong(0);  // TODO: set back to 0 !!!!
 }
 //====================================================
-
-
-//----- fuer audio in -----------
-// float band[8];
-// void printNumber(float n) {
-//   if (n >= 0.024) {
-//     Serial.print(n, 3);
-//     Serial.print(" ");
-//   } else {
-//     Serial.print("   -  "); // don't print "0.00"
-//   }
-// }
-//-----------------------------
-
 
 void loop() {
 
@@ -5687,13 +5594,13 @@ void loop() {
 
 			switch (songID) {
 			case 0:
-				defaultLoop();
+				defaultLoopTEST(); //defaultLoop();
 				break;
 			case 1:
-				LearnToFly();
+	
 				break;
 			case 2:
-				Castle();
+				
 				break;
 			case 3:
 				TooClose();
@@ -5717,22 +5624,22 @@ void loop() {
 				SetFire();
 				break;
 			case 10:
-				Chandelier();
+				
 				break;
 			case 11:
 				Titanium();
 				break;
 			case 12:
-				SomeoneYouLoved();
+				
 				break;
 			case 13:
-				ShouldntStop();
+				
 				break;
 			case 14:
 				SunAlwaysShinesOnTV();
 				break;
 			case 15:
-				peopleArePeople();
+				
 				break;
 			case 16:
 				enjoyTheSilence();
@@ -5767,53 +5674,4 @@ void loop() {
 		FastLED.show();
 		delay(500);
 	} 
-
-
-//---- fuer audio in -------------------------
-//   if (fft.available()) {
-//     Serial.print("FFT: ");
-//     for (int i = 0; i < 8; i++) { // 0-25  -->  DC to 1.25 kHz
-//       float n = fft.read(i);
-//       //printNumber((1- n)* 1000);
-//       band[0] = fft.read(0);      //0  //0
-//       band[1] = fft.read(1);      //0  //1
-//       band[2] = fft.read(2, 3);   //1  //2
-//       band[3] = fft.read(3, 5);   //2  //3
-//       band[4] = fft.read(4, 6);   //3  //4
-//       band[5] = fft.read(6, 14);  //6  //6
-//       band[6] = fft.read(14, 32); //12 //10
-//       band[7] = fft.read(32, 45); //23 //18
-//       printNumber(band[i]);
-//     }
-//     Serial.println();
-//   }
-//---------------------------------------------
-
-//----- fuer oled-display -------------------
-// if (flag_update_display == true) {
-//   display.clearDisplay(); // clear buffer
-//   for (int r = 0; r < 9; r++)
-//   {
-//     for (int y = 0; y < 8; y++) // fill buffer completely withs chars
-//     {
-//       display.setTextSize(1);
-//       display.setTextColor(1);
-//       display.setCursor(0, (y * 8));
-//       display.print("012345678901234567890");
-//     }
-//     display.setTextSize(1); // erase one line at the time
-//     display.setTextColor(0);
-//     display.setCursor(0, (r * 8));
-//     display.print("012345678901234567890");
-//     display.display();
-//     //delay(200);
-//   }
-//   flag_update_display = false;
-// }
-//------------------------------------------
-
 }
-//====================================================
-
-
-
