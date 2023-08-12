@@ -105,6 +105,11 @@ const static boolean DEBUG = true;
 // false: es wird für die LED-STRIPE-Git kompiliert
 // true: es wird für die LED-BOARD-Git kompiliert
 const static boolean LEDGITBOARD = false; 
+// marker LEDs dienen zum markieren der buende, die fuer den jeweiligen song relevant sind
+byte markerLED1 = 0;
+byte markerLED2 = 0;
+byte markerLED3 = 0;
+byte markerLED4 = 0;
 
 byte songID = 0; // 0 -> default loop
  
@@ -1638,13 +1643,22 @@ void setDurationAndNextPart(unsigned int durationMillis, byte nextPart) {
 // immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 void turnOffGitBlindingLEDs() {
 	if (LEDGITBOARD == false) {	// nur ausfuehren, wenn dies für die led-stripe-git kompiliert wurde!
-		for (int i = 50; i < 74; i++) {
+		
+		//turnOffGitBlindingLEDs
+		for (int i = 50; i < 75; i++) {
 			leds[i] = CRGB(0, 0, 0); //BLACK
 		}
+
+		// turn on special MarkerLEDs for the songs
+		if (markerLED1 > 50 && markerLED1 < 75) leds[markerLED1] = CRGB::Red;
+		if (markerLED2 > 50 && markerLED2 < 75) leds[markerLED2] = CRGB::Red;
+		if (markerLED3 > 50 && markerLED3 < 75) leds[markerLED3] = CRGB::Red;
+		if (markerLED4 > 50 && markerLED4 < 75) leds[markerLED4] = CRGB::Red;
+
+		// turn on generel MarkerLEDs
 		leds[55] = CRGB::Blue;
 		leds[56] = CRGB::Blue;
-		leds[65] = CRGB::Red;
-		//leds[69] = CRGB::;
+		leds[65] = CRGB::Blue;
 	}
 }
 //===================================
@@ -2037,6 +2051,9 @@ void progBlack(unsigned int durationMillis, byte nextPart) {
 		//		Serial.println(nextChangeMillis);
 	}
 	//---------------------------------------------------------------------
+
+	turnOffGitBlindingLEDs();
+	FastLED.show();
 
 	// FastLED.clear();	// hier nicht nötig
 	// FastLED.show();
@@ -3523,13 +3540,19 @@ void switchToPart(byte part) {
 }
 
 void switchToSong(byte song) {
-
 	if (DEBUG) {
 		Serial.println("-------------------");
 		Serial.print("switched to song: ");
 		Serial.println(song);
 		Serial.println("-------------------");
 	}
+
+	//---- reset markerLEDs
+	markerLED1 = 0;
+	markerLED2 = 0;
+	markerLED3 = 0;
+	markerLED4 = 0;
+
 	//--- start song ----
 	songID = song;
 	switchToPart(0);
@@ -3835,10 +3858,14 @@ void defaultLoop()  {
 }
 //==============================================
 
-// 1 PhysicalMitTrailer();
+// 1 PhysicalMitTrailer(); // erstellt am 12.08.2023
 void PhysicalMitTrailer() {
-	switch (prog) {
+	
+	markerLED1 = 65;
+	markerLED2 = 69;
+	markerLED3 = 73;
 
+	switch (prog) {
 	case 0:
 		progBlack(3060, 2);
 		// if (LEDGITBOARD) {
@@ -3849,8 +3876,6 @@ void PhysicalMitTrailer() {
 		// }
 		break;
 
-//progCircles(25725, 5, 815); 
-//progRandomLines(45700, 10, 475); 
 	case 2: // FOUR
 		progStrobo(410, 3, 40, 255, 255, 255);
 		break;
@@ -3876,69 +3901,151 @@ void PhysicalMitTrailer() {
 		progStrobo(410, 9, 40, 255, 255, 255);
 		break;
 	
-	case 9: // 
+	case 9: // synth
 		progPalette(12650, 6, 10);
 		break;
-	case 10: // 
+	case 10: // Ladies and …
 		progPalette(13060, 0, 12);
 		break;
-	case 12: // 
+	case 12: // we have main engine start
 		progPalette(16330, 2, 15);
 		break;
 
-	case 15: //
-		progCircles(13060, 20, 815); 
+	case 15: // mit hihat
+		progCircles(13060, 20, 1635); 
 		break;
 
-	case 20: // 
-		progRandomLines(6530, 22, 410);
+	case 20: // "the" "nerds" …
+		progRandomLines(6530, 22, 815);
 		break;
 
-	case 22: //
-		progCircles(5715, 25, 205); 
+	case 22: // "on" Fire"
+		progCircles(5715, 25, 410); 
 		break;
 
-	case 25: // 
+	case 25: // get ready
 		progStrobo(815, 30, 40, 255, 255, 255);
 		break;
 
-	case 30: // 
-		progStern(26125, 1635, 35, 15);	
+	case 30: // verse 1
+		progFullColors(26125, 35, 410);
+		//progStern(26125, 1635, 35, 15);	
 		break;
 
-	case 35: // 
+	case 35: // who needs to go to sleep
 		progBlack(2445, 40);
 		break;
 
-	case 40: // 
+	case 40: // strobe auf synth auftakt
 		progStrobo(820, 45, 75, 255, 255, 255); 
-		//progFullColors(15225, 45, 950);		// 15238
 		break;
 
-
-//TODO weiter ab hier
-
-
-	case 45: // 45	halftime	7625
-		progPalette(12650, 6, 50);
-		//progFastBlingBling(17625, 5, 50);		// 395
+	case 45: // Chorus 1 (2140)
+		progStern(24490, 1635, 50, 15);	
+		//progFullColors(24490, 50, 410);
 		break;
 
-	case 50: // 50	chorus weiter	7625
-		progFullColors(7625, 55, 475);		// 7619
+	case 50: // lets get physical
+		progStrobo(1630, 55, 75, 255, 255, 255); 
 		break;
 
-	case 55: // 55	hardcore 2	7600
-		progStrobo(7600, 60, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); // 5861
+	case 55: // drumfill
+		progPalette(1635, 6, 60);
 		break;
 
-	case 60: // 60	outro	17150
-		progBlingBlingColoring(17150, 65, 7625); // 65535 is max for unsigned int!
+	case 60: // snarewirbel
+		progStrobo(1630, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
 		break;
 
-	case 65: // 60	outro	17150
-		progBlack(10000, 100);
+	case 65: // verse 2
+		progBlingBlingColoring(24490, 70, 7625);
 		break;
+
+	case 70: // who needs to go to sleep
+		progBlack(1635, 75);
+		break;
+
+	case 75: // Chorus 2 (2174)
+		progPalette(24490, 9, 80);
+		break;
+
+	case 80: // lets get physical
+		progStrobo(1630, 82, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+		break;
+
+	case 82: // hold on 1
+		progFastBlingBling(13060, 2, 84);
+		break;
+
+	case 84: // hold on 2
+		progFastBlingBling(11430, 6, 86);
+		break;
+
+	case 86: // lets get physical
+		progStrobo(1635, 88, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+		break;
+
+	case 88: // SOLO VOC
+		progPalette(11425, 0, 90);
+		//progPalette(11425, 6, 90);
+		break;
+
+	case 90: // lets get physical
+		progStrobo(1635, 92, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+		break;
+
+	case 92: // chorus 3
+		progStern(11430, 1635, 94, 15);	
+		//progFullColors(11430, 94, 410);
+		break;
+
+	case 94: // lets get physical
+		progStrobo(1630, 96, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+		break;
+
+	case 96: // chorus 4
+		progFastBlingBling(11430, 6, 98);
+		break;
+
+	case 98: // lets get physical
+		progStrobo(1630, 100, 75, 255, 255, 255); 
+		break;
+
+	case 100: // FINITO
+		progBlack(6530, 110);
+		break;
+
+	case 110:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
+
+// 2 Physical();
+void Physical() {
+
+	markerLED1 = 72;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 69;
+	//markerLED3 = 59;
+	//markerLED4 = 67;
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Dancing on my own by Robyn", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progPalette(65000, 10, 5);
+		}
+		break;
+	
+	case 5: 
+		progBlingBlingColoring(65000, 100, 7625);
+		break;
+		
+
 
 	case 100:
 		FastLED.clear();
@@ -3947,14 +4054,14 @@ void PhysicalMitTrailer() {
 	}
 }
 
-
-// 2 Physical();
-
 // 3 - 
 
 //08.06.2021 OK!
 void TooClose() {
-	//FastLED.setBrightness(BRIGHTNESS); // zur sicherheit in jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
+
+	markerLED1 = 65;
+	markerLED2 = 69;
+	markerLED3 = 73;
 
 	switch (prog) {
 
@@ -4028,6 +4135,10 @@ void TooClose() {
 
 //#4 -> 08.06.2021: OK….. STOPs könnten noch eingebaut werden
 void Pokerface() {
+
+	markerLED1 = 67;
+	markerLED2 = 71;
+	markerLED3 = 74;
 
 	switch (prog) {
 
@@ -4122,6 +4233,10 @@ void Pokerface() {
 //#5 -> todo: anfang scrolltext kommt ein 2. mal + checken
 void UseSomebody() {
 
+	markerLED1 = 61;
+	markerLED2 = 69;
+	markerLED3 = 73;
+
 	switch (prog) {
 
 	case 0://Text	20435
@@ -4191,6 +4306,11 @@ void UseSomebody() {
 
 //#6 -> ok aber am ende fehlen die texteinblendungen im letzten chorus
 void NoRoots() {
+
+	markerLED1 = 71;
+	markerLED2 = 62;
+	markerLED3 = 69;
+	markerLED4 = 74;
 
 	switch (prog) {
 
@@ -4352,6 +4472,10 @@ void NoRoots() {
 //#7 -> song-scrolltext schneller als sonst! ggf. noch optimieren?
 void Firework() {
 
+	markerLED2 = 63;
+	markerLED3 = 69;
+	markerLED4 = 73;
+
 	switch (prog) {
 
 	case 0://text		7500
@@ -4467,12 +4591,45 @@ void Firework() {
 	}
 }
 
-
 // 8 DancingOnMyOwn();
+void DancingOnMyOwn() {
 
+	markerLED1 = 62;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 70;
+	markerLED3 = 59;
+	//markerLED4 = 67;
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Dancing on my own by Robyn", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progPalette(65000, 10, 5);
+		}
+		break;
+	
+	case 5: 
+		progBlingBlingColoring(65000, 100, 7625);
+		break;
+		
+
+
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
 
 //FERTIG: 01.05.2021
 void Diamonds() {
+
+	// markerLED1 = 71;
+	// markerLED2 = 62;
+	// markerLED3 = 69;
+	// markerLED4 = 74;
 
 	switch (prog) {
 
@@ -4556,6 +4713,11 @@ void Diamonds() {
 
 //#9 -> FERTIG: 02.05.2021
 void SetFire() {
+
+	markerLED1 = 69;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 63;
+	markerLED3 = 72;
+	markerLED4 = 60;
 
 	switch (prog) {
 
@@ -4666,13 +4828,45 @@ void SetFire() {
 	}
 }
 
-
-
 // 10 BloodyMary();
+void BloodyMary() {
 
+	markerLED1 = 63;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 62;
+	markerLED3 = 67;
+	markerLED4 = 70;
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Bloody Mary by Lady Gaga", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progPalette(65000, 10, 5);
+		}
+		break;
+	
+	case 5: 
+		progBlingBlingColoring(65000, 100, 7625);
+		break;
+		
+
+
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
 
 //#11 -> FERTIG: 02.05.2021 +  6.5.21 -> zeitplan perfektioniert!!!!!!
 void Titanium() {
+
+	markerLED1 = 69;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 63;
+	markerLED3 = 70;
+	markerLED4 = 62;
 
 	switch (prog) {
 
@@ -4774,16 +4968,77 @@ void Titanium() {
 	}
 }
 
-
-
 // 12 SuchAshame();
+void SuchAshame() {
 
+	markerLED1 = 70;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 69;
+	markerLED3 = 62;
+	markerLED4 = 67;
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Such A Shame by Talk Talk", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progPalette(65000, 10, 5);
+		}
+		break;
+	
+	case 5: 
+		progBlingBlingColoring(65000, 100, 7625);
+		break;
+		
+
+
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
 
 // 13 InTheDark();
+void InTheDark() {
 
+	markerLED1 = 70;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 67;
+	markerLED3 = 62;
+	markerLED4 = 59;
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("In the dark by Purple Disco Machine", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progPalette(65000, 10, 5);
+		}
+		break;
+	
+	case 5: 
+		progBlingBlingColoring(65000, 100, 7625);
+		break;
+		
+
+
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
 
 //#14 -> FERTIG: 03.05.2021 +  4.5.21 -> zeitplan perfektioniert!!!!!!
 void SunAlwaysShinesOnTV() {
+
+	markerLED1 = 69;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 72;
+	markerLED3 = 67;
+	markerLED4 = 63;
 
 	switch (prog) {
 
@@ -4952,14 +5207,44 @@ void SunAlwaysShinesOnTV() {
 	}
 }
 
-
-
 // 15 Abcdefu();
+void Abcdefu() {
+
+	markerLED1 = 67;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	markerLED2 = 70;
+	markerLED4 = 59;
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Abcdefu by Gayle", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progPalette(65000, 10, 5);
+		}
+		break;
+	
+	case 5: 
+		progBlingBlingColoring(65000, 100, 7625);
+		break;
+		
 
 
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
 
 //#16 -> FERTIG: 6.5.21 -> zeitplan perfektioniert!!!!!!
 void enjoyTheSilence() {
+
+	markerLED1 = 72;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58, D#/G#: 57
+	markerLED2 = 67;
+	markerLED3 = 60;
+	markerLED4 = 57;
 
 	switch (prog) {
 
@@ -5086,6 +5371,11 @@ void enjoyTheSilence() {
 
 //#17 -> TODO!
 void sober() {
+
+	markerLED1 = 67;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58, D#/G#: 57
+	markerLED2 = 62;
+	markerLED3 = 70;
+	markerLED4 = 67;
 
 	switch (prog) {
 
@@ -5288,6 +5578,11 @@ void sober() {
 //#18 -> ok: 5.3.22
 void prisoner() {
 
+	markerLED1 = 67;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58, D#/G#: 57
+	markerLED2 = 70;
+	markerLED3 = 62;
+	markerLED4 = 57;
+
 	switch (prog) {
 
 	case 0: //black	3525
@@ -5402,6 +5697,7 @@ void prisoner() {
 	}
 }
 //==============================================,
+
 
 void TEMPLATE() {
 
@@ -5606,7 +5902,7 @@ void setup() {
 	currentBlending = LINEARBLEND;
 	
 	//-----------------
-	switchToSong(0);  // TODO: set back to 0 !!!!
+	switchToSong(1);  // TODO: set back to 0 !!!!
 }
 //====================================================
 
@@ -5681,7 +5977,7 @@ void loop() {
 				PhysicalMitTrailer();
 				break;
 			case 2:
-				//Physical();
+				Physical();
 				break;
 			case 3:
 				//
@@ -5699,28 +5995,28 @@ void loop() {
 				Firework();
 				break;
 			case 8:
-				//DancingOnMyOwn();
+				DancingOnMyOwn();
 				break;
 			case 9:
 				SetFire();
 				break;
 			case 10:
-				//BloodyMary();
+				BloodyMary();
 				break;
 			case 11:
 				Titanium();
 				break;
 			case 12:
-				//SuchAshame();
+				SuchAshame();
 				break;
 			case 13:
-				//InTheDark();
+				InTheDark();
 				break;
 			case 14:
 				SunAlwaysShinesOnTV();
 				break;
 			case 15:
-				//Abcdefu();
+				Abcdefu();
 				break;
 			case 16:
 				enjoyTheSilence();
