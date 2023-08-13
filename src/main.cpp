@@ -4352,8 +4352,8 @@ void TooClose() {
 	}
 }
 
-//#4 -> 08.06.2021: OK….. STOPs könnten noch eingebaut werden
-void Pokerface() {
+//#4 pokerface FERTIG! am 13.08.2023 gemacht (LED STRIPE_GIT)
+void Pokerface() { //
 
 	markerLED1 = 67;
 	markerLED2 = 71;
@@ -4361,81 +4361,90 @@ void Pokerface() {
 
 	switch (prog) {
 
-	case 0://0	text	11100
-		progScrollText("Pokerface by Lady Gaga", 11100, 75, getRandomColor(), 2);
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Pokerface by Lady Gaga", 11100, 75, getRandomColor(), 2);
+		}
+		else {
+			progBlack(7565, 2);
+			//progPalette(65000, 10, 5);
+		}
 		break;
 
 	case 2: // 4525
-		progPalette(4525, 4, 4);	// paletteID -> 0 - 10
+		progPalette(8065, 4, 4);	// paletteID -> 0 - 10
 		break;
 
-	case 4://1	intro1	8075
-		progPalette(8075, 3, 6);	// paletteID -> 0 - 10
+	case 4://1	intro1	mit bass
+		progPalette(8065, 3, 6);	// paletteID -> 0 - 10
 		break;
 
-	case 6://2	intro2	8075
-		progPalette(8075, 2, 8);	// paletteID -> 0 - 10
+	case 6://2	intro2	mit git
+		progPalette(8070, 2, 8);	// paletteID -> 0 - 10
 		//progMatrixScanner(24202, 5, 25);
 		break;
 
 	case 8:// 5	verse	16125
-		progCircles(16125, 10, 505);
+		progCircles(16135, 10, 505);
 		break;
 
 	case 10://10	reggea	16125
-		setDurationAndNextPart(16125, 15);
+		setDurationAndNextPart(16135, 15);
 		display_rgbBitmap(9);
 		break;
 
 	case 15://15	pre chorus	16150
-		progFullColors(16150, 20, 505);
+		progFullColors(16135, 20, 505);
 		break;
 
 	case 20://20	chorus	16125
-		progStrobo(16125, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		progStern(16135, 1005, 25, 15);	
+		//progStrobo(16125, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 
 	case 25://25	verse 2	16125
-		progCircles(16125, 30, 505);
+		progCircles(16130, 30, 505);
 		break;
 
 	case 30://30	reggea	16150
-		setDurationAndNextPart(16125, 35);
+		setDurationAndNextPart(16135, 35);
 		display_rgbBitmap(9);
 		//progPalette(16150, 4, 35);	// paletteID -> 0 - 10
 		break;
 
 	case 35://35	pre chorus	16125
-		progFullColors(16125, 40, 505);
+		progFullColors(16135, 40, 505);
 		//progCircles(14769, 40, 450);
 		break;
 
 	case 40://40	chorus	16150
-		progStrobo(16150, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progMatrixScanner(29538, 40, 25);
+		progStern(16135, 1005, 45, 15);
+		//progStrobo(16150, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		//progMatrixScanner(16150, 45, 25);
 		break;
 
 	case 45://45	pause	8050
-		progMatrixScanner(8050, 50, 25);
+		progMatrixScanner(8070, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
 	case 50://50	gaga	16150
-		progFastBlingBling(16150, 7, 55);
+		progFastBlingBling(16130, 7, 55);
 		//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
 		break;
 
 	case 55://55	pre chorus	16125
-		progFullColors(16125, 60, 505);
+		progFullColors(16135, 60, 505);
 		//progRandomLines(16134, 56, 450);
 		break;
 
 	case 60://60	chorus	12100
-		progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		progStern(12100, 1005, 65, 15);
+		//progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 
 	case 65://65	chorus	4025
-		progFastBlingBling(4025, 12, 70);
+		progFastBlingBling(4035, 12, 70);
 		break;
 
 	case 70://70	ende schwarz	10000
@@ -4448,6 +4457,112 @@ void Pokerface() {
 		break;
 	}
 }
+
+
+// void Pokerface() {	// alt: backup fuer das gitboard!
+
+// 	markerLED1 = 67;
+// 	markerLED2 = 71;
+// 	markerLED3 = 74;
+
+// 	switch (prog) {
+
+// 	case 0:
+// 		if (LEDGITBOARD) {
+// 			progScrollText("Pokerface by Lady Gaga", 11100, 75, getRandomColor(), 2);
+// 		}
+// 		else {
+// 			progBlack(7565, 2);
+// 			//progPalette(65000, 10, 5);
+// 		}
+// 		break;
+
+// 	case 2: // 4525
+// 		progPalette(4525, 4, 4);	// paletteID -> 0 - 10
+// 		break;
+
+// 	case 4://1	intro1	8075
+// 		progPalette(8075, 3, 6);	// paletteID -> 0 - 10
+// 		break;
+
+// 	case 6://2	intro2	8075
+// 		progPalette(8075, 2, 8);	// paletteID -> 0 - 10
+// 		//progMatrixScanner(24202, 5, 25);
+// 		break;
+
+// 	case 8:// 5	verse	16125
+// 		progCircles(16125, 10, 505);
+// 		break;
+
+// 	case 10://10	reggea	16125
+// 		setDurationAndNextPart(16125, 15);
+// 		display_rgbBitmap(9);
+// 		break;
+
+// 	case 15://15	pre chorus	16150
+// 		progFullColors(16150, 20, 505);
+// 		break;
+
+// 	case 20://20	chorus	16125
+// 		progStern(16125, 1005, 25, 15);	
+// 		//progStrobo(16125, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+// 		break;
+
+// 	case 25://25	verse 2	16125
+// 		progCircles(16125, 30, 505);
+// 		break;
+
+// 	case 30://30	reggea	16150
+// 		setDurationAndNextPart(16125, 35);
+// 		display_rgbBitmap(9);
+// 		//progPalette(16150, 4, 35);	// paletteID -> 0 - 10
+// 		break;
+
+// 	case 35://35	pre chorus	16125
+// 		progFullColors(16125, 40, 505);
+// 		//progCircles(14769, 40, 450);
+// 		break;
+
+// 	case 40://40	chorus	16150
+// 		progStern(16150, 1005, 45, 15);
+// 		//progStrobo(16150, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+// 		//progMatrixScanner(16150, 45, 25);
+// 		break;
+
+// 	case 45://45	pause	8050
+// 		progMatrixScanner(8050, 50, 25);
+// 		//progBlack(12923, 50);
+// 		break;
+
+// 	case 50://50	gaga	16150
+// 		progFastBlingBling(16150, 7, 55);
+// 		//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
+// 		break;
+
+// 	case 55://55	pre chorus	16125
+// 		progFullColors(16125, 60, 505);
+// 		//progRandomLines(16134, 56, 450);
+// 		break;
+
+// 	case 60://60	chorus	12100
+// 		progStern(12100, 1005, 65, 15);
+// 		//progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+// 		break;
+
+// 	case 65://65	chorus	4025
+// 		progFastBlingBling(4025, 12, 70);
+// 		break;
+
+// 	case 70://70	ende schwarz	10000
+// 		progBlack(10000, 100);
+// 		break;
+
+// 	case 100:
+// 		FastLED.clear();
+// 		switchToSong(0);	// SongID 0 == DEFAULT loop
+// 		break;
+// 	}
+// }
 
 //#5 -> todo: anfang scrolltext kommt ein 2. mal + checken
 void UseSomebody() {
@@ -6121,9 +6236,9 @@ void setup() {
 	currentBlending = LINEARBLEND;
 	
 	//-----------------
-	switchToSong(4);  // TODO: set back to 0 !!!!
+	switchToSong(0);  // TODO: set back to 0 !!!!
 
-	switchToPart(10); // only 4 testing!!!
+	//switchToPart(10); // only 4 testing!!!
 }
 //====================================================
 
