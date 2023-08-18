@@ -190,6 +190,8 @@ void turnOffGitBlindingLEDs() {
 			leds[i] = CRGB(0, 0, 0); //BLACK
 		}
 
+		//FastLED.setBrightness(5);	// dim brightness funktioniert nicht ....dimmt leider alle LEDs
+
 		// turn on special MarkerLEDs for the songs
 		if (markerLED1 > 50 && markerLED1 < 75) leds[markerLED1] = CRGB::Red;
 		if (markerLED2 > 50 && markerLED2 < 75) leds[markerLED2] = CRGB::Red;
@@ -1874,7 +1876,8 @@ void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart,
 
 	//---- jetzt LEDs ausgeben
 	FastLED.clear();
-	FastLED.setBrightness(255);
+	FastLED.setBrightness(100); //255	// brightness erhöhen...aber nicht zu hoch!
+
 	//set random pixel to defined color
 	for (int i = 0; i < actualAnzahlLEDs; i++) {
 		leds[random(0, anz_LEDs)] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); //LED_RED_HIGH;
@@ -3924,6 +3927,7 @@ void defaultLoop()  {
 			progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
 		}
 		else {
+			//progFastBlingBling(55000, 5, 5); //20s -> 3:13
 			progPalette(19500, 10, 5);
 		}
 		break;
@@ -3989,9 +3993,10 @@ void defaultLoop()  {
 // 1 PhysicalMitTrailer(); // fertig! am 12.08.2023
 void PhysicalMitTrailer() {
 	
-	markerLED1 = 65;
+	markerLED1 = 65; // E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
 	markerLED2 = 69;
 	markerLED3 = 73;
+	markerLED4 = 60;
 
 	switch (prog) {
 	case 0:
@@ -4156,6 +4161,7 @@ void Physical() {
 	markerLED1 = 65;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
 	markerLED2 = 69;
 	markerLED3 = 73;
+	markerLED4 = 60;
 
  	switch (prog) { 
 
@@ -4357,7 +4363,8 @@ void Pokerface() { //
 
 	markerLED1 = 67;
 	markerLED2 = 71;
-	markerLED3 = 74;
+	markerLED3 = 62;
+	markerLED4 = 59;
 
 	switch (prog) {
 
