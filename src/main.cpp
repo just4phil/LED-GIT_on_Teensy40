@@ -2584,7 +2584,7 @@ void progShowText(String words, unsigned int durationMillis, int pos_x, int pos_
 
 	if (millisCounterTimer >= 100) {	// ersatz für delay()
 		millisCounterTimer = 0;
-		FastLED.setBrightness(5); // TODO: zurueck auf BRIGHTNESS?
+		FastLED.setBrightness(BRIGHTNESS); //5 TODO: zurueck auf BRIGHTNESS?
 
 		//uint8_t size = max(int(mw / 8), 1);
 		matrix->clear();
@@ -2622,7 +2622,7 @@ void progScrollText(String words, unsigned int durationMillis, int delay, int co
 	
 	if (millisCounterTimer >= delay) {	// ersatz für delay()
 		millisCounterTimer = 0;
-		FastLED.setBrightness(5); // TODO: zurueck auf BRIGHTNESS?
+		FastLED.setBrightness(BRIGHTNESS); //5 TODO: zurueck auf BRIGHTNESS?
 
 		//uint8_t size = max(int(mw / 8), 1);
 		matrix->clear();
@@ -2638,7 +2638,14 @@ void progScrollText(String words, unsigned int durationMillis, int delay, int co
 		matrix->setCursor(progScrollTextZaehler, 13);
 		matrix->setTextColor(col);
 		matrix->print(words);
-		matrix->show();
+
+		if (LEDGITBOARD == false) {	// nur ausfuehren, wenn dies für die led-stripe-git kompiliert wurde!
+			turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+			FastLED.show();
+		}
+		else {
+			matrix->show();
+		}
 	}
 }
 
@@ -2657,7 +2664,7 @@ void progShowROOTS(unsigned int durationMillis, byte nextPart) {
 
 	if (millisCounterTimer >= 500) {	// ersatz für delay()
 		millisCounterTimer = 0;
-		FastLED.setBrightness(15); // TODO: zurueck auf BRIGHTNESS?
+		FastLED.setBrightness(BRIGHTNESS); //15 TODO: zurueck auf BRIGHTNESS?
 
 		//uint8_t size = max(int(mw / 8), 1);
 		matrix->clear();
@@ -2688,7 +2695,13 @@ void progShowROOTS(unsigned int durationMillis, byte nextPart) {
 		matrix->setTextColor(getRandomColor());
 		matrix->print("s");
 
-		matrix->show();
+		if (LEDGITBOARD == false) {	// nur ausfuehren, wenn dies für die led-stripe-git kompiliert wurde!
+			turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+			FastLED.show();
+		}
+		else {
+			matrix->show();
+		}
 	}
 }
 
@@ -2715,7 +2728,7 @@ void progWordArray(String words[], int anzWords, int msPerWord, unsigned int dur
 		millisCounterTimer = 0;
 
 		if (zaehlerWortArray <= anzWords) {
-			FastLED.setBrightness(5); // TODO: zurueck auf 155
+			FastLED.setBrightness(BRIGHTNESS); //5 TODO: zurueck auf 155
 
 			matrix->clear();
 			matrix->setTextWrap(false);  // we don't wrap text so it scrolls nicely
@@ -2751,7 +2764,7 @@ void progBlinkText(String words, unsigned int durationMillis, int col, byte next
 
 	//int last_x = -1;
 	//int last_y = -1;
-	FastLED.setBrightness(5); // TODO: zurueck auf 155
+	FastLED.setBrightness(BRIGHTNESS); //5 TODO: zurueck auf 155
 
 	//uint8_t size = max(int(mw / 8), 1);
 	matrix->clear();
