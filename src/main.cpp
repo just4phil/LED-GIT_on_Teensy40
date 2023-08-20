@@ -4383,16 +4383,17 @@ void Pokerface() { //
 
 	case 0:
 		if (LEDGITBOARD) {
-			progScrollText("Pokerface by Lady Gaga", 11100, 75, getRandomColor(), 2);
+			progScrollText("Pokerface by Lady Gaga", 11090, 75, getRandomColor(), 2);
 		}
 		else {
-			progBlack(7565, 2);
-			//progPalette(65000, 10, 5);
+			//progBlack(7565, 2);
+			progMatrixHorizontal(11090, 2);
+			//progPalette(11100, 6, 2);
 		}
 		break;
 
 	case 2: // 4525
-		progPalette(8065, 4, 4);	// paletteID -> 0 - 10
+		progPalette(4540, 4, 4);	// paletteID -> 0 - 10
 		break;
 
 	case 4://1	intro1	mit bass
@@ -4478,15 +4479,11 @@ void Pokerface() { //
 	}
 }
 
-
 // void Pokerface() {	// alt: backup fuer das gitboard!
-
 // 	markerLED1 = 67;
 // 	markerLED2 = 71;
 // 	markerLED3 = 74;
-
 // 	switch (prog) {
-
 // 	case 0:
 // 		if (LEDGITBOARD) {
 // 			progScrollText("Pokerface by Lady Gaga", 11100, 75, getRandomColor(), 2);
@@ -4496,87 +4493,69 @@ void Pokerface() { //
 // 			//progPalette(65000, 10, 5);
 // 		}
 // 		break;
-
 // 	case 2: // 4525
 // 		progPalette(4525, 4, 4);	// paletteID -> 0 - 10
 // 		break;
-
 // 	case 4://1	intro1	8075
 // 		progPalette(8075, 3, 6);	// paletteID -> 0 - 10
 // 		break;
-
 // 	case 6://2	intro2	8075
 // 		progPalette(8075, 2, 8);	// paletteID -> 0 - 10
 // 		//progMatrixScanner(24202, 5, 25);
 // 		break;
-
 // 	case 8:// 5	verse	16125
 // 		progCircles(16125, 10, 505);
 // 		break;
-
 // 	case 10://10	reggea	16125
 // 		setDurationAndNextPart(16125, 15);
 // 		display_rgbBitmap(9);
 // 		break;
-
 // 	case 15://15	pre chorus	16150
 // 		progFullColors(16150, 20, 505);
 // 		break;
-
 // 	case 20://20	chorus	16125
 // 		progStern(16125, 1005, 25, 15);	
 // 		//progStrobo(16125, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 // 		break;
-
 // 	case 25://25	verse 2	16125
 // 		progCircles(16125, 30, 505);
 // 		break;
-
 // 	case 30://30	reggea	16150
 // 		setDurationAndNextPart(16125, 35);
 // 		display_rgbBitmap(9);
 // 		//progPalette(16150, 4, 35);	// paletteID -> 0 - 10
 // 		break;
-
 // 	case 35://35	pre chorus	16125
 // 		progFullColors(16125, 40, 505);
 // 		//progCircles(14769, 40, 450);
 // 		break;
-
 // 	case 40://40	chorus	16150
 // 		progStern(16150, 1005, 45, 15);
 // 		//progStrobo(16150, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 // 		//progMatrixScanner(16150, 45, 25);
 // 		break;
-
 // 	case 45://45	pause	8050
 // 		progMatrixScanner(8050, 50, 25);
 // 		//progBlack(12923, 50);
 // 		break;
-
 // 	case 50://50	gaga	16150
 // 		progFastBlingBling(16150, 7, 55);
 // 		//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
 // 		break;
-
 // 	case 55://55	pre chorus	16125
 // 		progFullColors(16125, 60, 505);
 // 		//progRandomLines(16134, 56, 450);
 // 		break;
-
 // 	case 60://60	chorus	12100
 // 		progStern(12100, 1005, 65, 15);
 // 		//progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 // 		break;
-
 // 	case 65://65	chorus	4025
 // 		progFastBlingBling(4025, 12, 70);
 // 		break;
-
 // 	case 70://70	ende schwarz	10000
 // 		progBlack(10000, 100);
 // 		break;
-
 // 	case 100:
 // 		FastLED.clear();
 // 		switchToSong(0);	// SongID 0 == DEFAULT loop
@@ -4594,7 +4573,13 @@ void UseSomebody() {
 	switch (prog) {
 
 	case 0://Text	20435
-		progScrollText("Use Somebody by Kings of Leon", 20435, 75, getRandomColor(), 1);
+		if (LEDGITBOARD) {
+			progScrollText("Use Somebody by Kings of Leon", 20435, 75, getRandomColor(), 1);
+		}
+		else {
+			progMatrixHorizontal(20435, 1);
+			//progPalette(11100, 6, 2);
+		}		
 		break;
 
 	case 1://intro1		13913
@@ -4669,7 +4654,13 @@ void NoRoots() {
 	switch (prog) {
 
 	case 0://klick		11897
-		progScrollText("No Roots by Alice Merton", 11897, 75, getRandomColor(), 1);
+		if (LEDGITBOARD) {
+			progScrollText("No Roots by Alice Merton", 11897, 75, getRandomColor(), 1);
+		}
+		else {
+			progMatrixHorizontal(11897, 1);
+			//progPalette(11100, 6, 2);
+		}		
 		break;
 
 	case 1://intro1		8276
@@ -4833,7 +4824,13 @@ void Firework() {
 	switch (prog) {
 
 	case 0://text		7500
-		progScrollText("Firework by K.Perry", 7500, 70, getRandomColor(), 5);
+		if (LEDGITBOARD) {
+			progScrollText("Firework by K.Perry", 7500, 70, getRandomColor(), 5);
+		}
+		else {
+			progMatrixHorizontal(7500, 5);
+			//progPalette(11100, 6, 2);
+		}		
 		break;
 
 	case 5:// intro1		15484
@@ -5076,7 +5073,13 @@ void SetFire() {
 	switch (prog) {
 
 	case 0://text	115	14348
-		progScrollText("Set fire to the rain by Adele", 14348, 75, getRandomColor(), 1);
+		if (LEDGITBOARD) {
+			progScrollText("Set fire to the rain by Adele", 14348, 75, getRandomColor(), 1);
+		}
+		else {
+			//progMatrixHorizontal(14065, 4);
+			progPalette(14348, 6, 1);
+		}	
 		break;
 
 	case 1://v1: i let it fall	115	10696
@@ -5224,76 +5227,81 @@ void Titanium() {
 
 	switch (prog) {
 
-	case 0://text	11900
-		progScrollText("Titanium by David Guetta", 11900, 75, getRandomColor(), 5);
+	case 0://text	11900		
+		if (LEDGITBOARD) {
+			progScrollText("Titanium by David Guetta", 11905, 75, getRandomColor(), 5);
+		}
+		else {
+			progPalette(11905, 6, 5);
+		}
 		break;
 
 	case 5:// intro	9050
-		progCircles(9050, 10, 475);
+		progCircles(9045, 10, 475);
 		break;
 
 	case 10://v1: u shout it out	15250
-		progPalette(15250, 6, 15);
+		progPalette(15240, 6, 15);
 		//progMovingLines(15238, 15);
 		break;
 
 	case 15://v1: im criticised	15225
-		progPalette(15225, 3, 20);
+		progPalette(15240, 3, 20);
 		//progFullColors(15238, 20, 500);
 		break;
 
 	case 20://im bulletproof	15250
-		progMatrixScanner(15250, 25, 25);
+		progMatrixScanner(15235, 25, 25);
 		//progStrobo(16134, 25, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 
 	case 25://chorus 1	15225
-		progFullColors(15225, 30, 475);
+		progFullColors(15240, 30, 475);
 		//progCircles(16134, 30, 500);
 		break;
 
 	case 30://bridge	15250
-		progFastBlingBling(15250, 4, 35);
+		progFastBlingBling(15240, 4, 35);
 		//progMovingLines(16134, 35);
 		//progPalette(16134, 4, 35);	// paletteID -> 0 - 10
 		break;
 
 	case 35://v2: cut me down	15225
-		progPalette(15225, 9, 40);
+		progPalette(15235, 9, 40);
 		//progFullColors(16134, 40, 475);
 		//progCircles(14769, 40, 450);
 		break;
 
 	case 40://v2: race your voice	15250
-		progPalette(15250, 3, 45);
+		progPalette(15240, 3, 45);
 		//progStrobo(16134, 45, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		//progMatrixScanner(29538, 40, 25);
 		break;
 
 	case 45://im bulletproof	15225
-		progMatrixScanner(15225, 50, 25);
+		progMatrixScanner(15235, 50, 25);
 		//progBlack(12923, 50);
 		break;
 
 	case 50://chorus 2	15250
-		progFullColors(15250, 55, 475);
+		progFullColors(15240, 55, 475);
 		//progFastBlingBling(16125, 7, 55);
 		//progWordArray(wordArrCastle, 6, 325, 1846, getRandomColor(), 55);
 		break;
 
 	case 55://bridge	14750
-		progFastBlingBling(14750, 8, 60);
+		progFastBlingBling(14760, 8, 60);
 		//progFullColors(16134, 60, 500);
 		//progRandomLines(16134, 56, 450);
 		break;
 
 	case 60://Pause: STONE HEART ..	15725
-		progBlack(15725, 65);
+		progBlack(15715, 65);
 		//progStrobo(12100, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 
 	case 65://chorus 3	30475
-		progFastBlingBling(30475, 1, 75, 1, 100, 2000);
+		progFastBlingBling(30480, 1, 75, 1, 100, 2000);
 		//progFullColors(15238, 70, 250);
 		break;
 
@@ -5302,13 +5310,13 @@ void Titanium() {
 	//	break;
 
 	case 75://bridge triolisch	13325
-		progStrobo(13325, 80, 175, 255, 255, 255);
+		progStrobo(13330, 80, 175, 255, 255, 255);
 		//progFastBlingBling(13333, 12, 80);
 		//progFastBlingBling(13333, 2, 80, 1, 100, 500);
 		break;
 
 	case 80://matrix	7625
-		progMatrixHorizontal(7625, 85);
+		progMatrixHorizontal(7620, 85);
 		break;
 
 	case 85://BLACK	126	28571
@@ -5397,7 +5405,12 @@ void SunAlwaysShinesOnTV() {
 	switch (prog) {
 
 	case 0: // scrolltext	126	16900
-		progScrollText("The sun always shines on TV by a-ha", 16900, 75, getRandomColor(), 2);
+		if (LEDGITBOARD) {
+			progScrollText("The sun always shines on TV by a-ha", 16900, 75, getRandomColor(), 2);
+		}
+		else {
+			progPalette(16900, 6, 2);
+		}
 		break;
 
 	case 2: // BLACK	126	5250
@@ -5561,7 +5574,7 @@ void SunAlwaysShinesOnTV() {
 	}
 }
 
-// 15 Abcdefu();
+// 15 Abcdefu(); TODO
 void Abcdefu() {
 
 	markerLED1 = 67;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
@@ -5575,7 +5588,7 @@ void Abcdefu() {
 			progScrollText("Abcdefu by Gayle", 19500, 90, getRandomColor(), 5);
 		}
 		else {
-			progPalette(65000, 10, 5);
+			progPalette(19500, 6, 5);
 		}
 		break;
 	
@@ -5603,8 +5616,18 @@ void enjoyTheSilence() {
 	switch (prog) {
 
 	case 0://text	21500
-		progScrollText("Enjoy the silence by Depeche Mode", 21500, 90, getRandomColor(), 5);
+		if (LEDGITBOARD) {
+			progScrollText("Enjoy the silence by Depeche Mode", 21500, 90, getRandomColor(), 5);
+		}
+		else {
+			progBlack(21500, 5);
+			//progPalette(21500, 6, 5);
+		}
 		break;
+
+
+//TODO: auftakt mit strobo
+
 
 	case 5://intro1	11675
 		progPalette(11675, 11, 10);	// paletteID -> 0 - 10
@@ -5738,8 +5761,12 @@ void sober() {
 		break;
 
 	case 2: //  text	9575
-		progScrollText("Sober by Pink", 9575, 90, getRandomColor(), 4);
-		//progMatrixScanner(17750, 4, 25);
+		if (LEDGITBOARD) {
+			progScrollText("Sober by Pink", 9575, 90, getRandomColor(), 4);
+		}
+		else {
+			progPalette(9575, 6, 4);
+		}
 		break;
 
 	case 4: // v1a: i dont wanna be	10200
@@ -5940,11 +5967,22 @@ void prisoner() {
 	switch (prog) {
 
 	case 0: //black	3525
-		progBlack(5390, 2);
+		if (LEDGITBOARD) {
+			progBlack(5390, 2);
+		}
+		else {
+			progBlack(7265, 2);
+		}	
 		break;
 
 	case 2: //  text	15925
-		progScrollText("Prisoner by Miley Cyrus ", 14065, 90, getRandomColor(), 4);
+		if (LEDGITBOARD) {
+			progScrollText("Prisoner by Miley Cyrus ", 14065, 90, getRandomColor(), 4);
+		}
+		else {
+			//progMatrixHorizontal(14065, 4);
+			progPalette(15000, 6, 6);
+		}	
 		break;
 
 	case 4: // black	2825

@@ -98,17 +98,19 @@ progScrollText("Nerds on Fire", 30000, 90, getRandomColor(), 5);
 
 
 18.08.2023:
-phys.	ok
-tit.	ok
-fire	ok
-poker	ok
-use		ok exkl. bridge
-roots	ok (fixed: bei text keine marker)
-pris.	ok (fixed: in pause (+ letzter akkord))
-set f.	ok
-abc		ok
-sober	ok
-enjoy 	ok (bis auf höchsten marker)
+TODO: eigentlich alle am anfang sofort auf BLACK
+
+phys.	ok	todo: komplett checken
+tit.	ok	anfang gefixt! -> todo: komplett checken
+fire	ok	anfang gefixt! -> todo: komplett checken
+poker	ok	anfang gefixt! -> todo: komplett checken
+use		ok	anfang gefixt! -> todo: komplett checken
+roots	ok	anfang gefixt! -> todo: komplett checken
+pris.	ok	anfang gefixt! -> todo: komplett checken
+set f.	ok	anfang müsste black sein! -> todo: komplett checken
+sober	ok	anfang gefixt! -> todo: komplett checken
+enjoy 	ok 	todo: anfang black und auftakt mit strobo
+abc		todo	
 bm		todo
 dancing	todo
 itd.	todo
