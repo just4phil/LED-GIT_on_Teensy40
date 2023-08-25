@@ -21,6 +21,11 @@ progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, int red
 	progStrobo(ms, nextPart, 50, 255, 255, 255);	// Weisser strobo
 progMatrixScanner(unsigned int durationMillis, byte nextPart)
 progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int msForChange)
+
+progCircles(16696, 75, 260, false);		// clearEach= false!
+progRandomLines(16696, 70, 260, false);	// clearEach= false!
+
+progStern(15475, 970, 10, 15); 
 progStern(unsigned int durationMillis, byte nextPart)
 progStern(unsigned int durationMillis, int msForColorChange, byte nextPart)
 progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange)
