@@ -5091,113 +5091,103 @@ void BloodyMary() {
 			progScrollText("Bloody Mary by Lady Gaga", 19500, 90, getRandomColor(), 5);
 		}
 		else {
-			progPalette(65000, 10, 5);
+			progBlack(1840, 3);
 		}
 		break;
-	case 3: //bass, 15740
-		progPalette(15740, 8, 10);
+	case 3: //synth intro	16845
+		progRandomLines(16840, 6, 525, true);
 		break;
-	case 6: //somebody, 15735
-		progPalette(15735, 4, 15);
+	case 6: //verse 1	16840
+		progPalette(16830, 4, 9);
 		break;
-	case 9: //git steigt ein, 15740
-		progPalette(15740, 6, 20);
+	case 9: //dance dance	16845
+		//progMovingLines(16845, 12);
+		progStrobo(16840, 12, 525, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 12: //yeah i knwo ist stupid, 7870
-		progPalette(7870, 11, 25);
+	case 12: //chorus 1	16840
+		progStern(16840, 525, 15, 20); 
 		break;
-	case 15: //chorus 1, 15735
-		//progRandomLines(15735, 30, 490, false);
-		progMatrixScanner(15735, 30, 26);
+	case 15: //chorus instrumental	8420
+		progFastBlingBling(8420, 3, 18);
 		break;
-	case 18: //chorus 1b, 7870
-		progStern(7870, 490, 35, 20); 
+	case 18: //FX	2105
+		progPalette(2105, 10, 21);
 		break;
-	case 21: //i keep dancing, 7870
-		progFastBlingBling(7870, 4, 40);
+	case 21: //verse 2	16845
+		progBlingBlingColoring(16830, 24, 3000);
 		break;
-	case 24: //pause vor verse 2a, 3935
-		progBlack(3935, 45);
+	case 24: //dance dance	16840
+		//progMovingLines(16840, 27);
+		progStrobo(16840, 27, 525, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 27: //verse 2b, 11800 -> 19670
-		//progPalette(11800, 11, 50);
-		progBlingBlingColoring(19670, 55, 3000);
+	case 27: //chorus 1	16845
+		progStern(16845, 525, 30, 20); 
 		break;
-	case 30: //chorus 1, 15735
-		progMatrixScanner(15735, 60, 26);
+	case 30: //synth break	8420
+		progRandomLines(8350, 33, 525, true);
 		break;
-	case 33: //chorus 1b, 7870
-		progStern(7870, 490, 65, 20); 
+	case 33: //git vs synth (git)	1050
+		progStrobo(1050, 36, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 36: //i keep dancing, 7870
-		progFastBlingBling(7870, 4, 70);
+	case 36: //git vs synth (synth)	1055
+		progFastBlingBling(1045, 4, 39);
 		break;
-	case 39: //instrumental, 15740
-		progPalette(15740, 9, 75);	// rot weiss blau
+	case 39: //git vs synth (git)	1050
+		progStrobo(1050, 42, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 42: //so far away, 15735
-		//progPalette(15735, 11, 80);
-		progMatrixHorizontal(15735, 80);
+	case 42: //git vs synth (synth)	1055
+		progFastBlingBling(1045, 4, 45);
 		break;
-	case 45: //im in the corner, 5900
-		progBlack(5900, 85);
+	case 45: //git vs synth (git)	1050
+		progStrobo(1050, 48, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 48: //snarewirbel, 1970
-		//progPalette(1970, 11, 90);
-		progStrobo(1970, 90, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 48: //git vs synth (synth)	1055
+		progFastBlingBling(1045, 4, 51);
 		break;
-	case 51: //chorus 1, 7870
-		//progPalette(7870, 11, 95);
-		progStern(7870, 490, 95, 20); 
+	case 51: //git vs synth (git)	1055
+		progStrobo(1055, 54, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;	
-	case 54: //i keep dancing, 7865
-		//progPalette(7865, 11, 100);
-		progFastBlingBling(7865, 4, 100);
+	case 54: //git vs synth (synth)	1050
+		progFastBlingBling(1045, 4, 57);
 		break;
-	case 57: //chorus 1, 15740
-		//progPalette(15740, 11, 105);
-		progStern(15740, 490, 105, 20); 
+	case 57: //git vs synth (git)	1055
+		progStrobo(1055, 60, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 60: //chorus 1b, 7870
-		//progPalette(7870, 11, 110);
-		progFastBlingBling(7870, 4, 110);
+	case 60: //git vs synth (synth)	1050
+		progFastBlingBling(1045, 4, 63);
 		break;
-	case 63: //i keep dancing, 7865
-		//progFastBlingBling(7865, 4, 115);
-		progStern(7865, 490, 115, 20); 
+	case 63: //git vs synth (git)	1055
+		progStrobo(1055, 66, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 66: //i keep dancing, 15740
-		progFastBlingBling(15740, 8, 120);
+	case 66: //git vs synth (synth)	1050
+		progFastBlingBling(1045, 4, 69);
 		break;
-	case 69: //instrumental, 15740
-		progPalette(15740, 11, 125);
+	case 69: //git vs synth (git)	1055
+		progStrobo(1055, 72, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;	
-	case 72: //outro, 11800
-		progBlingBlingColoring(11800, 127, 4000);
+	case 72: //git vs synth (synth)	1050
+		progFastBlingBling(1045, 4, 75);
 		break;	
-	case 75: //chorus 1b, 7870
-		progStern(7870, 490, 65, 20); 
+	case 75: //git vs synth (git)	1055
+		progStrobo(1055, 78, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 78: //i keep dancing, 7870
-		progFastBlingBling(7870, 4, 70);
+	case 78: //git vs synth (synth)	1050
+		progFastBlingBling(1045, 4, 81);
 		break;
-	case 81: //instrumental, 15740
-		progPalette(15740, 9, 75);	// rot weiss blau
+	case 81: //instrumental	16845
+		progPalette(16845, 9, 84);	// rot weiss blau
 		break;
-	case 84: //so far away, 15735
-		//progPalette(15735, 11, 80);
-		progMatrixHorizontal(15735, 80);
+	case 84: //dance dance	16840
+		progStrobo(16840, 87, 525, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 87: //im in the corner, 5900
-		progBlack(5900, 85);
+	case 87: //chorus a	16845
+		progStern(16845, 525, 90, 20); 
 		break;
-	case 90: //snarewirbel, 1970
-		//progPalette(1970, 11, 90);
-		progStrobo(1970, 90, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 90: //chorus b	16840
+		progFastBlingBling(16840, 8, 93);
 		break;
-	case 93: //chorus 1, 7870
-		//progPalette(7870, 11, 95);
-		progStern(7870, 490, 95, 20); 
+	case 93: //outro 	7370
+		progRandomLines(7370, 96, 525, true);
 		break;	
 
 	case 96: //black, 10000
@@ -6442,7 +6432,7 @@ void setup() {
 	currentBlending = LINEARBLEND;
 	
 	//-----------------
-	switchToSong(8);  // TODO: set back to 0 !!!!
+	switchToSong(10);  // TODO: set back to 0 !!!!
 
 	//switchToPart(10); // only 4 testing!!!
 }
