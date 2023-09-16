@@ -81,7 +81,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define NUMPIXELS           MATRIX_SIZE // TODO: ausmerzen
 #define COLOR_ORDER         RGB
 #define CHIPSET             WS2812B
-#define anz_LEDs			157 //fuer die stripe-git // git-board hat: 278
+#define anz_LEDs			193 //fuer die stripe-git // git-board hat: 278
 
 CRGB leds[NUMMATRIX];
 //=============================================
@@ -113,6 +113,7 @@ byte markerLED1 = 0;
 byte markerLED2 = 0;
 byte markerLED3 = 0;
 byte markerLED4 = 0;
+byte markerLED5 = 0;
 
 byte songID = 0; // 0 -> default loop
  
@@ -158,9 +159,9 @@ volatile boolean OneSecondHasPast = false;
 volatile unsigned int LED1_millis = 0;
 volatile unsigned int LED2_millis = 0;
 volatile unsigned int LED3_millis = 0;
-volatile boolean LED1_on = false;
-volatile boolean LED2_on = false;
-volatile boolean LED3_on = false;
+volatile boolean LED1_on = true;
+volatile boolean LED2_on = true;
+volatile boolean LED3_on = true;
 
 unsigned int lastLEDchange = millis();
 int ledState = LOW;             // ledState used to set the LED --TODO: nur test mit interner LED
@@ -181,6 +182,13 @@ PeriodicTimer t1;
 
 
 //==================================
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
 // immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
 void turnOffGitBlindingLEDs() {
 	if (LEDGITBOARD == false) {	// nur ausfuehren, wenn dies für die led-stripe-git kompiliert wurde!
@@ -197,11 +205,12 @@ void turnOffGitBlindingLEDs() {
 		if (markerLED2 > 50 && markerLED2 < 75) leds[markerLED2] = CRGB::Red;
 		if (markerLED3 > 50 && markerLED3 < 75) leds[markerLED3] = CRGB::Red;
 		if (markerLED4 > 50 && markerLED4 < 75) leds[markerLED4] = CRGB::Red;
+		if (markerLED5 > 50 && markerLED5 < 75) leds[markerLED5] = CRGB::Red;
 
 		// turn on generel MarkerLEDs
+		//leds[72] = CRGB::Blue;
 		leds[55] = CRGB::Blue;
-		leds[56] = CRGB::Blue;
-		leds[65] = CRGB::Blue;
+		leds[62] = CRGB::Blue;
 	}
 }
 //===================================
@@ -3696,6 +3705,7 @@ void switchToSong(byte song) {
 	markerLED2 = 0;
 	markerLED3 = 0;
 	markerLED4 = 0;
+	markerLED5 = 0;
 
 	//--- start song ----
 	songID = song;
@@ -3942,6 +3952,7 @@ void defaultLoop()  {
 		else {
 			//progFastBlingBling(55000, 5, 5); //20s -> 3:13
 			progPalette(19500, 10, 5);
+			//progFullColors(15000, 35, 2000);
 		}
 		break;
 
@@ -4006,10 +4017,23 @@ void defaultLoop()  {
 // #1 PhysicalMitTrailer(); // FERTIG! am 12.08.2023
 void PhysicalMitTrailer() {
 	
-	markerLED1 = 65; // E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+	
+	markerLED1 = 62; 
 	markerLED2 = 69;
-	markerLED3 = 73;
-	markerLED4 = 60;
+	markerLED3 = 65;
+	markerLED4 = 59;
+
+	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	// markerLED1 = 65; // A/D
+	// markerLED2 = 69; // G/C
+	// markerLED3 = 73; // 
+	// markerLED4 = 60; // C/F
 
 	switch (prog) {
 	case 0:
@@ -4171,10 +4195,23 @@ void PhysicalMitTrailer() {
 // #2 Physical(); // FERTIG! am 13.08.2023
 void Physical() {
 
-	markerLED1 = 65;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+	
+	markerLED1 = 62; 
 	markerLED2 = 69;
-	markerLED3 = 73;
-	markerLED4 = 60;
+	markerLED3 = 65;
+	markerLED4 = 59;
+
+	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	// markerLED1 = 65; // A/D
+	// markerLED2 = 69; // G/C
+	// markerLED3 = 73; // 
+	// markerLED4 = 60; // C/F
 
  	switch (prog) { 
 
@@ -4297,10 +4334,24 @@ void Physical() {
 //#4 pokerface FERTIG: 25.08.2023
 void Pokerface() { //
 
-	markerLED1 = 67;
-	markerLED2 = 71;
-	markerLED3 = 62;
-	markerLED4 = 59;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	markerLED1 = 63;
+	markerLED2 = 67;
+	markerLED3 = 60;
+	markerLED4 = 58;
+
+	// markerLED1 = 67;
+	// markerLED2 = 71;
+	// markerLED3 = 62;
+	// markerLED4 = 59;
 
 	switch (prog) {
 
@@ -4406,9 +4457,21 @@ void Pokerface() { //
 //#5 -> FERTIG: 25.08.2023
 void UseSomebody() {
 
-	markerLED1 = 61;
-	markerLED2 = 69;
-	markerLED3 = 73;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 59;
+	markerLED2 = 65;
+	markerLED3 = 69;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	// markerLED1 = 61;
+	// markerLED2 = 69;
+	// markerLED3 = 73;
 
 	switch (prog) {
 
@@ -4495,10 +4558,24 @@ void UseSomebody() {
 // ggf. nochmal die restlichen roots optimieren ...die kommen alle 1/8tel zu früh
 void NoRoots() {
 
-	markerLED1 = 71;
-	markerLED2 = 62;
-	markerLED3 = 69;
-	markerLED4 = 74;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 67;
+	markerLED2 = 60;
+	markerLED3 = 65;
+	markerLED4 = 71;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 71;
+	// markerLED2 = 62;
+	// markerLED3 = 69;
+	// markerLED4 = 74;
 
 	switch (prog) {
 
@@ -4691,9 +4768,22 @@ void NoRoots() {
 //#7 -> FERTIG: 25.08.2023
 void Firework() {
 
-	markerLED2 = 63;
-	markerLED3 = 69;
-	markerLED4 = 73;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED2 = 61;
+	markerLED3 = 65;
+	markerLED4 = 69;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED2 = 63;
+	// markerLED3 = 69;
+	// markerLED4 = 73;
 
 	switch (prog) {
 
@@ -4839,9 +4929,22 @@ void Firework() {
 // #8 DancingOnMyOwn();
 void DancingOnMyOwn() {	// FERTIG: 26.08.2023
 
-	markerLED1 = 62;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	markerLED2 = 70;
-	markerLED3 = 59;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 60;	
+	markerLED2 = 67;
+	markerLED3 = 58;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 62;
+	// markerLED2 = 70;
+	// markerLED3 = 59;
 	//markerLED4 = 67;
 
  	switch (prog) { 
@@ -4953,10 +5056,24 @@ void DancingOnMyOwn() {	// FERTIG: 26.08.2023
 //#9 -> FERTIG: 25.08.2023
 void SetFire() {
 
-	markerLED1 = 69;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	markerLED2 = 63;
-	markerLED3 = 72;
-	markerLED4 = 60;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 65;
+	markerLED2 = 61;
+	markerLED3 = 69;
+	markerLED4 = 59;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 69;
+	// markerLED2 = 63;
+	// markerLED3 = 72;
+	// markerLED4 = 60;
 
 	switch (prog) {
 
@@ -5079,10 +5196,25 @@ void SetFire() {
 // #10 BloodyMary();
 void BloodyMary() {
 
-	markerLED1 = 63;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	markerLED2 = 62;
-	markerLED3 = 67;
-	markerLED4 = 70;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 61;
+	markerLED2 = 60;
+	markerLED3 = 63;
+	markerLED4 = 67;
+	markerLED5 = 56;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 63;
+	// markerLED2 = 62;
+	// markerLED3 = 67;
+	// markerLED4 = 70;
 
  	switch (prog) { 
 
@@ -5204,10 +5336,24 @@ void BloodyMary() {
 //#11 -> FERTIG: 25.08.2023
 void Titanium() {
 
-	markerLED1 = 69;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	markerLED2 = 63;
-	markerLED3 = 70;
-	markerLED4 = 62;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 65;	
+	//markerLED2 = 61;
+	markerLED3 = 67;
+	markerLED4 = 60;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 69;	
+	// markerLED2 = 63;
+	// markerLED3 = 70;
+	// markerLED4 = 62;
 
 	switch (prog) {
 
@@ -5317,10 +5463,24 @@ void Titanium() {
 // #12 SuchAshame();
 void SuchAshame() {
 
-	markerLED1 = 70;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	markerLED2 = 69;
-	markerLED3 = 62;
-	markerLED4 = 67;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 67;
+	markerLED2 = 65;
+	markerLED3 = 60;
+	markerLED4 = 63;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 70;
+	// markerLED2 = 69;
+	// markerLED3 = 62;
+	// markerLED4 = 67;
 
  	switch (prog) { 
 
@@ -5349,10 +5509,24 @@ void SuchAshame() {
 // #13 InTheDark();
 void InTheDark() {
 
-	markerLED1 = 70;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	markerLED2 = 67;
-	markerLED3 = 62;
-	markerLED4 = 59;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 67;	
+	markerLED2 = 63;
+	markerLED3 = 58;
+	markerLED4 = 60;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 70;	
+	// markerLED2 = 67;
+	// markerLED3 = 62;
+	// markerLED4 = 59;
 
  	switch (prog) { 
 
@@ -5381,9 +5555,22 @@ void InTheDark() {
 // #15 Abcdefu -> FERTIG: 25.08.2023
 void Abcdefu() {
 
-	markerLED1 = 67;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	markerLED2 = 70;
-	markerLED4 = 59;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 63;
+	markerLED2 = 67;
+	markerLED4 = 58;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 67;
+	// markerLED2 = 70;
+	// markerLED4 = 59;
 
  	switch (prog) { 
 
@@ -5478,10 +5665,24 @@ void Abcdefu() {
 //#16 -> FERTIG: 25.08.2023
 void enjoyTheSilence() {
 
-	markerLED1 = 72;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58, D#/G#: 57
-	markerLED2 = 67;
-	markerLED3 = 60;
-	markerLED4 = 57;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 69;	
+	markerLED2 = 63;
+	markerLED3 = 59;
+	markerLED4 = 56;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 72;	
+	// markerLED2 = 67;
+	// markerLED3 = 60;
+	// markerLED4 = 57;
 
 	switch (prog) {
 
@@ -5619,10 +5820,24 @@ void enjoyTheSilence() {
 //#17 -> FERTIG: 25.08.2023 (ende checken...blieb auf blingColoring -> jetzt besser?)
 void sober() {
 
-	markerLED1 = 67;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58, D#/G#: 57
-	markerLED2 = 62;
-	markerLED3 = 70;
-	markerLED4 = 67;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 63;	
+	markerLED2 = 60;
+	markerLED3 = 67;
+	//markerLED4 = 67;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 67;	
+	// markerLED2 = 62;
+	// markerLED3 = 70;
+	// markerLED4 = 67;
 
 	switch (prog) {
 
@@ -5829,10 +6044,24 @@ void sober() {
 //#18 -> ok: 5.3.22
 void prisoner() {
 
-	markerLED1 = 67;	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58, D#/G#: 57
-	markerLED2 = 70;
-	markerLED3 = 62;
-	markerLED4 = 57;
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 63;	
+	markerLED2 = 67;
+	markerLED3 = 60;
+	markerLED4 = 56;
+
+//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+
+	// markerLED1 = 67;	
+	// markerLED2 = 70;
+	// markerLED3 = 62;
+	// markerLED4 = 57;
 
 	switch (prog) {
 
@@ -6430,9 +6659,10 @@ void setup() {
 	//------ Setup Palette
 	currentPalette = RainbowColors_p;
 	currentBlending = LINEARBLEND;
-	
 	//-----------------
-	switchToSong(10);  // TODO: set back to 0 !!!!
+	digitalWrite(LED3_PIN, HIGH);
+
+	switchToSong(13);  // TODO: set back to 0 !!!!
 
 	//switchToPart(10); // only 4 testing!!!
 }
@@ -6443,24 +6673,24 @@ void loop() {
 	//=== ausserhalb vom fastLED loop ====
 
 	//--- LEDs ggf. wieder ausschalten ---
-	if (LED1_on == true) {
-		if (millis() - LED1_millis >= 500) {
-			digitalWrite(LED1_PIN, LOW);
-			LED1_on = false;
-		}
-	}
+	// if (LED1_on == true) {
+	// 	if (millis() - LED1_millis >= 500) {
+	// 		digitalWrite(LED1_PIN, LOW);
+	// 		LED1_on = false;
+	// 	}
+	// }
 	// if (LED2_on == true) {
-	// 	if (millis() - LED2_millis >= 1) {
+	// 	if (millis() - LED2_millis >= 500) {
 	// 		digitalWrite(LED2_PIN, LOW);
 	// 		LED2_on = false;
 	// 	}
 	// }
-	if (LED3_on == true) {
-		if (millis() - LED3_millis >= 500) {
-			digitalWrite(LED3_PIN, LOW);
-			LED3_on = false;
-		}
-	}
+	// if (LED3_on == true) {
+	// 	if (millis() - LED3_millis >= 500) {
+	// 		digitalWrite(LED3_PIN, LOW);
+	// 		LED3_on = false;
+	// 	}
+	// }
 
 	if (OneSecondHasPast) {
 		secondsForVoltage++;	// count seconds for voltage lipo safer 
