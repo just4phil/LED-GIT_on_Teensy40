@@ -5535,15 +5535,57 @@ void InTheDark() {
 			progScrollText("In the dark by Purple Disco Machine", 19500, 90, getRandomColor(), 5);
 		}
 		else {
-			progPalette(65000, 10, 5);
+			progBlack(7500, 5);
 		}
 		break;
 	
-	case 5: 
-		progBlingBlingColoring(65000, 100, 7625);
+	case 5: //intro+verse 1
+		progBlingBlingColoring(33090, 10, 5000);
 		break;
 		
+	case 10: // bridge 1
+		progFullColors(16550, 12, 515);
+		break;
+	
+	case 12: // chorus 1
+		progStern(16550, 1035, 14, 20); 
+		break;
 
+	case 14: // verse 2
+		progPalette(16540, 4, 16);
+		break;
+
+	case 16: // bridge 2
+		progRandomLines(16550, 18, 515, true);
+		break;
+	
+	case 18: // chorus 2
+		progStern(16550, 1035, 20, 20); 
+		break;		
+
+	case 20: // am i going under
+		progPalette(16550, 4, 22);
+		break;	
+
+	case 22: // bass solo
+		progMatrixHorizontal(16550, 24, 70);
+		break;	
+
+	case 24: // chrosu 3
+		progStern(16550, 515, 26, 20); 
+		break;	
+
+	case 26: // chorus 4
+		progFastBlingBling(16550, 8, 28);
+		break;	
+
+	case 28: // fade out
+		progBlingBlingColoring(16550, 30, 5000);
+		break;	
+
+	case 30: // black
+		progBlack(10000, 100);
+		break;	
 
 	case 100:
 		FastLED.clear();
