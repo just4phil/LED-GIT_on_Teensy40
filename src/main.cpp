@@ -3939,6 +3939,26 @@ void defaultLoopTEST()  {
 		//display_bitmap(4, getRandomColor());
 		//display_rgbBitmap(10); // cool: 5, 8, 9, 10
 
+// progMovingLines(unsigned int durationMillis, byte nextPart)
+// progOutline(unsigned int durationMillis, byte nextPart)
+// progRunningPixel(unsigned int durationMillis, byte nextPart)
+// progMatrixHorizontal(unsigned int durationMillis, byte nextPart)
+// progMatrixVertical(unsigned int durationMillis, byte nextPart)
+
+
+// 0 rainbow slow
+// 1 rainbow fast (ohne fades)
+// 2 rainbow fast (mit fades)
+// 3 lila/grün Fast mit fades
+// 4 blau/lila/rot/orange mit fades Fast
+// 5 white fast ohne fades
+// 6 white fast mit fades
+// 7 blau/weiss slow mit fades
+// 8 blau/lila/rot/orange mit fades slow
+// 9 weiss/blau/beige fast ohne fades (interessante farben)
+// 10 kurze grüne streifen 
+// 11 weiss/grün fast mit fades
+
 
 //#0
 void defaultLoop()  {
@@ -3950,61 +3970,67 @@ void defaultLoop()  {
 			progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 5);
 		}
 		else {
-			//progFastBlingBling(55000, 5, 5); //20s -> 3:13
-			progPalette(19500, 10, 5);
-			//progFullColors(15000, 35, 2000);
+			progBlingBlingColoring(60000, 5, 5000);
+			//progMovingLines(16000, 5);
+			// progOutline(16000, 5);
+			// progRunningPixel(16000, 5); // geht nicht?!
+			// progMatrixHorizontal(16000, 5);
+			// progMatrixVertical(16000, 5);
 		}
 		break;
 
-	case 5: // TODO: FIXEN am anfang doppelstreifen!?
-		progMatrixHorizontal(30000, 10, 70);
+	case 5:
+		progMatrixHorizontal(16000, 10, 80);
 		break;
 
-	case 10: // TODO: FIXEN: bleibt manchmal einfach stehen?
-		progStern(15000, 15, 15);
+	case 10:
+		progStern(16000, 15, 20);
 		break;
 
 	case 15: // OK
-		//progStrobo(5000, 20, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		progBlingBlingColoring(10000, 20, 500);
+		progPalette(16000, 10, 20);
 		//progCLED(10000, 4);	// matrix colors
 		break;
 
 	case 20: // OK
-		progMatrixScanner(15000, 25, 25);
+		progMatrixScanner(16000, 25, 25);
 		break;
 
 	case 25: // OK
-		progFullColors(15000, 35, 2000);
+		progFullColors(16000, 30, 600);
 		break;
 
-	//case 30:
-	//	progStrobo(5000, 35, 50, 255, 255, 255);	// Weisser strobo
-	//	break;
+	case 30:
+		progMovingLines(16000, 35);
+		// progOutline(16000, 35);
+		// progRunningPixel(16000, 35);
+		// progMatrixHorizontal(16000, 35);
+		// progMatrixVertical(16000, 35);
+		break;
 
 	case 35: // OK
-		progCircles(15000, 40, 1000);
+		progCircles(16000, 40, 600, false);
 		break;
 
 	case 40: // OK
-		progFastBlingBling(15000, 5, 45); //20s -> 3:13
+		progFastBlingBling(6000, 8, 45); //20s -> 3:13
 		break;
 
 	case 45: 
-		progOutline(10000, 50);
+		progOutline(6000, 50);
 		break;
 
 	case 50: 
-		progMovingLines(10000, 55);
+		progPalette(16000, 3, 55);
 		break;
 
 	case 55:
-		progRandomLines(15000, 60, 500);
+		progRandomLines(16000, 100, 500, true);
 		break;
 	
-	case 60: 
-		progBlingBlingColoring(60000, 100, 7625);
-		break;
+	// case 60: 
+	// 	progMovingLines(16000, 100);
+	// 	break;
 		
 	case 100:
 		FastLED.clear();
@@ -4913,19 +4939,6 @@ void Firework() {
 	}
 }
 
-// 0 rainbow slow
-// 1 rainbow fast (ohne fades)
-// 2 rainbow fast (mit fades)
-// 3 lila/grün Fast mit fades
-// 4 blau/lila/rot/orange mit fades Fast
-// 5 white fast ohne fades
-// 6 white fast mit fades
-// 7 blau/weiss slow mit fades
-// 8 blau/lila/rot/orange mit fades slow
-// 9 weiss/blau/beige fast ohne fades (interessante farben)
-// 10 kurze grüne streifen 
-// 11 weiss/grün fast mit fades
-
 // #8 DancingOnMyOwn();
 void DancingOnMyOwn() {	// FERTIG: 26.08.2023
 
@@ -5461,7 +5474,7 @@ void Titanium() {
 }
 
 // #12 SuchAshame();
-void SuchAshame() {
+void SuchAshame() { // fertig: 17.09.2023
 
 	// (E/A: 71)
 	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
@@ -5489,15 +5502,97 @@ void SuchAshame() {
 			progScrollText("Such A Shame by Talk Talk", 19500, 90, getRandomColor(), 5);
 		}
 		else {
-			progPalette(65000, 10, 5);
+			progBlack(11630, 5);
 		}
 		break;
 	
-	case 5: 
-		progBlingBlingColoring(65000, 100, 7625);
+	case 5: //intro + verse 1
+		progBlingBlingColoring(22750, 10, 5000);
 		break;
 		
+	case 10: // bridge 1
+		//progFullColors(12410, 12, 515);
+		progMatrixScanner(12410, 12, 30);
+		break;
+	
+	case 12: // chorus 1
+		progStern(24820, 1035, 14, 20); 
+		break;
 
+	case 14: // übergang
+		//progPalette(16540, 4, 16);
+		progFastBlingBling(8270, 8, 16);
+		break;
+
+	case 16: // pause
+		//progRandomLines(16550, 18, 515, true);
+		progBlack(5170, 18);
+		break;
+	
+	case 18: // verse 2
+		progRandomLines(16550, 20, 515, false);
+		break;		
+
+	case 20: // bridge 2
+		progPalette(10340, 6, 22);
+		break;	
+
+	case 22: // pause
+		progStrobo(2060, 24, 65, 255, 255, 255);
+		//progStern(16550, 515, 24, 20); 
+		//progMatrixHorizontal(16550, 24, 70);
+		break;	
+
+	case 24: // chorus 2
+		progStern(24820, 515, 26, 20); 
+		break;	
+
+	case 26: // übergang
+		progFastBlingBling(8270, 8, 28);
+		break;	
+
+	case 28: // pause
+		progBlack(4130, 30);
+		//progBlingBlingColoring(16550, 30, 5000);
+		break;	
+
+	case 30: // strobo
+		progStrobo(1030, 32, 65, 255, 255, 255);
+		break;
+
+	case 32: // solopart 1
+		progPalette(16550, 2, 34);
+		break;	
+
+	case 34: // solopart 2
+		progPalette(14480, 9, 36);
+		break;	
+
+	case 36: // bridge 3
+		progRandomLines(10340, 38, 515, false);
+		break;	
+
+	case 38: // pause
+		progStrobo(2060, 40, 65, 255, 255, 255);
+		//progStern(16550, 515, 24, 20); 
+		//progMatrixHorizontal(16550, 24, 70);
+		break;	
+
+	case 40: // chorus 2
+		progStern(33100, 515, 42, 20); 
+		break;	
+
+	case 42: // übergang
+		progFastBlingBling(8270, 8, 44);
+		break;	
+
+	case 44: // fade out
+		progBlingBlingColoring(6200, 46, 3000);
+		break;	
+
+	case 46: // pause
+		progBlack(10000, 100);
+		break;	
 
 	case 100:
 		FastLED.clear();
@@ -5507,7 +5602,7 @@ void SuchAshame() {
 }
 
 // #13 InTheDark();
-void InTheDark() {
+void InTheDark() {	// fertig: 16.09.2023
 
 	// (E/A: 71)
 	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
@@ -6704,9 +6799,9 @@ void setup() {
 	//-----------------
 	digitalWrite(LED3_PIN, HIGH);
 
-	switchToSong(13);  // TODO: set back to 0 !!!!
+	switchToSong(0);  // TODO: set back to 0 !!!!
 
-	//switchToPart(10); // only 4 testing!!!
+	//switchToPart(0); // only 4 testing!!!
 }
 //====================================================
 
