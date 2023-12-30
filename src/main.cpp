@@ -3895,6 +3895,38 @@ void defaultLoopTEST()  {
 
 
 
+void STARTUP()  {	// 3 minuten BLACK
+
+ 	switch (prog) { 
+
+	case 0:
+		progBlack(60000, 5);
+		break;
+
+	case 5:
+		progBlack(60000, 10);
+		break;
+
+	case 10:
+		progBlack(60000, 15);
+		break;		
+
+	case 15:
+		progBlack(60000, 20);
+		break;
+
+	case 20:
+		progBlack(60000, 100);
+		break;	
+		
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
+
+
 		//progPalette(5000, 10, 5);
 		//progBlingBlingColoring(5000, 5, 5000);
 		//progFastBlingBling(5000, 1, 5, 1, 15, 2000);		 
@@ -4063,65 +4095,55 @@ void PhysicalMitTrailer() {
 
 	switch (prog) {
 	case 0:
-		progBlack(3060, 2);
-		// if (LEDGITBOARD) {
-		// 	progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 2);
-		// }
-		// else {
-		// 	progPalette(19500, 0, 2);
-		// }
-		break;
+		progBlack(38260, 1); // progBlack(3060, 2);
+	break;
 
-	case 2: // FOUR
-		progStrobo(410, 3, 40, 255, 255, 255);
-		break;
-	case 3: // 
-		progBlack(1225, 4);
-		break;
+	case 1:
+		progBlack(38260, 30);
+	break;
 
-	case 4: // THREE
-		progStrobo(410, 5, 40, 255, 255, 255);
-		break;
-	case 5: // 
-		progBlack(1220, 6);
-		break;
-
-	case 6: // TWO
-		progStrobo(410, 7, 40, 255, 255, 255);
-		break;
-	case 7: // 
-		progBlack(1225, 8);
-		break;
-
-	case 8: // ONE
-		progStrobo(410, 9, 40, 255, 255, 255);
-		break;
-	
-	case 9: // synth
-		progPalette(12650, 6, 10);
-		break;
-	case 10: // Ladies and …
-		progPalette(13060, 0, 12);
-		break;
-	case 12: // we have main engine start
-		progPalette(16330, 2, 15);
-		break;
-
-	case 15: // mit hihat
-		progCircles(13060, 20, 1635); 
-		break;
-
-	case 20: // "the" "nerds" …
-		progRandomLines(6530, 22, 815);
-		break;
-
-	case 22: // "on" Fire"
-		progCircles(5715, 25, 410); 
-		break;
-
-	case 25: // get ready
-		progStrobo(815, 30, 40, 255, 255, 255);
-		break;
+	// case 2: // FOUR
+	// 	progStrobo(410, 3, 40, 255, 255, 255);
+	// 	break;
+	// case 3: // 
+	// 	progBlack(1225, 4);
+	// 	break;
+	// case 4: // THREE
+	// 	progStrobo(410, 5, 40, 255, 255, 255);
+	// 	break;
+	// case 5: // 
+	// 	progBlack(1220, 6);
+	// 	break;
+	// case 6: // TWO
+	// 	progStrobo(410, 7, 40, 255, 255, 255);
+	// 	break;
+	// case 7: // 
+	// 	progBlack(1225, 8);
+	// 	break;
+	// case 8: // ONE
+	// 	progStrobo(410, 9, 40, 255, 255, 255);
+	// 	break;
+	// case 9: // synth
+	// 	progPalette(12650, 6, 10);
+	// 	break;
+	// case 10: // Ladies and …
+	// 	progPalette(13060, 0, 12);
+	// 	break;
+	// case 12: // we have main engine start
+	// 	progPalette(16330, 2, 15);
+	// 	break;
+	// case 15: // mit hihat
+	// 	progCircles(13060, 20, 1635); 
+	// 	break;
+	// case 20: // "the" "nerds" …
+	// 	progRandomLines(6530, 22, 815);
+	// 	break;
+	// case 22: // "on" Fire"
+	// 	progCircles(5715, 25, 410); 
+	// 	break;
+	// case 25: // get ready
+	// 	progStrobo(815, 30, 40, 255, 255, 255);
+	// 	break;
 
 	case 30: // verse 1
 		progFullColors(26130, 35, 410);
@@ -4217,6 +4239,184 @@ void PhysicalMitTrailer() {
 		break;
 	}
 }
+
+// // #1 PhysicalMitTrailer(); // FERTIG! am 12.08.2023
+// void PhysicalMitTrailer() {
+	
+// 	// (E/A: 71)
+// 	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+// 	// A/D: 62, 
+// 	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+// 	// E/A: 55, 
+// 	// (F/Bb: 54, F#/B: 53, G/C: 52)
+	
+// 	markerLED1 = 62; 
+// 	markerLED2 = 69;
+// 	markerLED3 = 65;
+// 	markerLED4 = 59;
+
+// 	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+// 	// markerLED1 = 65; // A/D
+// 	// markerLED2 = 69; // G/C
+// 	// markerLED3 = 73; // 
+// 	// markerLED4 = 60; // C/F
+
+// 	switch (prog) {
+// 	case 0:
+// 		progBlack(3060, 2);
+// 		// if (LEDGITBOARD) {
+// 		// 	progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 2);
+// 		// }
+// 		// else {
+// 		// 	progPalette(19500, 0, 2);
+// 		// }
+// 		break;
+
+// 	case 2: // FOUR
+// 		progStrobo(410, 3, 40, 255, 255, 255);
+// 		break;
+// 	case 3: // 
+// 		progBlack(1225, 4);
+// 		break;
+
+// 	case 4: // THREE
+// 		progStrobo(410, 5, 40, 255, 255, 255);
+// 		break;
+// 	case 5: // 
+// 		progBlack(1220, 6);
+// 		break;
+
+// 	case 6: // TWO
+// 		progStrobo(410, 7, 40, 255, 255, 255);
+// 		break;
+// 	case 7: // 
+// 		progBlack(1225, 8);
+// 		break;
+
+// 	case 8: // ONE
+// 		progStrobo(410, 9, 40, 255, 255, 255);
+// 		break;
+	
+// 	case 9: // synth
+// 		progPalette(12650, 6, 10);
+// 		break;
+// 	case 10: // Ladies and …
+// 		progPalette(13060, 0, 12);
+// 		break;
+// 	case 12: // we have main engine start
+// 		progPalette(16330, 2, 15);
+// 		break;
+
+// 	case 15: // mit hihat
+// 		progCircles(13060, 20, 1635); 
+// 		break;
+
+// 	case 20: // "the" "nerds" …
+// 		progRandomLines(6530, 22, 815);
+// 		break;
+
+// 	case 22: // "on" Fire"
+// 		progCircles(5715, 25, 410); 
+// 		break;
+
+// 	case 25: // get ready
+// 		progStrobo(815, 30, 40, 255, 255, 255);
+// 		break;
+
+// 	case 30: // verse 1
+// 		progFullColors(26130, 35, 410);
+// 		//progStern(26130, 1635, 35, 15);	
+// 		break;
+
+// 	case 35: // who needs to go to sleep
+// 		progBlack(2440, 40);
+// 		break;
+
+// 	case 40: // strobe auf synth auftakt
+// 		progStrobo(820, 45, 75, 255, 255, 255); 
+// 		break;
+
+// 	case 45: // Chorus 1 (2140)
+// 		progStern(24490, 1635, 50, 15);	
+// 		//progFullColors(24490, 50, 410);
+// 		break;
+
+// 	case 50: // lets get physical
+// 		progStrobo(1630, 55, 75, 255, 255, 255); 
+// 		break;
+
+// 	case 55: // drumfill
+// 		progPalette(1635, 6, 60);
+// 		break;
+
+// 	case 60: // snarewirbel
+// 		progStrobo(1630, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+// 		break;
+
+// 	case 65: // verse 2
+// 		progBlingBlingColoring(24490, 70, 7625);
+// 		break;
+
+// 	case 70: // who needs to go to sleep
+// 		progBlack(1635, 75);
+// 		break;
+
+// 	case 75: // Chorus 2 (2174)
+// 		progPalette(24490, 9, 80);
+// 		break;
+
+// 	case 80: // lets get physical
+// 		progStrobo(1630, 82, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+// 		break;
+
+// 	case 82: // hold on 1
+// 		progFastBlingBling(13060, 2, 84);
+// 		break;
+
+// 	case 84: // hold on 2
+// 		progFastBlingBling(11430, 6, 86);
+// 		break;
+
+// 	case 86: // lets get physical
+// 		progStrobo(1635, 88, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+// 		break;
+
+// 	case 88: // SOLO VOC
+// 		progPalette(11425, 0, 90);
+// 		//progPalette(11425, 6, 90);
+// 		break;
+
+// 	case 90: // lets get physical
+// 		progStrobo(1635, 92, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+// 		break;
+
+// 	case 92: // chorus 3
+// 		progStern(11430, 1635, 94, 15);	
+// 		//progFullColors(11430, 94, 410);
+// 		break;
+
+// 	case 94: // lets get physical
+// 		progStrobo(1630, 96, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
+// 		break;
+
+// 	case 96: // chorus 4
+// 		progFastBlingBling(11430, 6, 98);
+// 		break;
+
+// 	case 98: // lets get physical
+// 		progStrobo(1630, 100, 75, 255, 255, 255); 
+// 		break;
+
+// 	case 100: // FINITO
+// 		progBlack(6530, 110);
+// 		break;
+
+// 	case 110:
+// 		FastLED.clear();
+// 		switchToSong(0);	// SongID 0 == DEFAULT loop
+// 		break;
+// 	}
+// }
 
 // #2 Physical(); // FERTIG! am 13.08.2023
 void Physical() {
@@ -5689,6 +5889,150 @@ void InTheDark() {	// fertig: 16.09.2023
 	}
 }
 
+// #14 Shivers();
+void Shivers() { // fertig: TODO
+
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 61;
+	markerLED2 = 65;
+	markerLED3 = 59;
+	markerLED4 = 69;
+
+// 0	pause		6590
+// 4	intro		14545
+// 8	verse 1		14545
+// 12	verse 1b	14545
+// 16	i wanna be that guy	14545
+// 20	Chorus 1	14090
+// 24	mini pause	910
+// 28	Chorus 1b	14090
+// 32	verse 2		14545
+// 36	verse 2b	14545
+// 40	i wanna be that guy	14545
+// 44	Chorus 1	12730
+// 48	mini pause	1820
+// 52	Chorus 1b	14545
+// 56	you burn ….	14545
+// 60	you burn …. 2	14545
+// 64	SOLO VOC	3635
+// 68	Chorus 1	10000
+// 72	mini pause	910
+// 76	Chorus 1b	14545
+// 100	FINITO		10000
+
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Shivers by Ed Sheeran", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progBlack(11630, 5);
+		}
+		break;
+	
+	case 5: //intro + verse 1
+		progBlingBlingColoring(22750, 10, 5000);
+		break;
+		
+	case 10: // bridge 1
+		//progFullColors(12410, 12, 515);
+		progMatrixScanner(12410, 12, 30);
+		break;
+	
+	case 12: // chorus 1
+		progStern(24820, 1035, 14, 20); 
+		break;
+
+	case 14: // übergang
+		//progPalette(16540, 4, 16);
+		progFastBlingBling(8270, 8, 16);
+		break;
+
+	case 16: // pause
+		//progRandomLines(16550, 18, 515, true);
+		progBlack(5170, 18);
+		break;
+	
+	case 18: // verse 2
+		progRandomLines(16550, 20, 515, false);
+		break;		
+
+	case 20: // bridge 2
+		progPalette(10340, 6, 22);
+		break;	
+
+	case 22: // pause
+		progStrobo(2060, 24, 65, 255, 255, 255);
+		//progStern(16550, 515, 24, 20); 
+		//progMatrixHorizontal(16550, 24, 70);
+		break;	
+
+	case 24: // chorus 2
+		progStern(24820, 515, 26, 20); 
+		break;	
+
+	case 26: // übergang
+		progFastBlingBling(8270, 8, 28);
+		break;	
+
+	case 28: // pause
+		progBlack(4130, 30);
+		//progBlingBlingColoring(16550, 30, 5000);
+		break;	
+
+	case 30: // strobo
+		progStrobo(1030, 32, 65, 255, 255, 255);
+		break;
+
+	case 32: // solopart 1
+		progPalette(16550, 2, 34);
+		break;	
+
+	case 34: // solopart 2
+		progPalette(14480, 9, 36);
+		break;	
+
+	case 36: // bridge 3
+		progRandomLines(10340, 38, 515, false);
+		break;	
+
+	case 38: // pause
+		progStrobo(2060, 40, 65, 255, 255, 255);
+		//progStern(16550, 515, 24, 20); 
+		//progMatrixHorizontal(16550, 24, 70);
+		break;	
+
+	case 40: // chorus 2
+		progStern(33100, 515, 42, 20); 
+		break;	
+
+	case 42: // übergang
+		progFastBlingBling(8270, 8, 44);
+		break;	
+
+	case 44: // fade out
+		progBlingBlingColoring(6200, 46, 3000);
+		break;	
+
+	case 46: // pause
+		progBlack(10000, 100);
+		break;	
+
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
+
 // #15 Abcdefu -> FERTIG: 25.08.2023
 void Abcdefu() {
 
@@ -6799,7 +7143,7 @@ void setup() {
 	//-----------------
 	digitalWrite(LED3_PIN, HIGH);
 
-	switchToSong(0);  // TODO: set back to 0 !!!!
+	switchToSong(100);  // TODO: set back to 0 !!!! // 100 ist der "startup" mit ein paar minuten BLACK, damit ich das intro in ruhe starten kann
 
 	//switchToPart(0); // only 4 testing!!!
 }
@@ -6912,7 +7256,7 @@ void loop() {
 				InTheDark();
 				break;
 			case 14:
-				//SunAlwaysShinesOnTV();
+				Shivers();
 				break;
 			case 15:
 				Abcdefu();
@@ -6931,6 +7275,10 @@ void loop() {
 				TEMPLATE();
 				break;
 
+			case 100:
+				STARTUP();
+				break;
+
 			default:
 				defaultLoop();
 				break;
@@ -6943,11 +7291,19 @@ void loop() {
 	}
 	else {	// if voltage is too low let LED 0 blink red
 		FastLED.clear();
+			leds[55] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
+			leds[62] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
 		FastLED.show();
+
 		delay(500);
+
 		FastLED.setBrightness(BRIGHTNESS);
-		leds[0] = CRGB::Red;
+			leds[55] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
+			leds[62] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
+		
+		leds[71] = CRGB::Red;	// rote LED blinkt bei low-voltage auf E/A
 		FastLED.show();
+
 		delay(500);
 	} 
 }
