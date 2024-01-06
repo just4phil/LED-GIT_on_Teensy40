@@ -73,7 +73,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define mh				    23	// TODO: ausmerzen
 #define MATRIX_WIDTH        22
 #define MATRIX_HEIGHT       23
-#define BRIGHTNESS			20 //40   // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
+#define BRIGHTNESS			40 //64 //20   // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
 
 #define MATRIX_TYPE         HORIZONTAL_ZIGZAG_MATRIX
 #define MATRIX_SIZE         (MATRIX_WIDTH * MATRIX_HEIGHT)
@@ -1885,7 +1885,7 @@ void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart,
 
 	//---- jetzt LEDs ausgeben
 	FastLED.clear();
-	FastLED.setBrightness(100); //255	// brightness erhöhen...aber nicht zu hoch!
+	FastLED.setBrightness(128); //128 //255	// brightness erhöhen...aber nicht zu hoch!
 
 	//set random pixel to defined color
 	for (int i = 0; i < actualAnzahlLEDs; i++) {
@@ -5931,102 +5931,111 @@ void Shivers() { // fertig: TODO
 
 	case 0:
 		if (LEDGITBOARD) {
-			progScrollText("Shivers by Ed Sheeran", 19500, 90, getRandomColor(), 5);
+			progScrollText("Shivers by Ed Sheeran", 19500, 90, getRandomColor(), 4);
 		}
 		else {
-			progBlack(11630, 5);
+			progBlack(6590, 4);
 		}
 		break;
 	
-	case 5: //intro + verse 1
-		progBlingBlingColoring(22750, 10, 5000);
+	case 4: //intro		14545
+		progBlingBlingColoring(29090, 12, 5000);
 		break;
 		
-	case 10: // bridge 1
-		//progFullColors(12410, 12, 515);
-		progMatrixScanner(12410, 12, 30);
-		break;
+	// case 8: // verse 1		14545
+	// 	progFullColors(14545, 12, 455);
+	// 	//progMatrixScanner(12410, 12, 30);
+	// 	break;
 	
-	case 12: // chorus 1
-		progStern(24820, 1035, 14, 20); 
+	case 12: // verse 1b	14545
+		progRandomLines(14545, 14, 455, false);
+		//progStern(24820, 1035, 14, 20); 
 		break;
 
-	case 14: // übergang
-		//progPalette(16540, 4, 16);
-		progFastBlingBling(8270, 8, 16);
+	case 14: // i wanna be that guy	14545
+		progPalette(14545, 4, 16);
+		//progFastBlingBling(8270, 8, 16);
 		break;
 
-	case 16: // pause
+	case 16: // Chorus 1	14090
 		//progRandomLines(16550, 18, 515, true);
-		progBlack(5170, 18);
+		//progBlack(5170, 18);
+		progStern(14090, 910, 18, 25); 
 		break;
 	
-	case 18: // verse 2
-		progRandomLines(16550, 20, 515, false);
+	case 18: // mini pause	910
+		//progRandomLines(16550, 20, 515, false);
+		progBlack(910, 20);
 		break;		
 
-	case 20: // bridge 2
-		progPalette(10340, 6, 22);
+	case 20: // Chorus 1b	14090
+		//progPalette(10340, 6, 22);
+		progFastBlingBling(14090, 8, 22);
 		break;	
 
-	case 22: // pause
-		progStrobo(2060, 24, 65, 255, 255, 255);
+	case 22: // verse 2		14545
+		progFullColors(14545, 24, 910);
+		//progStrobo(2060, 24, 65, 255, 255, 255);
+		//progFullColors(14545, 24, 455);
 		//progStern(16550, 515, 24, 20); 
 		//progMatrixHorizontal(16550, 24, 70);
 		break;	
 
-	case 24: // chorus 2
-		progStern(24820, 515, 26, 20); 
+	case 24: // verse 2b	14545
+		//progStern(24820, 515, 26, 20); 
+		progMatrixScanner(14545, 26, 31);
 		break;	
 
-	case 26: // übergang
-		progFastBlingBling(8270, 8, 28);
+	case 26: // i wanna be that guy	14545
+		progPalette(14545, 3, 28);
 		break;	
 
-	case 28: // pause
-		progBlack(4130, 30);
+	case 28: // Chorus 1	12730
+		progStern(12730, 455, 30, 25); 
 		//progBlingBlingColoring(16550, 30, 5000);
 		break;	
 
-	case 30: // strobo
-		progStrobo(1030, 32, 65, 255, 255, 255);
+	case 30: // mini pause	1820
+		progStrobo(1820, 32, 65, 255, 255, 255);
 		break;
 
-	case 32: // solopart 1
-		progPalette(16550, 2, 34);
+	case 32: // Chorus 1b	14545
+		progFastBlingBling(14545, 8, 34);
 		break;	
 
-	case 34: // solopart 2
-		progPalette(14480, 9, 36);
+	case 34: // you burn ….	14545
+		progBlack(14545, 36);
 		break;	
 
-	case 36: // bridge 3
-		progRandomLines(10340, 38, 515, false);
+	case 36: // you burn …. 2	14545
+		//progRandomLines(10340, 38, 515, false);
+		progStrobo(14545, 38, 170, 255, 255, 255);
 		break;	
 
-	case 38: // pause
-		progStrobo(2060, 40, 65, 255, 255, 255);
+	case 38: // SOLO VOC	3635
+		progBlack(3635, 40);
 		//progStern(16550, 515, 24, 20); 
 		//progMatrixHorizontal(16550, 24, 70);
 		break;	
 
-	case 40: // chorus 2
-		progStern(33100, 515, 42, 20); 
+	case 40: // Chorus 1	10000
+		progStern(10000, 910, 42, 20); 
 		break;	
 
-	case 42: // übergang
-		progFastBlingBling(8270, 8, 44);
+	case 42: // mini pause	910
+		//progBlack(910, 44);
+		progStrobo(910, 44, 65, 255, 255, 255);
 		break;	
 
-	case 44: // fade out
-		progBlingBlingColoring(6200, 46, 3000);
+	case 44: // Chorus 1b	14545
+		progFastBlingBling(14545, 8, 46);
 		break;	
 
-	case 46: // pause
+	case 46: //FINITO		10000
 		progBlack(10000, 100);
 		break;	
 
-	case 100:
+	case 100: 
 		FastLED.clear();
 		switchToSong(0);	// SongID 0 == DEFAULT loop
 		break;
@@ -6670,6 +6679,129 @@ void prisoner() {
 		break;
 	}
 }
+
+
+
+// #19 Not n Cold();
+void Hotncold() { // fertig: TODO
+
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 67;
+	markerLED2 = 63;
+	markerLED3 = 60;
+	markerLED4 = 55;
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Hot N Cold by Katy Perry", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progBlack(11630, 5);
+		}
+		break;
+	
+	case 5: //intro + verse 1
+		progBlingBlingColoring(22750, 10, 5000);
+		break;
+		
+	case 10: // bridge 1
+		//progFullColors(12410, 12, 515);
+		progMatrixScanner(12410, 12, 30);
+		break;
+	
+	case 12: // chorus 1
+		progStern(24820, 1035, 14, 20); 
+		break;
+
+	case 14: // übergang
+		//progPalette(16540, 4, 16);
+		progFastBlingBling(8270, 8, 16);
+		break;
+
+	case 16: // pause
+		//progRandomLines(16550, 18, 515, true);
+		progBlack(5170, 18);
+		break;
+	
+	case 18: // verse 2
+		progRandomLines(16550, 20, 515, false);
+		break;		
+
+	case 20: // bridge 2
+		progPalette(10340, 6, 22);
+		break;	
+
+	case 22: // pause
+		progStrobo(2060, 24, 65, 255, 255, 255);
+		//progStern(16550, 515, 24, 20); 
+		//progMatrixHorizontal(16550, 24, 70);
+		break;	
+
+	case 24: // chorus 2
+		progStern(24820, 515, 26, 20); 
+		break;	
+
+	case 26: // übergang
+		progFastBlingBling(8270, 8, 28);
+		break;	
+
+	case 28: // pause
+		progBlack(4130, 30);
+		//progBlingBlingColoring(16550, 30, 5000);
+		break;	
+
+	case 30: // strobo
+		progStrobo(1030, 32, 65, 255, 255, 255);
+		break;
+
+	case 32: // solopart 1
+		progPalette(16550, 2, 34);
+		break;	
+
+	case 34: // solopart 2
+		progPalette(14480, 9, 36);
+		break;	
+
+	case 36: // bridge 3
+		progRandomLines(10340, 38, 515, false);
+		break;	
+
+	case 38: // pause
+		progStrobo(2060, 40, 65, 255, 255, 255);
+		//progStern(16550, 515, 24, 20); 
+		//progMatrixHorizontal(16550, 24, 70);
+		break;	
+
+	case 40: // chorus 2
+		progStern(33100, 515, 42, 20); 
+		break;	
+
+	case 42: // übergang
+		progFastBlingBling(8270, 8, 44);
+		break;	
+
+	case 44: // fade out
+		progBlingBlingColoring(6200, 46, 3000);
+		break;	
+
+	case 46: // pause
+		progBlack(10000, 100);
+		break;	
+
+	case 100:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
 //==============================================,
 
 
@@ -7269,6 +7401,9 @@ void loop() {
 				break;
 			case 18:
 				prisoner();
+				break;
+			case 19:
+				Hotncold();
 				break;
 
 			case 20:

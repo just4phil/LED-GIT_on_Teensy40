@@ -160,6 +160,14 @@ und dann scrolltext am anfang des songs -> laengen testen (automatische kalkulat
 
 TODO
 =====
+
+07.01.2024:
+!?!?
+wenn brightness höher als 60 dann stürzt es ab wenn viele leds leuchten (fullColor)
+
+------------------------
+
+
 21.01.22:
 	- timer für teensy 4.0 klären
 	- check incoming midi umsetellen von polling auf interrupt
