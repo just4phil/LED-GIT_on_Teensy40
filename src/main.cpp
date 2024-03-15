@@ -73,7 +73,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define mh				    23	// TODO: ausmerzen
 #define MATRIX_WIDTH        22
 #define MATRIX_HEIGHT       23
-#define BRIGHTNESS			40 //64 //20   // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
+#define BRIGHTNESS			32 //64 //20   // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
 
 #define MATRIX_TYPE         HORIZONTAL_ZIGZAG_MATRIX
 #define MATRIX_SIZE         (MATRIX_WIDTH * MATRIX_HEIGHT)
@@ -201,16 +201,16 @@ void turnOffGitBlindingLEDs() {
 		//FastLED.setBrightness(5);	// dim brightness funktioniert nicht ....dimmt leider alle LEDs
 
 		// turn on special MarkerLEDs for the songs
-		if (markerLED1 > 50 && markerLED1 < 75) leds[markerLED1] = CRGB::Red;
-		if (markerLED2 > 50 && markerLED2 < 75) leds[markerLED2] = CRGB::Red;
-		if (markerLED3 > 50 && markerLED3 < 75) leds[markerLED3] = CRGB::Red;
-		if (markerLED4 > 50 && markerLED4 < 75) leds[markerLED4] = CRGB::Red;
-		if (markerLED5 > 50 && markerLED5 < 75) leds[markerLED5] = CRGB::Red;
+		if (markerLED1 > 50 && markerLED1 < 75) leds[markerLED1] = CRGB(20, 0, 0);	//CRGB::Red;
+		if (markerLED2 > 50 && markerLED2 < 75) leds[markerLED2] = CRGB(20, 0, 0);	//CRGB::Red;
+		if (markerLED3 > 50 && markerLED3 < 75) leds[markerLED3] = CRGB(20, 0, 0);	//CRGB::Red;
+		if (markerLED4 > 50 && markerLED4 < 75) leds[markerLED4] = CRGB(20, 0, 0);	//CRGB::Red;
+		if (markerLED5 > 50 && markerLED5 < 75) leds[markerLED5] = CRGB(20, 0, 0);	//CRGB::Red;
 
 		// turn on generel MarkerLEDs
 		//leds[72] = CRGB::Blue;
-		leds[55] = CRGB::Blue;
-		leds[62] = CRGB::Blue;
+		leds[55] = CRGB(0, 0, 20);	//CRGB::Blue;
+		leds[62] = CRGB(0, 0, 20);	//CRGB::Blue;
 	}
 }
 //===================================
@@ -1885,7 +1885,7 @@ void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart,
 
 	//---- jetzt LEDs ausgeben
 	FastLED.clear();
-	FastLED.setBrightness(128); //128 //255	// brightness erhöhen...aber nicht zu hoch!
+	FastLED.setBrightness(100); //128 //255	// brightness erhöhen...aber nicht zu hoch!
 
 	//set random pixel to defined color
 	for (int i = 0; i < actualAnzahlLEDs; i++) {
@@ -3895,29 +3895,29 @@ void defaultLoopTEST()  {
 
 
 
-void STARTUP()  {	// 3 minuten BLACK
+void STARTUP()  {	// BLACK bis zum Start des Intros
 
  	switch (prog) { 
 
 	case 0:
-		progBlack(60000, 5);
-		break;
-
-	case 5:
-		progBlack(60000, 10);
-		break;
-
-	case 10:
-		progBlack(60000, 15);
-		break;		
-
-	case 15:
-		progBlack(60000, 20);
-		break;
-
-	case 20:
 		progBlack(60000, 100);
-		break;	
+		break;
+
+	// case 5:
+	// 	progBlack(60000, 10);
+	// 	break;
+
+	// case 10:
+	// 	progBlack(60000, 15);
+	// 	break;		
+
+	// case 15:
+	// 	progBlack(60000, 20);
+	// 	break;
+
+	// case 20:
+	// 	progBlack(60000, 100);
+	// 	break;	
 		
 	case 100:
 		FastLED.clear();
