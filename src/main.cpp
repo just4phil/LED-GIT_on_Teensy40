@@ -4555,7 +4555,126 @@ void Physical() {
 	}
 }
 
-// #3 - 
+// #3 - TakeOnMe
+void TakeOnMe() {	// TODO
+
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+	markerLED1 = 62;	
+	markerLED2 = 65;
+	markerLED3 = 60;
+
+ 	switch (prog) { 
+
+	case 0:
+		if (LEDGITBOARD) {
+			progScrollText("Take on me", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progBlack(5655, 5);
+		}
+		break;
+	case 5: //bass, 15740
+		progPalette(15740, 8, 10);
+		break;
+	case 10: //somebody, 15735
+		progPalette(15735, 4, 15);
+		break;
+	case 15: //git steigt ein, 15740
+		progPalette(15740, 6, 20);
+		break;
+	case 20: //yeah i knwo ist stupid, 7870
+		progPalette(7870, 11, 25);
+		break;
+	case 25: //chorus 1, 15735
+		//progRandomLines(15735, 30, 490, false);
+		progMatrixScanner(15735, 30, 26);
+		break;
+	case 30: //chorus 1b, 7870
+		progStern(7870, 490, 35, 20); 
+		break;
+	case 35: //i keep dancing, 7870
+		progFastBlingBling(7870, 4, 40);
+		break;
+	case 40: //pause vor verse 2a, 3935
+		progBlack(3935, 45);
+		break;
+	case 45: //verse 2b, 11800 -> 19670
+		//progPalette(11800, 11, 50);
+		progBlingBlingColoring(19670, 55, 3000);
+		break;
+	// ACHTUNG: wenn man Nr. 50 nutzen will dann muss man es im cakewalk als event wieder einfügen
+	// case 50: //bridge, 7870
+	// 	//progPalette(7870, 11, 55);
+	// 	//switchToPart(55);
+	// 	break;
+	case 55: //chorus 1, 15735
+		progMatrixScanner(15735, 60, 26);
+		break;
+	case 60: //chorus 1b, 7870
+		progStern(7870, 490, 65, 20); 
+		break;
+	case 65: //i keep dancing, 7870
+		progFastBlingBling(7870, 4, 70);
+		break;
+	case 70: //instrumental, 15740
+		progPalette(15740, 9, 75);	// rot weiss blau
+		break;
+	case 75: //so far away, 15735
+		//progPalette(15735, 11, 80);
+		progMatrixHorizontal(15735, 80);
+		break;
+	case 80: //im in the corner, 5900
+		progBlack(5900, 85);
+		break;
+	case 85: //snarewirbel, 1970
+		//progPalette(1970, 11, 90);
+		progStrobo(1970, 90, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		break;
+	case 90: //chorus 1, 7870
+		//progPalette(7870, 11, 95);
+		progStern(7870, 490, 95, 20); 
+		break;	
+	case 95: //i keep dancing, 7865
+		//progPalette(7865, 11, 100);
+		progFastBlingBling(7865, 4, 100);
+		break;
+	case 100: //chorus 1, 15740
+		//progPalette(15740, 11, 105);
+		progStern(15740, 490, 105, 20); 
+		break;
+	case 105: //chorus 1b, 7870
+		//progPalette(7870, 11, 110);
+		progFastBlingBling(7870, 4, 110);
+		break;
+	case 110: //i keep dancing, 7865
+		//progFastBlingBling(7865, 4, 115);
+		progStern(7865, 490, 115, 20); 
+		break;
+	case 115: //i keep dancing, 15740
+		progFastBlingBling(15740, 8, 120);
+		break;
+	case 120: //instrumental, 15740
+		progPalette(15740, 11, 125);
+		break;	
+	case 125: //outro, 11800
+		progBlingBlingColoring(11800, 127, 4000);
+		break;	
+	case 127: //black, 10000
+		progBlack(10000, 200);
+		break;	
+	case 200:
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
+
 
 //#4 pokerface FERTIG: 25.08.2023
 void Pokerface() { //
@@ -7355,7 +7474,7 @@ void loop() {
 				Physical();
 				break;
 			case 3:
-				//
+				TakeOnMe();
 				break;
 			case 4:
 				Pokerface();
