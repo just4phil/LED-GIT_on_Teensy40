@@ -4073,350 +4073,36 @@ void defaultLoop()  {
 //==============================================
 
 // #1 PhysicalMitTrailer(); // FERTIG! am 12.08.2023
-void PhysicalMitTrailer() {
-	
-	// (E/A: 71)
-	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
-	// A/D: 62, 
-	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
-	// E/A: 55, 
-	// (F/Bb: 54, F#/B: 53, G/C: 52)
-	
+void PhysicalTrailer() {
+		
 	markerLED1 = 62; 
 	markerLED2 = 69;
 	markerLED3 = 65;
 	markerLED4 = 59;
 
-	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	// markerLED1 = 65; // A/D
-	// markerLED2 = 69; // G/C
-	// markerLED3 = 73; // 
-	// markerLED4 = 60; // C/F
-
 	switch (prog) {
+
 	case 0:
-		progBlack(38260, 1); // progBlack(3060, 2);
+		progBlack(38980, 1); 
 	break;
 
 	case 1:
-		progBlack(38260, 30);
+		progBlack(37540, 100);
 	break;
 
-	// case 2: // FOUR
-	// 	progStrobo(410, 3, 40, 255, 255, 255);
-	// 	break;
-	// case 3: // 
-	// 	progBlack(1225, 4);
-	// 	break;
-	// case 4: // THREE
-	// 	progStrobo(410, 5, 40, 255, 255, 255);
-	// 	break;
-	// case 5: // 
-	// 	progBlack(1220, 6);
-	// 	break;
-	// case 6: // TWO
-	// 	progStrobo(410, 7, 40, 255, 255, 255);
-	// 	break;
-	// case 7: // 
-	// 	progBlack(1225, 8);
-	// 	break;
-	// case 8: // ONE
-	// 	progStrobo(410, 9, 40, 255, 255, 255);
-	// 	break;
-	// case 9: // synth
-	// 	progPalette(12650, 6, 10);
-	// 	break;
-	// case 10: // Ladies and …
-	// 	progPalette(13060, 0, 12);
-	// 	break;
-	// case 12: // we have main engine start
-	// 	progPalette(16330, 2, 15);
-	// 	break;
-	// case 15: // mit hihat
-	// 	progCircles(13060, 20, 1635); 
-	// 	break;
-	// case 20: // "the" "nerds" …
-	// 	progRandomLines(6530, 22, 815);
-	// 	break;
-	// case 22: // "on" Fire"
-	// 	progCircles(5715, 25, 410); 
-	// 	break;
-	// case 25: // get ready
-	// 	progStrobo(815, 30, 40, 255, 255, 255);
-	// 	break;
-
-	case 30: // verse 1
-		progFullColors(26130, 35, 410);
-		//progStern(26130, 1635, 35, 15);	
-		break;
-
-	case 35: // who needs to go to sleep
-		progBlack(2440, 40);
-		break;
-
-	case 40: // strobe auf synth auftakt
-		progStrobo(820, 45, 75, 255, 255, 255); 
-		break;
-
-	case 45: // Chorus 1 (2140)
-		progStern(24490, 1635, 50, 15);	
-		//progFullColors(24490, 50, 410);
-		break;
-
-	case 50: // lets get physical
-		progStrobo(1630, 55, 75, 255, 255, 255); 
-		break;
-
-	case 55: // drumfill
-		progPalette(1635, 6, 60);
-		break;
-
-	case 60: // snarewirbel
-		progStrobo(1630, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-		break;
-
-	case 65: // verse 2
-		progBlingBlingColoring(24490, 70, 7625);
-		break;
-
-	case 70: // who needs to go to sleep
-		progBlack(1635, 75);
-		break;
-
-	case 75: // Chorus 2 (2174)
-		progPalette(24490, 9, 80);
-		break;
-
-	case 80: // lets get physical
-		progStrobo(1630, 82, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-		break;
-
-	case 82: // hold on 1
-		progFastBlingBling(13060, 2, 84);
-		break;
-
-	case 84: // hold on 2
-		progFastBlingBling(11430, 6, 86);
-		break;
-
-	case 86: // lets get physical
-		progStrobo(1635, 88, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-		break;
-
-	case 88: // SOLO VOC
-		progPalette(11425, 0, 90);
-		//progPalette(11425, 6, 90);
-		break;
-
-	case 90: // lets get physical
-		progStrobo(1635, 92, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-		break;
-
-	case 92: // chorus 3
-		progStern(11430, 1635, 94, 15);	
-		//progFullColors(11430, 94, 410);
-		break;
-
-	case 94: // lets get physical
-		progStrobo(1630, 96, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-		break;
-
-	case 96: // chorus 4
-		progFastBlingBling(11430, 6, 98);
-		break;
-
-	case 98: // lets get physical
-		progStrobo(1630, 100, 75, 255, 255, 255); 
-		break;
-
-	case 100: // FINITO
-		progBlack(6530, 110);
-		break;
-
-	case 110:
+	case 100:
 		FastLED.clear();
-		switchToSong(0);	// SongID 0 == DEFAULT loop
+	
+		// switch to the real song PHYSICAL
+
+		//switchToSong(2);	// we dont use this, because it turns off the MarkerLEDs
+
+		//--- start song ----// we go there directly
+		songID = 2;			// this is PHYSICAL
+		switchToPart(30);	// but we have to jump over the Intro directly to part 30!
 		break;
 	}
 }
-
-// // #1 PhysicalMitTrailer(); // FERTIG! am 12.08.2023
-// void PhysicalMitTrailer() {
-	
-// 	// (E/A: 71)
-// 	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
-// 	// A/D: 62, 
-// 	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
-// 	// E/A: 55, 
-// 	// (F/Bb: 54, F#/B: 53, G/C: 52)
-	
-// 	markerLED1 = 62; 
-// 	markerLED2 = 69;
-// 	markerLED3 = 65;
-// 	markerLED4 = 59;
-
-// 	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-// 	// markerLED1 = 65; // A/D
-// 	// markerLED2 = 69; // G/C
-// 	// markerLED3 = 73; // 
-// 	// markerLED4 = 60; // C/F
-
-// 	switch (prog) {
-// 	case 0:
-// 		progBlack(3060, 2);
-// 		// if (LEDGITBOARD) {
-// 		// 	progScrollText("Nerds on Fire", 19500, 90, getRandomColor(), 2);
-// 		// }
-// 		// else {
-// 		// 	progPalette(19500, 0, 2);
-// 		// }
-// 		break;
-
-// 	case 2: // FOUR
-// 		progStrobo(410, 3, 40, 255, 255, 255);
-// 		break;
-// 	case 3: // 
-// 		progBlack(1225, 4);
-// 		break;
-
-// 	case 4: // THREE
-// 		progStrobo(410, 5, 40, 255, 255, 255);
-// 		break;
-// 	case 5: // 
-// 		progBlack(1220, 6);
-// 		break;
-
-// 	case 6: // TWO
-// 		progStrobo(410, 7, 40, 255, 255, 255);
-// 		break;
-// 	case 7: // 
-// 		progBlack(1225, 8);
-// 		break;
-
-// 	case 8: // ONE
-// 		progStrobo(410, 9, 40, 255, 255, 255);
-// 		break;
-	
-// 	case 9: // synth
-// 		progPalette(12650, 6, 10);
-// 		break;
-// 	case 10: // Ladies and …
-// 		progPalette(13060, 0, 12);
-// 		break;
-// 	case 12: // we have main engine start
-// 		progPalette(16330, 2, 15);
-// 		break;
-
-// 	case 15: // mit hihat
-// 		progCircles(13060, 20, 1635); 
-// 		break;
-
-// 	case 20: // "the" "nerds" …
-// 		progRandomLines(6530, 22, 815);
-// 		break;
-
-// 	case 22: // "on" Fire"
-// 		progCircles(5715, 25, 410); 
-// 		break;
-
-// 	case 25: // get ready
-// 		progStrobo(815, 30, 40, 255, 255, 255);
-// 		break;
-
-// 	case 30: // verse 1
-// 		progFullColors(26130, 35, 410);
-// 		//progStern(26130, 1635, 35, 15);	
-// 		break;
-
-// 	case 35: // who needs to go to sleep
-// 		progBlack(2440, 40);
-// 		break;
-
-// 	case 40: // strobe auf synth auftakt
-// 		progStrobo(820, 45, 75, 255, 255, 255); 
-// 		break;
-
-// 	case 45: // Chorus 1 (2140)
-// 		progStern(24490, 1635, 50, 15);	
-// 		//progFullColors(24490, 50, 410);
-// 		break;
-
-// 	case 50: // lets get physical
-// 		progStrobo(1630, 55, 75, 255, 255, 255); 
-// 		break;
-
-// 	case 55: // drumfill
-// 		progPalette(1635, 6, 60);
-// 		break;
-
-// 	case 60: // snarewirbel
-// 		progStrobo(1630, 65, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-// 		break;
-
-// 	case 65: // verse 2
-// 		progBlingBlingColoring(24490, 70, 7625);
-// 		break;
-
-// 	case 70: // who needs to go to sleep
-// 		progBlack(1635, 75);
-// 		break;
-
-// 	case 75: // Chorus 2 (2174)
-// 		progPalette(24490, 9, 80);
-// 		break;
-
-// 	case 80: // lets get physical
-// 		progStrobo(1630, 82, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-// 		break;
-
-// 	case 82: // hold on 1
-// 		progFastBlingBling(13060, 2, 84);
-// 		break;
-
-// 	case 84: // hold on 2
-// 		progFastBlingBling(11430, 6, 86);
-// 		break;
-
-// 	case 86: // lets get physical
-// 		progStrobo(1635, 88, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-// 		break;
-
-// 	case 88: // SOLO VOC
-// 		progPalette(11425, 0, 90);
-// 		//progPalette(11425, 6, 90);
-// 		break;
-
-// 	case 90: // lets get physical
-// 		progStrobo(1635, 92, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-// 		break;
-
-// 	case 92: // chorus 3
-// 		progStern(11430, 1635, 94, 15);	
-// 		//progFullColors(11430, 94, 410);
-// 		break;
-
-// 	case 94: // lets get physical
-// 		progStrobo(1630, 96, 75, getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); 
-// 		break;
-
-// 	case 96: // chorus 4
-// 		progFastBlingBling(11430, 6, 98);
-// 		break;
-
-// 	case 98: // lets get physical
-// 		progStrobo(1630, 100, 75, 255, 255, 255); 
-// 		break;
-
-// 	case 100: // FINITO
-// 		progBlack(6530, 110);
-// 		break;
-
-// 	case 110:
-// 		FastLED.clear();
-// 		switchToSong(0);	// SongID 0 == DEFAULT loop
-// 		break;
-// 	}
-// }
 
 // #2 Physical(); // FERTIG! am 13.08.2023
 void Physical() {
@@ -6271,6 +5957,34 @@ void Abcdefu() {
 	}
 }
 
+//#24 -> FERTIG: 22.03.2024
+void enjoyTheSilenceINTRO() {
+
+	markerLED1 = 69;	
+	markerLED2 = 63;
+	markerLED3 = 59;
+	markerLED4 = 56;
+
+	switch (prog) {
+
+	case 0:
+		progBlack(65840, 100);
+		break;
+
+	case 100:
+		FastLED.clear();
+	
+		// switch to the real song ENJOY
+
+		//switchToSong(16);	// we dont use this, because it turns off the MarkerLEDs
+
+		//--- start song ----// we go there directly
+		songID = 16;	// this is ENJOY
+		switchToPart(0);
+		break;
+	}
+}
+
 //#16 -> FERTIG: 25.08.2023
 void enjoyTheSilence() {
 
@@ -7468,7 +7182,7 @@ void loop() {
 				defaultLoop();
 				break;
 			case 1:
-				PhysicalMitTrailer();
+				PhysicalTrailer();
 				break;
 			case 2:
 				Physical();
@@ -7527,6 +7241,10 @@ void loop() {
 
 			case 20:
 				TEMPLATE();
+				break;
+
+			case 24:
+				enjoyTheSilenceINTRO();
 				break;
 
 			case 100:
