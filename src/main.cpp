@@ -4257,101 +4257,84 @@ void TakeOnMe() {	// TODO
 
  	switch (prog) { 
 
-	case 0:
-		if (LEDGITBOARD) {
-			progScrollText("Take on me", 19500, 90, getRandomColor(), 5);
-		}
-		else {
-			progBlack(5655, 5);
-		}
+	case 0://pause	5505
+		progBlack(5505, 5);
 		break;
-	case 5: //bass, 15740
-		progPalette(15740, 8, 10);
+	case 5: //drumIntro	6075
+		progPalette(6075, 8, 10);
+		//progStrobo(6075, 10, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 10: //somebody, 15735
-		progPalette(15735, 4, 15);
+	case 10: //synthIntro	6075
+		progPalette(6075, 4, 15);
 		break;
-	case 15: //git steigt ein, 15740
-		progPalette(15740, 6, 20);
+	case 15: //gitIntro	6080
+		progPalette(6080, 6, 20);
 		break;
-	case 20: //yeah i knwo ist stupid, 7870
-		progPalette(7870, 11, 25);
+	case 20: //chorus 1	18225
+		//progPalette(18225, 11, 25);
+		progStrobo(18225, 25, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 25: //chorus 1, 15735
-		//progRandomLines(15735, 30, 490, false);
-		progMatrixScanner(15735, 30, 26);
+	case 25: //verse 1	18230
+		//progRandomLines(18230, 30, 490, false);
+		progMatrixScanner(18230, 30, 26);
 		break;
-	case 30: //chorus 1b, 7870
-		progStern(7870, 490, 35, 20); 
+	case 30: //take on me	12145
+		progStern(12145, 490, 35, 20); 
 		break;
-	case 35: //i keep dancing, 7870
-		progFastBlingBling(7870, 4, 40);
+	case 35: //tom-halfTime	6080
+		//progFastBlingBling(6080, 4, 40);
+		progStrobo(6080, 40, 760, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 40: //pause vor verse 2a, 3935
-		progBlack(3935, 45);
+	case 40: //letzter durchgang	6075
+		progBlack(6075, 45);
 		break;
-	case 45: //verse 2b, 11800 -> 19670
-		//progPalette(11800, 11, 50);
-		progBlingBlingColoring(19670, 55, 3000);
+	case 45: //chorus 2	12150
+		//progPalette(12150, 11, 50);
+		progBlingBlingColoring(12150, 50, 3000);
 		break;
-	// ACHTUNG: wenn man Nr. 50 nutzen will dann muss man es im cakewalk als event wieder einfügen
-	// case 50: //bridge, 7870
-	// 	//progPalette(7870, 11, 55);
-	// 	//switchToPart(55);
-	// 	break;
-	case 55: //chorus 1, 15735
-		progMatrixScanner(15735, 60, 26);
+	case 50: //verse 2	18230
+		progMatrixScanner(18230, 55, 26);
 		break;
-	case 60: //chorus 1b, 7870
-		progStern(7870, 490, 65, 20); 
+	case 55: //take on me	12150
+		progMatrixScanner(12150, 60, 26);
 		break;
-	case 65: //i keep dancing, 7870
-		progFastBlingBling(7870, 4, 70);
+	case 60: //tom-halfTime	6075
+		progStern(6075, 490, 65, 20); 
 		break;
-	case 70: //instrumental, 15740
-		progPalette(15740, 9, 75);	// rot weiss blau
+	case 65: //letzter durchgang	6075
+		progFastBlingBling(6075, 4, 70);
 		break;
-	case 75: //so far away, 15735
-		//progPalette(15735, 11, 80);
-		progMatrixHorizontal(15735, 80);
+	case 70: //BRIDGE	18230
+		progPalette(18230, 9, 75);	// rot weiss blau
 		break;
-	case 80: //im in the corner, 5900
-		progBlack(5900, 85);
+	case 75: //SOLO SYNTH	6075
+		//progPalette(6075, 11, 80);
+		progMatrixHorizontal(6075, 80);
 		break;
-	case 85: //snarewirbel, 1970
-		//progPalette(1970, 11, 90);
-		progStrobo(1970, 90, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 80: //chorus 3	18230
+		progBlack(18230, 85);
 		break;
-	case 90: //chorus 1, 7870
-		//progPalette(7870, 11, 95);
-		progStern(7870, 490, 95, 20); 
+	case 85: //verse 3	18225
+		//progPalette(18225, 11, 90);
+		progStrobo(18225, 90, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		break;
+	case 90: //take on me	12155
+		//progPalette(12155, 11, 95);
+		progStern(12155, 490, 95, 20); 
 		break;	
-	case 95: //i keep dancing, 7865
-		//progPalette(7865, 11, 100);
-		progFastBlingBling(7865, 4, 100);
+	case 95: //tom-halfTime	6075
+		//progPalette(6075, 11, 100);
+		progFastBlingBling(6075, 4, 100);
 		break;
-	case 100: //chorus 1, 15740
-		//progPalette(15740, 11, 105);
-		progStern(15740, 490, 105, 20); 
+	case 100: //letzter durchgang	6075
+		//progPalette(6075, 11, 105);
+		progStern(6075, 490, 105, 20); 
 		break;
-	case 105: //chorus 1b, 7870
-		//progPalette(7870, 11, 110);
-		progFastBlingBling(7870, 4, 110);
+	case 105: //chorus 3	18230
+		//progPalette(18230, 11, 110);
+		progFastBlingBling(18230, 4, 110);
 		break;
-	case 110: //i keep dancing, 7865
-		//progFastBlingBling(7865, 4, 115);
-		progStern(7865, 490, 115, 20); 
-		break;
-	case 115: //i keep dancing, 15740
-		progFastBlingBling(15740, 8, 120);
-		break;
-	case 120: //instrumental, 15740
-		progPalette(15740, 11, 125);
-		break;	
-	case 125: //outro, 11800
-		progBlingBlingColoring(11800, 127, 4000);
-		break;	
-	case 127: //black, 10000
+	case 110: //black, 10000
 		progBlack(10000, 200);
 		break;	
 	case 200:
