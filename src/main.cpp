@@ -1692,7 +1692,7 @@ int getRandomColorValue() {	// dies erzeugt einen random-farb-anteil rot, grün 
     int farbe = 0;
     switch (farbZahl) {
     case 1:
-        farbe = 5;	// 0
+        farbe = 5;	// 0 echtes schwarz vermeiden
         break;
     case 2:
         farbe = 63; 
@@ -4268,7 +4268,6 @@ void TakeOnMe() {	// TODO
 		break;
 	case 5: //drumIntro	6075
 		progPalette(6075, 8, 10);
-		//progStrobo(6075, 10, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 10: //synthIntro	6075
 		progPalette(6075, 4, 15);
@@ -4277,68 +4276,58 @@ void TakeOnMe() {	// TODO
 		progPalette(6080, 6, 20);
 		break;
 	case 20: //chorus 1	18225
-		//progPalette(18225, 11, 25);
 		progStrobo(18225, 25, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 25: //verse 1	18230
-		//progRandomLines(18230, 30, 490, false);
-		progMatrixScanner(18230, 30, 26);
+		progMatrixScanner(18230, 30, 24);
 		break;
 	case 30: //take on me	12145
 		progStern(12145, 490, 35, 20); 
 		break;
 	case 35: //tom-halfTime	6080
-		//progFastBlingBling(6080, 4, 40);
 		progStrobo(6080, 40, 760, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 40: //letzter durchgang	6075
-		progBlack(6075, 45);
+		progFastBlingBling(6075, 6, 45);
 		break;
 	case 45: //chorus 2	12150
-		//progPalette(12150, 11, 50);
-		progBlingBlingColoring(12150, 50, 3000);
+		progStrobo(12150, 50, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 50: //verse 2	18230
-		progMatrixScanner(18230, 55, 26);
+		progRandomLines(18230, 55, 380, false);
 		break;
 	case 55: //take on me	12150
-		progMatrixScanner(12150, 60, 26);
+		progStern(12150, 490, 60, 20); 
 		break;
 	case 60: //tom-halfTime	6075
-		progStern(6075, 490, 65, 20); 
+		progStrobo(6075, 65, 760, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 65: //letzter durchgang	6075
-		progFastBlingBling(6075, 4, 70);
+		progFastBlingBling(6075, 6, 70);
 		break;
 	case 70: //BRIDGE	18230
 		progPalette(18230, 9, 75);	// rot weiss blau
 		break;
 	case 75: //SOLO SYNTH	6075
-		//progPalette(6075, 11, 80);
-		progMatrixHorizontal(6075, 80);
+		progBlack(6075, 80);
 		break;
 	case 80: //chorus 3	18230
-		progBlack(18230, 85);
+		progStrobo(18230, 85, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 85: //verse 3	18225
-		//progPalette(18225, 11, 90);
-		progStrobo(18225, 90, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		progPalette(18225, 11, 90);
 		break;
 	case 90: //take on me	12155
-		//progPalette(12155, 11, 95);
-		progStern(12155, 490, 95, 20); 
+		progStern(12155, 490, 95, 20);
 		break;	
 	case 95: //tom-halfTime	6075
-		//progPalette(6075, 11, 100);
-		progFastBlingBling(6075, 4, 100);
+		progStrobo(6075, 100, 760, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 100: //letzter durchgang	6075
-		//progPalette(6075, 11, 105);
-		progStern(6075, 490, 105, 20); 
+		progFastBlingBling(6075, 6, 105);
 		break;
 	case 105: //chorus 3	18230
-		//progPalette(18230, 11, 110);
-		progFastBlingBling(18230, 4, 110);
+		progStrobo(18230, 110, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 110: //black, 10000
 		progBlack(10000, 200);
