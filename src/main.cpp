@@ -1688,16 +1688,22 @@ uint16_t myRemapFn(uint16_t x, uint16_t y) {
 //=====================================================================
 
 int getRandomColorValue() {	// dies erzeugt einen random-farb-anteil rot, grün oder blau
-    int farbZahl = random(1, 4);
+    int farbZahl = random(1, 6);
     int farbe = 0;
     switch (farbZahl) {
     case 1:
-        farbe = 0; // 0
+        farbe = 5;	// 0
         break;
     case 2:
-        farbe = 127; // 127
+        farbe = 63; 
         break;
     case 3:
+        farbe = 127;
+        break;
+	case 4:
+        farbe = 191;
+        break;
+	case 5:
         farbe = 255;
         break;
     }
