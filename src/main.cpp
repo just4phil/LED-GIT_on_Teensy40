@@ -1807,6 +1807,25 @@ void setDurationAndNextPart(unsigned int durationMillis, byte nextPart) {
 // myRemapping table  von hier aus an die lib übergeben!
 
 
+void progBlinkLowVoltage(unsigned int del) {
+
+	if (millisCounterTimer >= del) {	// ersatz für delay()
+		millisCounterTimer = 0;
+
+		//--- switch color ---
+		if (progStroboIsBlack) {
+			leds[71] = CRGB(20, 0, 0);	// rote LED blinkt bei low-voltage auf E/A
+			FastLED.show();
+			progStroboIsBlack = false;
+		}
+		else {
+			leds[71] = CRGB::Black;	// rote LED blinkt bei low-voltage auf E/A
+			FastLED.show();
+			progStroboIsBlack = true;
+		}
+	}
+}
+
 
 //--- progBlingBlingColoring -----
 int progBlingBlingColoring_rounds = 0;
@@ -7167,17 +7186,20 @@ void loop() {
 	MIDI.read(); // Continuously check if Midi data has been received.
 
 //========================================
+
 //--- erstmal markerLEDs setzen, bevor gecheckt wird ob genug voltage für die LEDs da ist --
-
 	if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
-
 		setMarkerLEDs(songID);
 	}
 
 //=========================================
 
 	//---- start loop only when voltage is high enough
- 	if (voltageSmooth > 94) {	// !!! TODO !!!! //only fire LEDs if voltage is > 7,99V
+ 	// 12,0v => 131 
+	// 11,0v => 120
+	// 10,0v => 107
+	// 	9,0v => 92
+	if (voltageSmooth > 114) {	// 114 -> 10,5V -> 3,5V pro zelle
 
 		//=== ab hier wird nur alle 5 ms ausgefuehrt ======
 
@@ -7281,25 +7303,11 @@ void loop() {
 		
 			FastLED.clear();
 
-				setMarkerLEDs(songID);
-				
-				// leds[55] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
-				// leds[62] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
-
-				turnOffGitBlindingLEDs();
-
-			FastLED.show();
-
-			// delay(500);
-
-			// 	setMarkerLEDs(songID);
-			// 	leds[55] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
-			// 	leds[62] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
+			setMarkerLEDs(songID);
+			turnOffGitBlindingLEDs();
+			progBlinkLowVoltage(500);	// FastLED.show(); ist hier schon enthalten
 			
-			// leds[71] = CRGB::Red;	// rote LED blinkt bei low-voltage auf E/A
-			// FastLED.show();
-
-			// delay(500);
+			//FastLED.show();
 
 		flag_processFastLED = false;		
 		}
