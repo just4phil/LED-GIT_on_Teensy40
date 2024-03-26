@@ -7120,7 +7120,6 @@ void setup() {
 void loop() {
 
 	//=== ausserhalb vom fastLED loop ====
-
 	//--- LEDs ggf. wieder ausschalten ---
 	// if (LED1_on == true) {
 	// 	if (millis() - LED1_millis >= 500) {
