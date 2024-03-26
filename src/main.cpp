@@ -2080,6 +2080,8 @@ void progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, in
 			progStroboIsBlack = true;
 		}
 	}
+	//FastLED.show();	// add here to make sure that markerLEDs will show up in case of delays
+		//--> ja das hilft, aber es verzoegert das timing leider ziemlich :(
 }
 
 void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
@@ -3871,8 +3873,9 @@ String wordArrCastle[] = { castle_w1, castle_w2, castle_w3, castle_w4, castle_w5
 // 16 enjoyTheSilence();
 // 17 sober();
 // 18 prisoner();
-// ---
+// 19 Hot n cold
 // 20 TEMPLATE();
+// 24 enjoyTheSilenceINTRO();
 
 
 void defaultLoopTEST()  {
@@ -4081,10 +4084,10 @@ void defaultLoop()  {
 // #1 PhysicalMitTrailer(); // FERTIG! am 12.08.2023
 void PhysicalTrailer() {
 		
-	markerLED1 = 62; 
-	markerLED2 = 69;
-	markerLED3 = 65;
-	markerLED4 = 59;
+	// markerLED1 = 62; 
+	// markerLED2 = 69;
+	// markerLED3 = 65;
+	// markerLED4 = 59;
 
 	switch (prog) {
 
@@ -4120,16 +4123,10 @@ void Physical() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 	
-	markerLED1 = 62; 
-	markerLED2 = 69;
-	markerLED3 = 65;
-	markerLED4 = 59;
-
-	// E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	// markerLED1 = 65; // A/D
-	// markerLED2 = 69; // G/C
-	// markerLED3 = 73; // 
-	// markerLED4 = 60; // C/F
+	// markerLED1 = 62; 
+	// markerLED2 = 69;
+	// markerLED3 = 65;
+	// markerLED4 = 59;
 
  	switch (prog) { 
 
@@ -4257,9 +4254,9 @@ void TakeOnMe() {	// TODO
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 62;	
-	markerLED2 = 65;
-	markerLED3 = 60;
+	// markerLED1 = 62;	
+	// markerLED2 = 65;
+	// markerLED3 = 60;
 
  	switch (prog) { 
 
@@ -4306,6 +4303,12 @@ void TakeOnMe() {	// TODO
 		progFastBlingBling(6075, 6, 70);
 		break;
 	case 70: //BRIDGE	18230
+			// markerLED1 = 62;	
+			// markerLED2 = 65;
+			// markerLED3 = 60;
+			markerLED1 = 69;	
+			markerLED2 = 0;
+			markerLED3 = 67;			
 		progPalette(18230, 9, 75);	// rot weiss blau
 		break;
 	case 75: //SOLO SYNTH	6075
@@ -4339,7 +4342,6 @@ void TakeOnMe() {	// TODO
 	}
 }
 
-
 //#4 pokerface FERTIG: 25.08.2023
 void Pokerface() { //
 
@@ -4350,17 +4352,11 @@ void Pokerface() { //
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
+	// markerLED1 = 63;
+	// markerLED2 = 67;
+	// markerLED3 = 60;
+	// markerLED4 = 58;
 
-	markerLED1 = 63;
-	markerLED2 = 67;
-	markerLED3 = 60;
-	markerLED4 = 58;
-
-	// markerLED1 = 67;
-	// markerLED2 = 71;
-	// markerLED3 = 62;
-	// markerLED4 = 59;
 
 	switch (prog) {
 
@@ -4473,14 +4469,9 @@ void UseSomebody() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 59;
-	markerLED2 = 65;
-	markerLED3 = 69;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-	// markerLED1 = 61;
-	// markerLED2 = 69;
-	// markerLED3 = 73;
+	// markerLED1 = 59;
+	// markerLED2 = 65;
+	// markerLED3 = 69;
 
 	switch (prog) {
 
@@ -4574,17 +4565,10 @@ void NoRoots() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 67;
-	markerLED2 = 60;
-	markerLED3 = 65;
-	markerLED4 = 71;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 71;
-	// markerLED2 = 62;
-	// markerLED3 = 69;
-	// markerLED4 = 74;
+	// markerLED1 = 67;
+	// markerLED2 = 60;
+	// markerLED3 = 65;
+	// markerLED4 = 71;
 
 	switch (prog) {
 
@@ -4788,12 +4772,6 @@ void Firework() {
 	markerLED3 = 65;
 	markerLED4 = 69;
 
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED2 = 63;
-	// markerLED3 = 69;
-	// markerLED4 = 73;
-
 	switch (prog) {
 
 	case 0://text		7500
@@ -4932,16 +4910,9 @@ void DancingOnMyOwn() {	// FERTIG: 26.08.2023
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 60;	
-	markerLED2 = 67;
-	markerLED3 = 58;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 62;
-	// markerLED2 = 70;
-	// markerLED3 = 59;
-	//markerLED4 = 67;
+	// markerLED1 = 60;	
+	// markerLED2 = 67;
+	// markerLED3 = 58;
 
  	switch (prog) { 
 
@@ -5059,17 +5030,10 @@ void SetFire() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 65;
-	markerLED2 = 61;
-	markerLED3 = 69;
-	markerLED4 = 59;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 69;
-	// markerLED2 = 63;
-	// markerLED3 = 72;
-	// markerLED4 = 60;
+	// markerLED1 = 65;
+	// markerLED2 = 61;
+	// markerLED3 = 69;
+	// markerLED4 = 59;
 
 	switch (prog) {
 
@@ -5199,18 +5163,11 @@ void BloodyMary() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 61;
-	markerLED2 = 60;
-	markerLED3 = 63;
-	markerLED4 = 67;
-	markerLED5 = 56;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 63;
-	// markerLED2 = 62;
-	// markerLED3 = 67;
-	// markerLED4 = 70;
+	// markerLED1 = 61;
+	// markerLED2 = 60;
+	// markerLED3 = 63;
+	// markerLED4 = 67;
+	// markerLED5 = 56;
 
  	switch (prog) { 
 
@@ -5339,17 +5296,10 @@ void Titanium() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 65;	
-	//markerLED2 = 61;
-	markerLED3 = 67;
-	markerLED4 = 60;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 69;	
-	// markerLED2 = 63;
-	// markerLED3 = 70;
-	// markerLED4 = 62;
+	// markerLED1 = 65;	
+	// //markerLED2 = 61;
+	// markerLED3 = 67;
+	// markerLED4 = 60;
 
 	switch (prog) {
 
@@ -5466,17 +5416,10 @@ void SuchAshame() { // fertig: 17.09.2023
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 67;
-	markerLED2 = 65;
-	markerLED3 = 60;
-	markerLED4 = 63;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 70;
-	// markerLED2 = 69;
-	// markerLED3 = 62;
-	// markerLED4 = 67;
+	// markerLED1 = 67;
+	// markerLED2 = 65;
+	// markerLED3 = 60;
+	// markerLED4 = 63;
 
  	switch (prog) { 
 
@@ -5594,17 +5537,10 @@ void InTheDark() {	// fertig: 16.09.2023
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 67;	
-	markerLED2 = 63;
-	markerLED3 = 58;
-	markerLED4 = 60;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 70;	
-	// markerLED2 = 67;
-	// markerLED3 = 62;
-	// markerLED4 = 59;
+	// markerLED1 = 67;	
+	// markerLED2 = 63;
+	// markerLED3 = 58;
+	// markerLED4 = 60;
 
  	switch (prog) { 
 
@@ -5682,33 +5618,10 @@ void Shivers() { // fertig: TODO
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 61;
-	markerLED2 = 65;
-	markerLED3 = 59;
-	markerLED4 = 69;
-
-// 0	pause		6590
-// 4	intro		14545
-// 8	verse 1		14545
-// 12	verse 1b	14545
-// 16	i wanna be that guy	14545
-// 20	Chorus 1	14090
-// 24	mini pause	910
-// 28	Chorus 1b	14090
-// 32	verse 2		14545
-// 36	verse 2b	14545
-// 40	i wanna be that guy	14545
-// 44	Chorus 1	12730
-// 48	mini pause	1820
-// 52	Chorus 1b	14545
-// 56	you burn ….	14545
-// 60	you burn …. 2	14545
-// 64	SOLO VOC	3635
-// 68	Chorus 1	10000
-// 72	mini pause	910
-// 76	Chorus 1b	14545
-// 100	FINITO		10000
-
+	// markerLED1 = 61;
+	// markerLED2 = 65;
+	// markerLED3 = 59;
+	// markerLED4 = 69;
 
  	switch (prog) { 
 
@@ -5835,15 +5748,9 @@ void Abcdefu() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 63;
-	markerLED2 = 67;
-	markerLED4 = 58;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 67;
-	// markerLED2 = 70;
-	// markerLED4 = 59;
+	// markerLED1 = 63;
+	// markerLED2 = 67;
+	// markerLED4 = 58;
 
  	switch (prog) { 
 
@@ -5938,10 +5845,10 @@ void Abcdefu() {
 //#24 -> FERTIG: 22.03.2024
 void enjoyTheSilenceINTRO() {
 
-	markerLED1 = 69;	
-	markerLED2 = 63;
-	markerLED3 = 59;
-	markerLED4 = 56;
+	// markerLED1 = 69;	
+	// markerLED2 = 63;
+	// markerLED3 = 59;
+	// markerLED4 = 56;
 
 	switch (prog) {
 
@@ -5973,17 +5880,10 @@ void enjoyTheSilence() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 69;	
-	markerLED2 = 63;
-	markerLED3 = 59;
-	markerLED4 = 56;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 72;	
-	// markerLED2 = 67;
-	// markerLED3 = 60;
-	// markerLED4 = 57;
+	// markerLED1 = 69;	
+	// markerLED2 = 63;
+	// markerLED3 = 59;
+	// markerLED4 = 56;
 
 	switch (prog) {
 
@@ -6128,17 +6028,10 @@ void sober() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 63;	
-	markerLED2 = 60;
-	markerLED3 = 67;
-	//markerLED4 = 67;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 67;	
-	// markerLED2 = 62;
-	// markerLED3 = 70;
-	// markerLED4 = 67;
+	// markerLED1 = 63;	
+	// markerLED2 = 60;
+	// markerLED3 = 67;
+	// //markerLED4 = 67;
 
 	switch (prog) {
 
@@ -6352,17 +6245,10 @@ void prisoner() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 63;	
-	markerLED2 = 67;
-	markerLED3 = 60;
-	markerLED4 = 56;
-
-//ALT: E/A: 74, F/Bb: 72, F#/B: 70, G/C: 69, G#/C#: 67, A/D: 65, Bb/D#: 63, B/E: 62, C/F: 60, C#/F#: 59, D/G: 58
-
-	// markerLED1 = 67;	
-	// markerLED2 = 70;
-	// markerLED3 = 62;
-	// markerLED4 = 57;
+	// markerLED1 = 63;	
+	// markerLED2 = 67;
+	// markerLED3 = 60;
+	// markerLED4 = 56;
 
 	switch (prog) {
 
@@ -6491,8 +6377,6 @@ void prisoner() {
 	}
 }
 
-
-
 // #19 Not n Cold();
 void Hotncold() { // fertig: TODO
 
@@ -6503,10 +6387,10 @@ void Hotncold() { // fertig: TODO
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED1 = 67;
-	markerLED2 = 63;
-	markerLED3 = 60;
-	markerLED4 = 55;
+	// markerLED1 = 67;
+	// markerLED2 = 63;
+	// markerLED3 = 60;
+	// markerLED4 = 55;
 
  	switch (prog) { 
 
@@ -7028,6 +6912,147 @@ void callback() // toggle the LED
 	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
 }
 
+void setMarkerLEDs(byte songID) {
+	
+	FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
+
+	switch (songID) {
+	case 0: //defaultLoop();
+		// DO NOTHING !!
+		break;
+	case 1: //PhysicalTrailer();
+		markerLED1 = 62; 
+		markerLED2 = 69;
+		markerLED3 = 65;
+		markerLED4 = 59;
+		break;
+	case 2://Physical();
+		markerLED1 = 62; 
+		markerLED2 = 69;
+		markerLED3 = 65;
+		markerLED4 = 59;
+		break;
+	case 3://	TakeOnMe();
+		markerLED1 = 62;	
+		markerLED2 = 65;
+		markerLED3 = 60;
+		break;
+	case 4://Pokerface();
+		markerLED1 = 63;
+		markerLED2 = 67;
+		markerLED3 = 60;
+		markerLED4 = 58;			
+		break;
+	case 5://UseSomebody();
+		markerLED1 = 59;
+		markerLED2 = 65;
+		markerLED3 = 69;			
+		break;
+	case 6://NoRoots();
+		markerLED1 = 67;
+		markerLED2 = 60;
+		markerLED3 = 65;
+		markerLED4 = 71;			
+		break;
+	case 7://Firework();
+		markerLED2 = 61;
+		markerLED3 = 65;
+		markerLED4 = 69;			
+		break;
+	case 8://DancingOnMyOwn();
+		markerLED1 = 60;	
+		markerLED2 = 67;
+		markerLED3 = 58;			
+		break;
+	case 9://SetFire();
+		markerLED1 = 65;
+		markerLED2 = 61;
+		markerLED3 = 69;
+		markerLED4 = 59;			
+		break;
+	case 10://BloodyMary();
+		markerLED1 = 61;
+		markerLED2 = 60;
+		markerLED3 = 63;
+		markerLED4 = 67;
+		markerLED5 = 56;			
+		break;
+	case 11://Titanium();
+		markerLED1 = 65;	
+		//markerLED2 = 61;
+		markerLED3 = 67;
+		markerLED4 = 60;			
+		break;
+	case 12://SuchAshame();
+		markerLED1 = 67;
+		markerLED2 = 65;
+		markerLED3 = 60;
+		markerLED4 = 63;			
+		break;
+	case 13://InTheDark();
+		markerLED1 = 67;	
+		markerLED2 = 63;
+		markerLED3 = 58;
+		markerLED4 = 60;			
+		break;
+	case 14://Shivers();
+		markerLED1 = 61;
+		markerLED2 = 65;
+		markerLED3 = 59;
+		markerLED4 = 69;			
+		break;
+	case 15://Abcdefu();
+		markerLED1 = 63;
+		markerLED2 = 67;
+		markerLED4 = 58;			
+		break;
+	case 16://enjoyTheSilence();
+		markerLED1 = 69;	
+		markerLED2 = 63;
+		markerLED3 = 59;
+		markerLED4 = 56;			
+		break;
+	case 17://sober();
+		markerLED1 = 63;	
+		markerLED2 = 60;
+		markerLED3 = 67;
+		//markerLED4 = 67;			
+		break;
+	case 18://prisoner();
+		markerLED1 = 63;	
+		markerLED2 = 67;
+		markerLED3 = 60;
+		markerLED4 = 56;			
+		break;
+	case 19://Hotncold();
+		markerLED1 = 67;
+		markerLED2 = 63;
+		markerLED3 = 60;
+		markerLED4 = 55;			
+		break;
+
+	case 20://TEMPLATE();
+		// DO NOTHING !!
+		break;
+
+	case 24://enjoyTheSilenceINTRO();
+		markerLED1 = 69;	
+		markerLED2 = 63;
+		markerLED3 = 59;
+		markerLED4 = 56;			
+		break;
+
+	case 100://STARTUP();
+		// DO NOTHING !!
+		break;
+
+	default://defaultLoop();
+		// DO NOTHING !!
+		break;
+	}
+	//flag_processFastLED = false; // flag hier NICHT setzen, damit die LEDs ggf. auch noch durchlaufen
+}
+
 void setup() {
  
  	Serial.begin(9600);
@@ -7137,13 +7162,23 @@ void loop() {
 		secondsForVoltage = 0;
 	}
 
+	//--- midi immer checken, auch wenn voltage low, damit ja trotzdem marker LEDs setzen kann
+	//checkIncomingMIDI();
+	//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
+	MIDI.read(); // Continuously check if Midi data has been received.
+
+//========================================
+//--- erstmal markerLEDs setzen, bevor gecheckt wird ob genug voltage für die LEDs da ist --
+
+	if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
+
+		setMarkerLEDs(songID);
+	}
+
+//=========================================
+
 	//---- start loop only when voltage is high enough
  	if (voltageSmooth > 94) {	// !!! TODO !!!! //only fire LEDs if voltage is > 7,99V
-
-		//checkIncomingMIDI();
-		//checkIncomingMIDITEST(); // macht nur einfache ausgabe der midi commands
-		MIDI.read(); // Continuously check if Midi data has been received.
-
 
 		//=== ab hier wird nur alle 5 ms ausgefuehrt ======
 
@@ -7237,23 +7272,37 @@ void loop() {
 			
 			//-- debugging: LED aus
 			//digitalWrite(LED2_PIN, LOW);
+
+			//FastLED.show();	// add here to make sure that markerLEDs will show up in case of delays
 		}
 	}
 	else {	// if voltage is too low let LED 0 blink red
-		FastLED.clear();
-			leds[55] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
-			leds[62] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
-		FastLED.show();
-
-		delay(500);
-
-		FastLED.setBrightness(BRIGHTNESS);
-			leds[55] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
-			leds[62] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
 		
-		leds[71] = CRGB::Red;	// rote LED blinkt bei low-voltage auf E/A
-		FastLED.show();
+		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
+		
+			FastLED.clear();
 
-		delay(500);
+				setMarkerLEDs(songID);
+				
+				// leds[55] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
+				// leds[62] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
+
+				turnOffGitBlindingLEDs();
+
+			FastLED.show();
+
+			// delay(500);
+
+			// 	setMarkerLEDs(songID);
+			// 	leds[55] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
+			// 	leds[62] = CRGB::Blue;	// standard LEDs für git-orientierung einschalten
+			
+			// leds[71] = CRGB::Red;	// rote LED blinkt bei low-voltage auf E/A
+			// FastLED.show();
+
+			// delay(500);
+
+		flag_processFastLED = false;		
+		}
 	} 
 }
