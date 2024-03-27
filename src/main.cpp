@@ -595,7 +595,7 @@ void count_pixels() {
 			matrix->drawPixel(j, i, i % 3 == 0 ? (uint16_t)LED_BLUE_HIGH : i % 3 == 1 ? (uint16_t)LED_RED_HIGH : (uint16_t)LED_GREEN_HIGH);
 			// depending on the matrix size, it's too slow to display each pixel, so
 			// make the scan init faster. This will however be too fast on a small matrix.
-			matrix->show();
+			matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 		}
 	}
 }
@@ -607,7 +607,7 @@ void display_four_white() {
 	matrix->drawRect(1, 1, MATRIX_WIDTH - 2, MATRIX_HEIGHT - 2, LED_WHITE_MEDIUM);
 	matrix->drawRect(2, 2, MATRIX_WIDTH - 4, MATRIX_HEIGHT - 4, LED_WHITE_LOW);
 	matrix->drawRect(3, 3, MATRIX_WIDTH - 6, MATRIX_HEIGHT - 6, LED_WHITE_VERYLOW);
-	matrix->show();
+	matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 }
 
 void display_bitmap(uint8_t bmp_num, uint16_t color) {
@@ -624,7 +624,7 @@ void display_bitmap(uint8_t bmp_num, uint16_t color) {
 	if (bmx >= mw) bmx = 0;
 	if (!bmx) bmy += 8;
 	if (bmy >= mh) bmy = 0;
-	matrix->show();
+	matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 }
 void progDisplay_bitmap(unsigned int durationMillis, byte nextPart, uint8_t bmp_num, uint16_t color) {
 
@@ -650,12 +650,12 @@ void display_rgbBitmap(uint8_t bmp_num) {
 	if (bmx >= MATRIX_WIDTH) bmx = 0;
 	if (!bmx) bmy += 8;
 	if (bmy >= MATRIX_HEIGHT) bmy = 0;
-	matrix->show();
+	matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 
-	if (LEDGITBOARD == false) {
-		turnOffGitBlindingLEDs(); // funktioniert alleine so nicht gut ...zusaetzlich die bitmap editieren und schwarz setzen
-		FastLED.show();
-	}
+	
+		// turnOffGitBlindingLEDs(); // funktioniert alleine so nicht gut ...zusaetzlich die bitmap editieren und schwarz setzen
+		// FastLED.show();
+	
 }
 
 void display_lines() {
@@ -676,7 +676,7 @@ void display_lines() {
 	// Diagonal blue line.
 	matrix->drawLine(0, 0, mw - 1, mh - 1, LED_BLUE_HIGH);
 	matrix->drawLine(0, mh - 1, mw - 1, 0, LED_ORANGE_MEDIUM);
-	matrix->show();
+	matrix->show();		// TODO: dies auch raus???????????????????????????????????????
 }
 
 void display_boxes() {
@@ -685,7 +685,7 @@ void display_boxes() {
 	matrix->drawRect(1, 1, mw - 2, mh - 2, LED_GREEN_MEDIUM);
 	matrix->fillRect(2, 2, mw - 4, mh - 4, LED_RED_HIGH);
 	matrix->fillRect(3, 3, mw - 6, mh - 6, LED_ORANGE_MEDIUM);
-	matrix->show();
+	matrix->show();		// TODO: dies auch raus???????????????????????????????????????
 }
 
 void display_circles() {
@@ -696,7 +696,7 @@ void display_circles() {
 	matrix->drawCircle(1, MATRIX_HEIGHT - 2, 1, LED_GREEN_LOW);
 	matrix->drawCircle(MATRIX_WIDTH - 2, 1, 1, LED_GREEN_HIGH);
 	if (min(MATRIX_WIDTH, MATRIX_HEIGHT) > 12) matrix->drawCircle(MATRIX_WIDTH / 2 - 1, mh / 2 - 1, min(MATRIX_HEIGHT / 2 - 1, MATRIX_WIDTH / 2 - 1), LED_CYAN_HIGH);
-	matrix->show();
+	matrix->show();		// TODO: dies auch raus???????????????????????????????????????
 }
 
 void display_resolution() {
@@ -756,7 +756,7 @@ void display_resolution() {
 		}
 	}
 
-	matrix->show();
+	matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 }
 
 void display_scrollText() {
@@ -776,7 +776,7 @@ void display_scrollText() {
 			matrix->setTextColor(LED_ORANGE_HIGH);
 			matrix->print("World");
 		}
-		matrix->show();
+		matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 		delay(50);
 	}
 
@@ -788,14 +788,14 @@ void display_scrollText() {
 		matrix->clear();
 		matrix->setCursor(x, MATRIX_WIDTH / 2 - size * 4);
 		matrix->print("Rotate");
-		matrix->show();
+		matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 		// note that on a big array the refresh rate from show() will be slow enough that
 		// the delay become irrelevant. This is already true on a 32x32 array.
 		delay(50 / size);
 	}
 	matrix->setRotation(0);
 	matrix->setCursor(0, 0);
-	matrix->show();
+	matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 }
 
 // Scroll within big bitmap so that all of it becomes visible or bounce a small one.
@@ -829,7 +829,7 @@ void display_panOrBounceBitmap(uint8_t bitmapSize) {
 #ifdef BM32
 		if (bitmapSize == 32) matrix->drawRGBBitmap(x, y, (const uint16_t*)bitmap32, bitmapSize, bitmapSize);
 #endif
-		matrix->show();
+		matrix->show();	// TODO: dies auch raus???????????????????????????????????????
 
 		// Only pan if the display size is smaller than the pixmap
 		// but not if the difference is too small or it'll look bad.
@@ -1815,12 +1815,12 @@ void progBlinkLowVoltage(unsigned int del) {
 		//--- switch color ---
 		if (progStroboIsBlack) {
 			leds[71] = CRGB(20, 0, 0);	// rote LED blinkt bei low-voltage auf E/A
-			FastLED.show();
+			//FastLED.show();
 			progStroboIsBlack = false;
 		}
 		else {
 			leds[71] = CRGB::Black;	// rote LED blinkt bei low-voltage auf E/A
-			FastLED.show();
+			//FastLED.show();
 			progStroboIsBlack = true;
 		}
 	}
@@ -1860,8 +1860,8 @@ void progBlingBlingColoring(unsigned int durationMillis, byte nextPart, unsigned
 		// delete 1 pixel sometimes
 		if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
 
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
+		//turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+		//FastLED.show();
 	}
 
 	// after DEL ms seconds change 1 part of the color randomly
@@ -1917,8 +1917,8 @@ void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart,
 		leds[random(0, anz_LEDs)] = CRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue()); //LED_RED_HIGH;
 	}
 
-	turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-	FastLED.show();
+	//turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+	//FastLED.show();
 }
 
 void progFastBlingBling(unsigned int durationMillis, byte anzahl, byte nextPart) {
@@ -1962,91 +1962,77 @@ void progFullColors(unsigned int durationMillis, byte nextPart, unsigned int del
 			for (int i = 0; i < anz_LEDs; i++) {
 				leds[i] = CRGB(r, g, b);
 			}
-			turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-			FastLED.show();
+			// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+			// FastLED.show();
 		}
 	}
 }
 
-// only for ampere testing
-void progWhiteGoingBright(unsigned int durationMillis, byte nextPart, unsigned int del) {
+// // DELETE!? only for ampere testing
+// void progWhiteGoingBright(unsigned int durationMillis, byte nextPart, unsigned int del) {
+// 	//--- standard-part um dauer und naechstes programm zu speichern ----
+// 	if (!nextChangeMillisAlreadyCalculated) {
+// 		FastLED.clear(true);
+// 		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
+// 		//nextChangeMillis = round((float)durationMillis / (float)1.0f);	// TODO: diesen wert eurieren und anpassen!!
+// 		nextChangeMillis = durationMillis;
+// 		nextSongPart = nextPart;
+// 		nextChangeMillisAlreadyCalculated = true;	
+// 		millisCounterTimer = del; // workaround, damit beim ersten durchlauf immer sofort LEDs aktiviert werden und nicht erst nachdem del abgelaufen ist!
+// 	}
+// 	//---------------------------------------------------------------------
+// 	//if (millis() - lastTimestamp > del) {
+// 	if (millisCounterTimer >= del) {	// ersatz für delay()
+// 		millisCounterTimer = 0;
+// 		progWhiteGoingBright_brightness = progWhiteGoingBright_brightness + 5;
+// 		if (progWhiteGoingBright_brightness > 255) progWhiteGoingBright_brightness = BRIGHTNESS;
+// 		FastLED.setBrightness(progWhiteGoingBright_brightness);
+// 		FastLED.showColor(CRGB(255, 255, 255)); // TODO .....wie kann man das hier umgehen?
+// 		//lastTimestamp = millis();	// restart timer
+// 	}
+// }
 
-	//--- standard-part um dauer und naechstes programm zu speichern ----
-	if (!nextChangeMillisAlreadyCalculated) {
-		FastLED.clear(true);
-		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
-		//nextChangeMillis = round((float)durationMillis / (float)1.0f);	// TODO: diesen wert eurieren und anpassen!!
-		nextChangeMillis = durationMillis;
-		nextSongPart = nextPart;
-		nextChangeMillisAlreadyCalculated = true;
-		
-		millisCounterTimer = del; // workaround, damit beim ersten durchlauf immer sofort LEDs aktiviert werden und nicht erst nachdem del abgelaufen ist!
-	}
-	//---------------------------------------------------------------------
-
-	//if (millis() - lastTimestamp > del) {
-	if (millisCounterTimer >= del) {	// ersatz für delay()
-		millisCounterTimer = 0;
-
-		progWhiteGoingBright_brightness = progWhiteGoingBright_brightness + 5;
-		if (progWhiteGoingBright_brightness > 255) progWhiteGoingBright_brightness = BRIGHTNESS;
-
-		FastLED.setBrightness(progWhiteGoingBright_brightness);
-
-		FastLED.showColor(CRGB(255, 255, 255));
-		//lastTimestamp = millis();	// restart timer
-	}
-}
-
-// TODO. scheint mir mit den 5000 millis buggy zu sein!?
-void progFullColorsWithFading(unsigned int durationMillis, byte nextPart) {
-
-	//--- standard-part um dauer und naechstes programm zu speichern ----
-	if (!nextChangeMillisAlreadyCalculated) {
-		FastLED.clear(true);
-		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
-		//nextChangeMillis = round((float)durationMillis / (float)2.25f);	// TODO: diesen wert eurieren und anpassen!!
-		nextChangeMillis = durationMillis;
-		nextSongPart = nextPart;
-		nextChangeMillisAlreadyCalculated = true;
-	
-		//millisCounterTimer = del; // workaround, damit beim ersten durchlauf immer sofort LEDs aktiviert werden und nicht erst nachdem del abgelaufen ist!
-	}
-	//---------------------------------------------------------------------
-
-	//if (millis() - lastTimestamp > 5000) {
-	if (millisCounterTimer >= 5000) {	// ersatz für delay()
-		millisCounterTimer = 0;
-
-		byte lastRed = r;
-		byte lastGreen = g;
-		byte lastBlue = b;
-
-		r = getRandomColorValue();
-		g = getRandomColorValue();
-		b = getRandomColorValue();
-
-		int diff_r = r - lastRed;
-		int diff_g = g - lastGreen;
-		int diff_b = b - lastBlue;
-
-		for (int i = 0; i < abs(diff_r); i++) {
-			if (diff_r < 0) FastLED.showColor(CRGB(lastRed - i, lastGreen, lastBlue));
-			else FastLED.showColor(CRGB(lastRed + i, lastGreen, lastBlue));
-		}
-		for (int i = 0; i < abs(diff_g); i++) {
-			if (diff_g < 0) FastLED.showColor(CRGB(r, lastGreen - i, lastBlue));
-			else FastLED.showColor(CRGB(r, lastGreen + i, lastBlue));
-		}
-		for (int i = 0; i < abs(diff_b); i++) {
-			if (diff_b < 0) FastLED.showColor(CRGB(r, g, lastBlue - i));
-			else FastLED.showColor(CRGB(r, g, lastBlue + i));
-		}
-
-		FastLED.showColor(CRGB(r, g, b));
-		//lastTimestamp = millis();	// restart timer
-	}
-}
+// DELETE!? TODO. scheint mir mit den 5000 millis buggy zu sein!?
+// void progFullColorsWithFading(unsigned int durationMillis, byte nextPart) {
+// 	//--- standard-part um dauer und naechstes programm zu speichern ----
+// 	if (!nextChangeMillisAlreadyCalculated) {
+// 		FastLED.clear(true);
+// 		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
+// 		//nextChangeMillis = round((float)durationMillis / (float)2.25f);	// TODO: diesen wert eurieren und anpassen!!
+// 		nextChangeMillis = durationMillis;
+// 		nextSongPart = nextPart;
+// 		nextChangeMillisAlreadyCalculated = true;
+// 		//millisCounterTimer = del; // workaround, damit beim ersten durchlauf immer sofort LEDs aktiviert werden und nicht erst nachdem del abgelaufen ist!
+// 	}
+// 	//---------------------------------------------------------------------
+// 	//if (millis() - lastTimestamp > 5000) {
+// 	if (millisCounterTimer >= 5000) {	// ersatz für delay()
+// 		millisCounterTimer = 0;
+// 		byte lastRed = r;
+// 		byte lastGreen = g;
+// 		byte lastBlue = b;
+// 		r = getRandomColorValue();
+// 		g = getRandomColorValue();
+// 		b = getRandomColorValue();
+// 		int diff_r = r - lastRed;
+// 		int diff_g = g - lastGreen;
+// 		int diff_b = b - lastBlue;
+// 		for (int i = 0; i < abs(diff_r); i++) {
+// 			if (diff_r < 0) FastLED.showColor(CRGB(lastRed - i, lastGreen, lastBlue));
+// 			else FastLED.showColor(CRGB(lastRed + i, lastGreen, lastBlue));
+// 		}
+// 		for (int i = 0; i < abs(diff_g); i++) {
+// 			if (diff_g < 0) FastLED.showColor(CRGB(r, lastGreen - i, lastBlue));
+// 			else FastLED.showColor(CRGB(r, lastGreen + i, lastBlue));
+// 		}
+// 		for (int i = 0; i < abs(diff_b); i++) {
+// 			if (diff_b < 0) FastLED.showColor(CRGB(r, g, lastBlue - i));
+// 			else FastLED.showColor(CRGB(r, g, lastBlue + i));
+// 		}
+// 		FastLED.showColor(CRGB(r, g, b));
+// 		//lastTimestamp = millis();	// restart timer
+// 	}
+// }
 
 void progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, int red, int green, int blue) {
 
@@ -2078,8 +2064,8 @@ void progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, in
 				for (int i = 0; i < anz_LEDs; i++) {
 					leds[i] = CRGB(red, green, blue);
 				}
-				turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-				FastLED.show();
+				// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+				// FastLED.show();
 			}
 			progStroboIsBlack = false;
 
@@ -2093,14 +2079,12 @@ void progStrobo(unsigned int durationMillis, byte nextPart, unsigned int del, in
 				for (int i = 0; i < anz_LEDs; i++) {
 					leds[i] = CRGB(0, 0, 0);
 				}
-				turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-				FastLED.show();
+				// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+				// FastLED.show();
 			}
 			progStroboIsBlack = true;
 		}
 	}
-	//FastLED.show();	// add here to make sure that markerLEDs will show up in case of delays
-		//--> ja das hilft, aber es verzoegert das timing leider ziemlich :(
 }
 
 void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int reduceSpeed) {
@@ -2142,8 +2126,8 @@ void progMatrixScanner(unsigned int durationMillis, byte nextPart, unsigned int 
 				matrix->drawLine(zaehler - 2, 0, zaehler - 2, MATRIX_HEIGHT, CRGB::White);
 			}
 
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
+		// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+		// FastLED.show();
 	}
 }
 void progMatrixScanner(unsigned int durationMillis, byte nextPart) {
@@ -2194,8 +2178,8 @@ void progStern(unsigned int durationMillis, unsigned int msForColorChange, unsig
 		matrix->drawLine(zaehler, 22, 22 - zaehler, 0, col1);
 		matrix->drawLine(zaehler - 1, 22, 21 - zaehler, 0, col2);
 
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
+		// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+		// FastLED.show();
 	}
 }
 void progStern(unsigned int durationMillis, unsigned char nextPart, unsigned char reduceSpeed) {
@@ -2219,10 +2203,7 @@ void progBlack(unsigned int durationMillis, byte nextPart) {
 	}
 	//---------------------------------------------------------------------
 
-	turnOffGitBlindingLEDs();
-	FastLED.show();
-
-	// FastLED.clear();	// hier nicht nötig
+	// turnOffGitBlindingLEDs();
 	// FastLED.show();
 }
 
@@ -2254,8 +2235,8 @@ void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForC
 
 		matrix->fillCircle(random(0, 21), random(0, 22), random(3, 10), col1);
 
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
+		// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+		// FastLED.show();
 	}
 }
 void progCircles(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
@@ -2295,8 +2276,8 @@ void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int ms
 		matrix->drawLine(x1, 0, x2, 22, col1);
 		matrix->drawLine(x1 + 1, 0, x2 + 1, 22, col1);
 
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
+		// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+		// FastLED.show();
 	}
 }
 void progRandomLines(unsigned int durationMillis, byte nextPart, unsigned int msForChange) {
@@ -2383,8 +2364,8 @@ void progMovingLines(unsigned int durationMillis, byte nextPart, unsigned int re
 				break;
 		}
 
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
+		// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+		// FastLED.show();
 	}
 }
 void progMovingLines(unsigned int durationMillis, byte nextPart) {
@@ -2481,8 +2462,8 @@ void progOutline(unsigned int durationMillis, byte nextPart, unsigned int reduce
 				break;
 			}
 
-			turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-			FastLED.show();
+			// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+			// FastLED.show();
 
 			zaehler++;
 			if (zaehler >= 9) scannerGoesBack = true;
@@ -2598,7 +2579,7 @@ void progRunningPixel(unsigned int durationMillis, byte nextPart) {
             matrix->drawLine(last_x, last_y, last_x, last_y, matrix->Color(0, 0, 0));
             last_x = x;
 			last_y = y;
-            matrix->show();
+            matrix->show();	// TODO ................wie hier ????????????????????
 		}
 	} 
 }
@@ -2633,7 +2614,7 @@ void progShowText(String words, unsigned int durationMillis, int pos_x, int pos_
 		matrix->setCursor(pos_x, pos_y);
 		matrix->setTextColor(col);
 		matrix->print(words);
-		matrix->show();
+		matrix->show();	// TODO ...................!?
 	}
 }
 
@@ -2680,7 +2661,7 @@ void progScrollText(String words, unsigned int durationMillis, int delay, int co
 			FastLED.show();
 		}
 		else {
-			matrix->show();
+			matrix->show();	// TODO ....................!?
 		}
 	}
 }
@@ -2736,7 +2717,7 @@ void progShowROOTS(unsigned int durationMillis, byte nextPart) {
 			FastLED.show();
 		}
 		else {
-			matrix->show();
+			matrix->show();	// TODO ..................!?
 		}
 	}
 }
@@ -2775,7 +2756,7 @@ void progWordArray(String words[], int anzWords, int msPerWord, unsigned int dur
 			matrix->setCursor(2, 13);
 			matrix->setTextColor(col);
 			matrix->print(words[zaehlerWortArray]);
-			matrix->show();
+			matrix->show();	// TODO ...........................!?
 
 			//Serial.println(zaehlerWortArray);
 			zaehlerWortArray++; // naechstes Wort
@@ -2813,41 +2794,36 @@ void progBlinkText(String words, unsigned int durationMillis, int col, byte next
 		matrix->setCursor(x, 13);
 		matrix->setTextColor(col);
 		matrix->print(words);
-		matrix->show();
+		matrix->show();			// TODO ...........................!?
 		delay(60);
 	}
 }
 
-// TODO Fixen
-void progFadeOut(unsigned int durationMillis, byte nextPart) {
-
-	//--- standard-part um dauer und naechstes programm zu speichern ----
-	if (!nextChangeMillisAlreadyCalculated) {
-		//FastLED.clear();
-		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
-		nextChangeMillis = durationMillis;
-		//nextChangeMillis = round((float)durationMillis / (float)9.0f);	// TODO: diesen wert eurieren und anpassen!!
-		nextSongPart = nextPart;
-		nextChangeMillisAlreadyCalculated = true;
-
-		r = getRandomColorValue();
-		g = getRandomColorValue();
-		b = getRandomColorValue();
-		FastLED.showColor(CRGB(r, g, b)); 
-		//FastLED.showColor(getRandomColor());
-	}
-	//---------------------------------------------------------------------
-
-	if (millisCounterTimer >= 100) {	// ersatz für delay()
-		millisCounterTimer = 0;
-
-		// delete 1 pixel sometimes
-		//if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
-
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
-	}
-}
+// DELETE !? TODO Fixen
+// void progFadeOut(unsigned int durationMillis, byte nextPart) {
+// 	//--- standard-part um dauer und naechstes programm zu speichern ----
+// 	if (!nextChangeMillisAlreadyCalculated) {
+// 		//FastLED.clear();
+// 		// workaround: die eigentlichen millis werden korrigiert auf die faktische dauer
+// 		nextChangeMillis = durationMillis;
+// 		//nextChangeMillis = round((float)durationMillis / (float)9.0f);	// TODO: diesen wert eurieren und anpassen!!
+// 		nextSongPart = nextPart;
+// 		nextChangeMillisAlreadyCalculated = true;
+// 		r = getRandomColorValue();
+// 		g = getRandomColorValue();
+// 		b = getRandomColorValue();
+// 		FastLED.showColor(CRGB(r, g, b)); 
+// 		//FastLED.showColor(getRandomColor());
+// 	}
+// 	//---------------------------------------------------------------------
+// 	if (millisCounterTimer >= 100) {	// ersatz für delay()
+// 		millisCounterTimer = 0;
+// 		// delete 1 pixel sometimes
+// 		//if (random(0, 3) == 1) leds[random(0, anz_LEDs)] = CRGB::Black;
+// 		// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+// 		// FastLED.show();
+// 	}
+// }
 
 // This function fills the palette with totally random colors.
 void SetupTotallyRandomPalette()
@@ -3036,8 +3012,8 @@ void progPalette(unsigned int durationMillis, uint8_t paletteID, byte nextPart) 
 	if (zaehler > 1000) zaehler = 0;	// der wert 1000 beinflusst  dei geschwindigkeit
 	FillLEDsFromPaletteColors(zaehler);
 
-	turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-    FastLED.show();
+	// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+    // FastLED.show();
 }
 
 extern const TProgmemRGBPalette16 matrixColors FL_PROGMEM =
@@ -3349,8 +3325,8 @@ void progMatrixHorizontal(unsigned int durationMillis, byte nextPart, unsigned i
 		}
 		//--------------------------
 
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
+		// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+		// FastLED.show();
 
 		zaehler++;
 		if (zaehler > 56) {
@@ -3611,8 +3587,8 @@ void progMatrixVertical(unsigned int durationMillis, byte nextPart, unsigned int
 
 		//--------------------------
 
-		turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
-		FastLED.show();
+		// turnOffGitBlindingLEDs();	// immer vor fastLED.show() callen damit die blendenen LEDs an der Gitarre ausgeschaltet werden
+		// FastLED.show();
 
 		zaehler++;
 		if (zaehler > 60) {
@@ -6884,34 +6860,7 @@ void TEMPLATE() {
 #define INCREMENT	5	// 25 // process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
 	//  => !!!! IMMER AUCH IN SETUP DEN CALLBACK AUFRUF ANPASSEN !!!!!
 
-/* void setupInterrupt() {
-    TCCR3A = 0;
-    TCCR3B = 0x0B;      // WGM32 (CTC), Prescaler: // 0x0C = 256 // 0x0B = 64
-    OCR3A = 6250;      // 16M/64(prescaler) * 0,025 sec (=25 ms) = 6250 [10ms = 2.500 / 15ms = 3.750 / 20ms = 5.000]
-    TIMSK3 = 0x02;      // enable compare interrupt
-}
 
-ISR(TIMER3_COMPA_vect) {
-	millisCounterTimer = millisCounterTimer + INCREMENT;	// wird von den progs fürs timing bzw. delay-ersatz verwendet
-    millisCounterForSeconds = millisCounterForSeconds + INCREMENT;
-    millisCounterForProgChange = millisCounterForProgChange + INCREMENT;
-
-    flag_processFastLED = true;	// process FastLED-loops only every 25 ms (fast-led takes approx. 18 ms!!)
-    PORTD ^= 0x40;				// toggle LED every 25 ms
-
-    // test zur messung der timing-praezision
-    if (millisCounterForSeconds >= 1000) {
-        //actualMillis = millis();
-        //diffMillis = actualMillis - lastMillis;
-        //lastMillis = actualMillis;
-        //Serial.println(millisCounterForSeconds);
-        millisCounterForSeconds = 0;
-        OneSecondHasPast = true;
-		//PORTD ^= 0x40;
-    }
-
-	if (millisCounterForProgChange >= nextChangeMillis) switchToPart(nextSongPart);
-}  */
 
 void callback() // toggle the LED
 {
@@ -7069,7 +7018,6 @@ void setMarkerLEDs(byte songID) {
 		// DO NOTHING !!
 		break;
 	}
-	//flag_processFastLED = false; // flag hier NICHT setzen, damit die LEDs ggf. auch noch durchlaufen
 }
 
 void setup() {
@@ -7095,16 +7043,6 @@ void setup() {
 	adc_value = analogRead(LIPO_PIN);     
 	voltageSmooth = map(adc_value, 0, 440, 0, 90); // 440 entspricht 9,0 Volt
 	
-	//---- fuer OLED Display --------
-	//   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-	//   delay(100);
-	//   display.clearDisplay();
-	//   display.display();
-	//------------------------------
-
-	// the audio library needs to be given memory to start working
-	//   AudioMemory(12);
-
 	//--- Development LEDs setup -------
 	pinMode(LED1_PIN, OUTPUT); 
 	pinMode(LED2_PIN, OUTPUT); 
@@ -7131,7 +7069,6 @@ void setup() {
 	digitalWrite(LED3_PIN, HIGH);
 
 	switchToSong(100);  // TODO: set back to 0 !!!! // 100 ist der "startup" mit ein paar minuten BLACK, damit ich das intro in ruhe starten kann
-
 	//switchToPart(0); // only 4 testing!!!
 }
 //====================================================
@@ -7187,129 +7124,120 @@ void loop() {
 
 //========================================
 
-//--- erstmal markerLEDs setzen, bevor gecheckt wird ob genug voltage für die LEDs da ist --
+	//=== ab hier wird nur alle 5 ms ausgefuehrt ======
+
 	if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
+
+		FastLED.clear();
+
 		setMarkerLEDs(songID);
-	}
 
-//=========================================
+		//--- debugging: LED ein
+		//digitalWrite(LED2_PIN, HIGH);
 
-	//---- start loop only when voltage is high enough
- 	// 12,0v => 131 
-	// 11,0v => 120
-	// 10,0v => 107
-	// 	9,0v => 92
-	if (voltageSmooth > 114) {	// 114 -> 10,5V -> 3,5V pro zelle
+		FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
 
-		//=== ab hier wird nur alle 5 ms ausgefuehrt ======
+		switch (songID) {
+		case 0:
+			//defaultLoopTEST(); 
+			defaultLoop();
+			break;
+		case 1:
+			PhysicalTrailer();
+			break;
+		case 2:
+			Physical();
+			break;
+		case 3:
+			TakeOnMe();
+			break;
+		case 4:
+			Pokerface();
+			break;
+		case 5:
+			UseSomebody();
+			break;
+		case 6:
+			NoRoots();
+			break;
+		case 7:
+			Firework();
+			break;
+		case 8:
+			DancingOnMyOwn();
+			break;
+		case 9:
+			SetFire();
+			break;
+		case 10:
+			BloodyMary();
+			break;
+		case 11:
+			Titanium();
+			break;
+		case 12:
+			SuchAshame();
+			break;
+		case 13:
+			InTheDark();
+			break;
+		case 14:
+			Shivers();
+			break;
+		case 15:
+			Abcdefu();
+			break;
+		case 16:
+			enjoyTheSilence();
+			break;
+		case 17:
+			sober();
+			break;
+		case 18:
+			prisoner();
+			break;
+		case 19:
+			Hotncold();
+			break;
 
-		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
+		case 20:
+			TEMPLATE();
+			break;
 
-			//--- debugging: LED ein
-			//digitalWrite(LED2_PIN, HIGH);
+		case 24:
+			enjoyTheSilenceINTRO();
+			break;
 
-			FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
+		case 100:
+			STARTUP();
+			break;
 
-			switch (songID) {
-			case 0:
-				//defaultLoopTEST(); 
-				defaultLoop();
-				break;
-			case 1:
-				PhysicalTrailer();
-				break;
-			case 2:
-				Physical();
-				break;
-			case 3:
-				TakeOnMe();
-				break;
-			case 4:
-				Pokerface();
-				break;
-			case 5:
-				UseSomebody();
-				break;
-			case 6:
-				NoRoots();
-				break;
-			case 7:
-				Firework();
-				break;
-			case 8:
-				DancingOnMyOwn();
-				break;
-			case 9:
-				SetFire();
-				break;
-			case 10:
-				BloodyMary();
-				break;
-			case 11:
-				Titanium();
-				break;
-			case 12:
-				SuchAshame();
-				break;
-			case 13:
-				InTheDark();
-				break;
-			case 14:
-				Shivers();
-				break;
-			case 15:
-				Abcdefu();
-				break;
-			case 16:
-				enjoyTheSilence();
-				break;
-			case 17:
-				sober();
-				break;
-			case 18:
-				prisoner();
-				break;
-			case 19:
-				Hotncold();
-				break;
-
-			case 20:
-				TEMPLATE();
-				break;
-
-			case 24:
-				enjoyTheSilenceINTRO();
-				break;
-
-			case 100:
-				STARTUP();
-				break;
-
-			default:
-				defaultLoop();
-				break;
-			}
-			flag_processFastLED = false;
-			
-			//-- debugging: LED aus
-			//digitalWrite(LED2_PIN, LOW);
-
-			//FastLED.show();	// add here to make sure that markerLEDs will show up in case of delays
+		default:
+			defaultLoop();
+			break;
 		}
-	}
-	else {	// if voltage is too low let LED 0 blink red
+		flag_processFastLED = false;
 		
-		if (flag_processFastLED) {	// LED loop only in certain time-slots to make ms-counter more accurate
-		
-			FastLED.clear();
 
-			setMarkerLEDs(songID);
-			turnOffGitBlindingLEDs();
-			progBlinkLowVoltage(500);	// FastLED.show(); ist hier schon enthalten
-			
-			//FastLED.show();
+		//-- debugging: LED aus
+		//digitalWrite(LED2_PIN, LOW);
 
-		flag_processFastLED = false;		
+ 		//  Serial.print("voltage = ");
+		//  Serial.println(voltageSmooth);  
+
+		if (voltageSmooth < 114.0) {	// if voltage is too low 
+
+			// for (int i = 0; i < 50; i++) {
+			// 	leds[i] = CRGB(0, 0, 0); //BLACK
+			// }
+			// for (int i = 75; i < anz_LEDs; i++) {
+			// 	leds[i] = CRGB(0, 0, 0); //BLACK
+			// }
+
+			//progBlinkLowVoltage(500);
 		}
+
+		// turnOffGitBlindingLEDs();
+		FastLED.show();
 	} 
 }
