@@ -4541,6 +4541,10 @@ void UseSomebody() {
 		break;
 
 	case 30://bridge		13913
+		markerLED1 = 62; // D (wird aber eh mit blau überschrieben)
+		markerLED2 = 67; // F#
+		markerLED3 = 60; // B		
+		markerLED4 = 59; // C erst fuer den naechsten Part, aber gut zur Orientierung		
 		//progMovingLines(13913, 35);
 		progPalette(13913, 4, 35);	// paletteID -> 0 - 10
 		break;
