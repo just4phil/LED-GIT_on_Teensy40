@@ -4319,6 +4319,7 @@ void TakeOnMe() {	// TODO
 		progStrobo(6075, 65, 760, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 65: //letzter durchgang	6075
+		markerLED4 = 67;	// nächsten bund schon mal präventiv anzeigen 
 		progFastBlingBling(6075, 6, 70);
 		break;
 	case 70: //BRIDGE	18230
@@ -4327,10 +4328,12 @@ void TakeOnMe() {	// TODO
 			// markerLED3 = 60;
 			markerLED1 = 69;	
 			markerLED2 = 0;
-			markerLED3 = 67;			
+			markerLED3 = 0;
+			markerLED4 = 67;		
 		progPalette(18230, 9, 75);	// rot weiss blau
 		break;
 	case 75: //SOLO SYNTH	6075
+		markerLED4 = 0;		//wieder abschalten
 		progBlack(6075, 80);
 		break;
 	case 80: //chorus 3	18230
