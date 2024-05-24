@@ -6942,6 +6942,13 @@ void setMarkerLEDs(byte songID) {
 	
 	FastLED.setBrightness(BRIGHTNESS); // zur sicherheit for jedem loop neu auf default setzen. ggf. kann einzelner fx das überschreiben
 
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
 	switch (songID) {
 	case 0: //defaultLoop();
 		// DO NOTHING !!
@@ -7005,7 +7012,7 @@ void setMarkerLEDs(byte songID) {
 		break;
 	case 11://Titanium();
 		markerLED1 = 65;	
-		//markerLED2 = 61;
+		markerLED2 = 57;
 		markerLED3 = 67;
 		markerLED4 = 60;			
 		break;
