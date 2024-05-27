@@ -4279,50 +4279,50 @@ void TakeOnMe() {	// TODO
 
  	switch (prog) { 
 
-	case 0://pause	5505
-		progBlack(5505, 5);
+	case 0://pause	5650
+		progBlack(5650, 5);
 		break;
-	case 5: //drumIntro	6075
-		progPalette(6075, 8, 10);
+	case 5: //drumIntro	6235
+		progPalette(6235, 8, 10);
 		break;
-	case 10: //synthIntro	6075
-		progPalette(6075, 4, 15);
+	case 10: //synthIntro	6230
+		progPalette(6230, 4, 15);
 		break;
-	case 15: //gitIntro	6080
-		progPalette(6080, 6, 20);
+	case 15: //gitIntro	6235
+		progPalette(6235, 6, 20);
 		break;
-	case 20: //chorus 1	18225
-		progStrobo(18225, 25, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 20: //chorus 1	18700
+		progStrobo(18700, 25, 195, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 25: //verse 1	18230
-		progMatrixScanner(18230, 30, 24);
+	case 25: //verse 1	18705
+		progMatrixScanner(18705, 30, 24);
 		break;
-	case 30: //take on me	12145
-		progStern(12145, 490, 35, 20); 
+	case 30: //take on me	12465
+		progStern(12465, 390, 35, 20); 
 		break;
-	case 35: //tom-halfTime	6080
-		progStrobo(6080, 40, 760, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 35: //tom-halfTime	6235
+		progStrobo(6235, 40, 780, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 40: //letzter durchgang	6075
-		progFastBlingBling(6075, 6, 45);
+	case 40: //letzter durchgang	6235
+		progFastBlingBling(6235, 6, 45);
 		break;
-	case 45: //chorus 2	12150
-		progStrobo(12150, 50, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 45: //chorus 2	12465
+		progStrobo(12465, 50, 195, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 50: //verse 2	18230
-		progRandomLines(18230, 55, 380, false);
+	case 50: //verse 2	18700
+		progRandomLines(18700, 55, 390, false);
 		break;
-	case 55: //take on me	12150
-		progStern(12150, 490, 60, 20); 
+	case 55: //take on me	12470
+		progStern(12470, 390, 60, 20); 
 		break;
-	case 60: //tom-halfTime	6075
-		progStrobo(6075, 65, 760, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 60: //tom-halfTime	6235
+		progStrobo(6235, 65, 780, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 65: //letzter durchgang	6075
+	case 65: //letzter durchgang	6230
 		markerLED4 = 67;	// nächsten bund schon mal präventiv anzeigen 
-		progFastBlingBling(6075, 6, 70);
+		progFastBlingBling(6230, 6, 70);
 		break;
-	case 70: //BRIDGE	18230
+	case 70: //BRIDGE	18705
 			// markerLED1 = 62;	
 			// markerLED2 = 65;
 			// markerLED3 = 60;
@@ -4330,29 +4330,29 @@ void TakeOnMe() {	// TODO
 			markerLED2 = 0;
 			markerLED3 = 0;
 			markerLED4 = 67;		
-		progPalette(18230, 9, 75);	// rot weiss blau
+		progPalette(18705, 9, 75);	// rot weiss blau
 		break;
-	case 75: //SOLO SYNTH	6075
+	case 75: //SOLO SYNTH	6230
 		markerLED4 = 0;		//wieder abschalten
-		progBlack(6075, 80);
+		progBlack(6230, 80);
 		break;
-	case 80: //chorus 3	18230
-		progStrobo(18230, 85, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 80: //chorus 3	18705
+		progStrobo(18705, 85, 195, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 85: //verse 3	18225
-		progPalette(18225, 11, 90);
+	case 85: //verse 3	18700
+		progPalette(18700, 11, 90);
 		break;
-	case 90: //take on me	12155
-		progStern(12155, 490, 95, 20);
+	case 90: //take on me	12465
+		progStern(12465, 390, 95, 20);
 		break;	
-	case 95: //tom-halfTime	6075
-		progStrobo(6075, 100, 760, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 95: //tom-halfTime	6235
+		progStrobo(6235, 100, 780, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
-	case 100: //letzter durchgang	6075
-		progFastBlingBling(6075, 6, 105);
+	case 100: //letzter durchgang	6235
+		progFastBlingBling(6235, 6, 105);
 		break;
-	case 105: //chorus 3	18230
-		progStrobo(18230, 110, 190, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 105: //chorus 3	18700
+		progStrobo(18700, 110, 195, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 	case 110: //black, 10000
 		progBlack(10000, 200);
