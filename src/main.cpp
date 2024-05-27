@@ -4850,11 +4850,11 @@ void Firework() {
 		break;
 		//----------------------------------
 
-	case 30://verse 1a		15484
+	case 30://verse 2a		15484
 		progFullColors(15475, 32, 485);
 		break;
 
-	case 32://verse 1b		15484
+	case 32://verse 2b		15484
 		progCircles(15475, 34, 485);
 		break;
 
@@ -4867,7 +4867,7 @@ void Firework() {
 		//progCircles(2125, 30, 485);
 		break;
 
-	case 36://chorus 1		14516
+	case 36://chorus 2a		14516
 		//progFastBlingBling(14500, 3, 37);
 		progStern(14500, 970, 37, 15); 
 		break;
@@ -4876,42 +4876,44 @@ void Firework() {
 		progStrobo(1000, 38, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 
-	case 38://chorus 2		15445
+	case 38://chorus 2b		15445
 		progFastBlingBling(15450, 7, 40);
 		break;
 		//----------------------------------
 
-	case 40://BRIDGE		15484
-		progPalette(15475, 2, 42);	// paletteID -> 0 - 10
+	case 40://BOOM 1		15485
+		progPalette(15485, 2, 42);	// paletteID -> 0 - 10
 		break;
 
-	case 42://pause		14516
-		progMatrixHorizontal(14500, 44);
-		//progBlingBlingColoring(14500, 44);
-		break;
-		//----------------------------------
-
-	case 44://übergang		1935
-		progStrobo(1000, 46, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		//progCircles(2125, 30, 500);
-		break;
-
-	case 46://chorus 1		14516
-		//progFastBlingBling(14500, 5, 48);
-		progStern(14500, 970, 48, 15); 
-		break;
-
-	case 48://übergang		968
-		progStrobo(1000, 50, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
-		break;
-
-	case 50://chorus 2		15445
-		progFastBlingBling(14500, 10, 55);
+	case 42://nur vocals		15485
+		progMatrixHorizontal(15485, 43);
+		//progBlingBlingColoring(14500, 43);
 		break;
 		//----------------------------------
 
-	case 55://übergang		968
-		progStrobo(1000, 60, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+	case 43://BOOM 2		15480
+		progPalette(15480, 0, 44);
+		break;
+
+	case 44://BOOM 3		15485
+		progPalette(15485, 7, 46); 
+		break;
+
+	case 46://BOOM 4	13550
+		progPalette(13550, 9, 47);
+		break;
+
+	case 47://strobo snarewirbel	1935
+		progStrobo(1935, 48, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+		break;
+
+	case 48://chorus 2		14515
+		progFastBlingBling(14515, 10, 49);
+		break;
+		//----------------------------------
+
+	case 49://strobo snarewirbel		970
+		progStrobo(970, 60, 50, getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
 		break;
 		//----------------------------------
 
