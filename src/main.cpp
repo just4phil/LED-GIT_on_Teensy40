@@ -4794,10 +4794,6 @@ void Firework() {
 	// E/A: 55, 
 	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
-	markerLED2 = 61;
-	markerLED3 = 65;
-	markerLED4 = 69;
-
 	switch (prog) {
 
 	case 0://text		7500
@@ -7238,9 +7234,10 @@ void setMarkerLEDs(byte songID) {
 		markerLED4 = 71;			
 		break;
 	case 7://Firework();
-		markerLED2 = 61;
-		markerLED3 = 65;
-		markerLED4 = 69;			
+		markerLED1 = 61; // Bb
+		markerLED2 = 65; // G/C
+		markerLED3 = 69; // F/Bb
+		markerLED4 = 59; // C/F			
 		break;
 	case 8://DancingOnMyOwn();
 		markerLED1 = 60;	
@@ -7326,14 +7323,6 @@ void setMarkerLEDs(byte songID) {
 		markerLED4 = 59;
 		markerLED5 = 57;			
 		break;
-
-	// (E/A: 71)
-	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
-	// A/D: 62, 
-	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
-	// E/A: 55, 
-	// (F/Bb: 54, F#/B: 53, G/C: 52)
-
 	case 24://enjoyTheSilenceINTRO();
 		markerLED1 = 69;	
 		markerLED2 = 63;
@@ -7410,7 +7399,7 @@ void setup() {
 	//-----------------
 	digitalWrite(LED3_PIN, HIGH);
 
-	switchToSong(20);  //100 // TODO: set back to 0 !!!! // 100 ist der "startup" mit ein paar minuten BLACK, damit ich das intro in ruhe starten kann
+	switchToSong(100);  //100 // TODO: set back to 0 !!!! // 100 ist der "startup" mit ein paar minuten BLACK, damit ich das intro in ruhe starten kann
 
 	//switchToPart(0); // only 4 testing!!!
 }
