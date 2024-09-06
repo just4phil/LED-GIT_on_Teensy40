@@ -161,6 +161,11 @@ und dann scrolltext am anfang des songs -> laengen testen (automatische kalkulat
 TODO
 =====
 
+11.8.2024: 
+- helligkeit wieder auf 32
+- ersten song wieder auf 100 (startup)
+
+
 07.01.2024:
 !?!?
 wenn brightness höher als 60 dann stürzt es ab wenn viele leds leuchten (fullColor)

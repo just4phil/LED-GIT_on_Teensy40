@@ -73,7 +73,7 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 #define mh				    23	// TODO: ausmerzen
 #define MATRIX_WIDTH        22
 #define MATRIX_HEIGHT       23
-#define BRIGHTNESS			32 //64 //20   // Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
+#define BRIGHTNESS			32 // 32 - Max is 255, 32 is a conservative value to not overload a USB power supply (500mA) for 12x12 pixels.
 
 #define MATRIX_TYPE         HORIZONTAL_ZIGZAG_MATRIX
 #define MATRIX_SIZE         (MATRIX_WIDTH * MATRIX_HEIGHT)
@@ -6525,6 +6525,254 @@ void Hotncold() { // fertig: TODO
 		break;
 	}
 }
+
+// #20 Kids();
+void Kids() { // TODO
+
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+ 	switch (prog) { 
+
+	case 0:// pause	6795
+		if (LEDGITBOARD) {
+			progScrollText("Kids", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progBlack(6562, 5); // 6562, da um 235 ms verschoben damit strobo nicht offbeat ist
+		}
+		break;
+	
+	case 5: //synth intro	15000
+		// 15235, da um 235 ms verschoben damit strobo nicht offbeat ist
+		progStrobo(15235, 10, 470, getRandomColor(), getRandomColor(), getRandomColor());
+		break;
+		
+	case 10: // chorus intro	15000
+		progFastBlingBling(15000, 8, 15); 
+		//progFullColors(15000, 15, 510);
+		//progMatrixScanner(15000, 15, 30);
+		break;
+	
+	case 15: // verse 1	15000
+		progPalette(15000, 5, 20);
+		//progRandomLines(15000, 20, 455, false);
+		//progStern(15000, 1035, 20, 20); 
+		break;
+
+	case 20: // verse 1b	15000
+		progRandomLines(15000, 25, 470, true);
+		break;
+
+	case 25: // chorus 1	15000
+		progFullColors(15000, 30, 470);
+		break;
+	
+	case 30: // chorus 1b	15000
+		//progRandomLines(16275, 35, 515, false);
+		progStern(15000, 940, 35, 10); 
+		break;		
+
+	case 35: // verse 2	15000
+		//progPalette(15000, 6, 40);
+		progBlingBlingColoring(15000, 40, 5000);
+		break;	
+
+	case 40: // verse 2b	15000
+		progRandomLines(15000, 45, 510, false);
+		//progPalette(15000, 3, 45);
+		//progStrobo(15000, 45, 65, 255, 255, 255);
+		//progFullColors(15000, 45, 455);
+		//progStern(15000, 515, 45, 20); 
+		//progMatrixHorizontal(15000, 45, 70);
+		break;	
+
+	case 45: // chorus 2	15000
+		progStern(15000, 940, 50, 10); 
+		break;	
+
+	case 50: // chorus 2b	15000
+		progFastBlingBling(15000, 8, 55);
+		break;	
+
+	case 55: // SOLO	15000
+		//progStern(15000, 510, 60, 25); 
+		progPalette(15000, 10, 60);
+		break;	
+
+	case 60: // SAMPLE	1875
+		progBlack(1875, 65);
+		break;
+
+	case 65: // snarewirbel	1875
+		progStrobo(1875, 70, 65, 255, 255, 255);
+		break;	
+
+	case 70: // chorus 3	15000
+		progStern(15000, 470, 75, 10); 
+		break;	
+
+	case 75: // chorus 3b	15000
+		progFastBlingBling(15000, 8, 80);
+		break;	
+
+	case 80: // pause	7500
+		progBlack(7500, 85);
+		break;	
+
+	case 85: // snareauftakt	1875
+		progStrobo(1875, 90, 65, 255, 255, 255);
+		break;	
+
+	case 90: // chorus 4	15000
+		progFastBlingBling(15000, 12, 95);
+		break;	
+
+	case 95: // outro F	3750
+		progBlingBlingColoring(3750, 100, 4000);
+		break;	
+
+	case 100: //BLACK	10000
+		progBlack(10000, 110);
+		break;	
+
+	case 110: 
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
+
+
+// #21 Tellittomyheart();
+void Tellittomyheart() { // TODO
+
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
+
+ 	switch (prog) { 
+
+	case 0:// pause	7375
+		if (LEDGITBOARD) {
+			progScrollText("Tellittomyheart", 19500, 90, getRandomColor(), 5);
+		}
+		else {
+			progBlack(7375, 5);
+		}
+		break;
+	
+	case 5: //intro chorus	16270
+		//progBlingBlingColoring(16270, 10, 5000);
+		progStern(16270, 1015, 10, 20); 
+		break;
+		
+	case 10: // verse	16270
+		progFullColors(16270, 15, 510);
+		//progMatrixScanner(16270, 15, 30);
+		break;
+	
+	case 15: // bridge	14240
+		progPalette(14240, 4, 20);
+		//progRandomLines(14240, 20, 455, false);
+		//progStern(14240, 1035, 20, 20); 
+		break;
+
+	case 20: // pause	1015
+		progBlack(1015, 25);
+		break;
+
+	case 25: // snareauftakt	1015
+		progStrobo(1015, 30, 65, 255, 255, 255);
+		break;
+	
+	case 30: // chorus 1	16275
+		//progRandomLines(16275, 35, 515, false);
+		progStern(16275, 1015, 35, 20); 
+		break;		
+
+	case 35: // verse 2	16270
+		//progPalette(16270, 6, 40);
+		progRandomLines(16270, 40, 510, false);
+		break;	
+
+	case 40: // bridge	14235
+		progPalette(14235, 3, 45);
+		//progStrobo(14235, 45, 65, 255, 255, 255);
+		//progFullColors(14235, 45, 455);
+		//progStern(14235, 515, 45, 20); 
+		//progMatrixHorizontal(14235, 45, 70);
+		break;	
+
+	case 45: // pause	1020
+		progBlack(1020, 50);
+		break;	
+
+	case 50: // snareauftakt	1015
+		progStrobo(1015, 55, 65, 255, 255, 255);
+		break;	
+
+	case 55: // chorus 2	16270
+		//progStern(16270, 510, 60, 25); 
+		progFastBlingBling(16270, 8, 60); 
+		break;	
+
+	case 60: // SOLO	16270
+		progPalette(16270, 6, 65);
+		break;
+
+	case 65: // love on the run	16275
+		progPalette(16275, 9, 70);
+		break;	
+
+	case 70: // pause	1015
+		progBlack(1015, 75);
+		break;	
+
+	case 75: // snareauftakt	1015
+		progStrobo(1015, 80, 65, 255, 255, 255);
+		break;	
+
+	case 80: // chorus 3	16275
+		progStern(16275, 510, 85, 25); 
+		break;	
+
+	case 85: // chorus 4	16270
+		progFastBlingBling(16270, 8, 90); 
+		break;	
+
+	case 90: // outro F	1015
+		//progFullColors(1015, 95, 100);
+		progStrobo(1015, 95, 95, 255, 255, 255);
+		break;	
+
+	case 95: // outro G	1020
+		//progFullColors(1020, 100, 100);
+		progStrobo(1020, 105, 65, 255, 255, 255);
+		break;	
+
+	// case 100: //outro A	4065
+	// 	//progFullColors(4065, 105, 5000);
+	// 	progBlingBlingColoring(4065, 105, 6000);
+	// 	break;	
+
+	case 105: //BLACK	10000
+		progBlack(10000, 110);
+		break;	
+
+	case 110: 
+		FastLED.clear();
+		switchToSong(0);	// SongID 0 == DEFAULT loop
+		break;
+	}
+}
 //==============================================,
 
 
@@ -7065,10 +7313,26 @@ void setMarkerLEDs(byte songID) {
 		markerLED3 = 60;
 		markerLED4 = 55;			
 		break;
-
-	case 20://TEMPLATE();
-		// DO NOTHING !!
+	case 20://Kids();
+		markerLED1 = 67;
+		markerLED2 = 62;
+		markerLED3 = 60;
+		markerLED4 = 55;
 		break;
+	case 21://Tell it to my Heart
+		markerLED1 = 69;	
+		markerLED2 = 65;
+		markerLED3 = 60;
+		markerLED4 = 59;
+		markerLED5 = 57;			
+		break;
+
+	// (E/A: 71)
+	// F/Bb: 69, F#/B: 67, G/C: 65, G#/C#: 63, 
+	// A/D: 62, 
+	// Bb/D#: 61, B/E: 60, C/F: 59, C#/F#: 58, D/G: 57, D#/G#: 56, 
+	// E/A: 55, 
+	// (F/Bb: 54, F#/B: 53, G/C: 52)
 
 	case 24://enjoyTheSilenceINTRO();
 		markerLED1 = 69;	
@@ -7146,7 +7410,7 @@ void setup() {
 	//-----------------
 	digitalWrite(LED3_PIN, HIGH);
 
-	switchToSong(100);  // TODO: set back to 0 !!!! // 100 ist der "startup" mit ein paar minuten BLACK, damit ich das intro in ruhe starten kann
+	switchToSong(20);  //100 // TODO: set back to 0 !!!! // 100 ist der "startup" mit ein paar minuten BLACK, damit ich das intro in ruhe starten kann
 
 	//switchToPart(0); // only 4 testing!!!
 }
@@ -7288,9 +7552,11 @@ void loop() {
 			case 19:
 				Hotncold();
 				break;
-
 			case 20:
-				TEMPLATE();
+				Kids();
+				break;
+			case 21:
+				Tellittomyheart();
 				break;
 
 			case 24:
